@@ -84,8 +84,8 @@
     max-width: 550px;
     background-color: var(--main-background-color);
     border: 1px solid var(--main-background-color-lighter);
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 6px 0 -2px rgba(0, 0, 0, 0.4);
     /* for clickspan */
     position: relative;
   }
@@ -111,6 +111,8 @@
     padding: 10px 0 10px 0;
     border-top: 1px solid var(--main-background-color-lighter);
     background-color: var(--main-background-color-light);
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
   }
   .clickspan {
     position:absolute;

@@ -30,9 +30,9 @@
 	button {
 		background-color: var(--elements-primary-color);
 		border: 0;
-		border-radius: 4px;
-		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);
-		/*padding: 7px 12px 7px 12px;*/
+		border-radius: 8px;
+		/*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.15);*/
+		box-shadow: 0 6px 0 -2px rgba(0, 0, 0, 0.3);
 		padding: 12px 12px 12px 12px;
 		margin-top: 12px;
 		margin-bottom: 12px;
