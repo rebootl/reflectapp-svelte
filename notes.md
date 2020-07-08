@@ -1,6 +1,8 @@
 
 
 - work on entries (WIP)
+  - unobserve "ul" on unmount!!
+  - "no entries found"
 
 - create github repo.
 - fix/improve app loading/routing

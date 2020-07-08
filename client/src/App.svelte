@@ -12,33 +12,47 @@
 	import { myrouter } from './resources/router.js';
 	import { loggedIn } from './resources/auth.js';
 
-	let route = myrouter.getRoute();
-	let _route = '';
-	let viewUser;
+	//let route = myrouter.getRoute();
+	// route for template
+	let route = '';
+	// user for user entries
+	let viewUser = '';
+	// id for single entry
+	let entryId = '';
+
 	// state of the menu
 	let shownav = false;
 	// disables and hides menu and menu button
 	let overview = true;
 
 	function routerUpdate() {
-		route = myrouter.getRoute();
-		if (route.startsWith('~')) {
-			// -> get user etc...
+		const _route = myrouter.getRoute();
+		const _p0 = myrouter.getParts(0);
+		if (_route.startsWith('~')) {
+			// user entries/entry
+			console.log(_p0)
+			if (_p0[0]) {
+				if (_p0[0].startsWith('~')) {
+				// single entry
+				route = 'singleentry';
+				entryId = _p0.slice(1);
+			}} else {
+				route = 'user';
+			}
 			overview = false;
-			_route = 'user';
-			viewUser = route.slice(1);
-		} else if (route === 'editor' || route === 'me' || route === 'my-entries'
-				|| route === 'myentries') {
+			viewUser = _route.slice(1);
+		} else if (_route === 'editor' || _route === 'me' || _route === 'my-entries'
+				|| _route === 'myentries') {
 				if (loggedIn()) overview = false;
 				else overview = true;
-				_route = 'me';
-		} else if (route === 'signup') {
+				route = 'me';
+		} else if (_route === 'signup') {
 			overview = true;
-			_route = 'signup';
+			route = 'signup';
 		} else {
 			myrouter.setUrl('', [], []);
 			overview = true;
-			_route = 'overview';
+			route = 'overview';
 		}
 	}
 
@@ -75,16 +89,16 @@
 	<div class="sidearea"></div>
 
 	<main>
-	{#if _route === 'user'}
+	{#if route === 'user'}
 		<Entries user={viewUser} />
 		<!--<Exampletext n={5} />-->
-	{:else if _route === 'me'}
+	{:else if route === 'me'}
 		{#if loggedIn()}
 			[ SHOW MY ENTRIES ]
 		{:else}
 			[ LOGIN OR SIGNUP ]
 		{/if}
-	{:else if _route === 'signup'}
+	{:else if route === 'signup'}
 		[ SHOW SIGNUP PAGE ]
 	{:else}
 		<Overview />

@@ -8,6 +8,13 @@
   export let user;
 
 	let entries = [];
+  let userNotFound = false;
+
+  $: updateEntries(user);
+
+  const updateEntries = async (user) => {
+    entries = await getEntries([{intersectionRatio: 1}]);
+  }
 
   const bottomObserver = new IntersectionObserver(
     async (e) => {
@@ -18,10 +25,10 @@
   );
 
   const ulMutationObserver = new MutationObserver(
-    (m, o) => updateObserver()
+    (m, o) => updateObserver(m, o)
   );
 
-  function updateObserver() {
+  function updateObserver(m, o) {
     const lastli = document.querySelector('.lastelement');
     if (lastli) {
       lastli.classList.remove('lastelement');
@@ -33,40 +40,31 @@
     bottomObserver.observe(newLastli);
   }
 
-  /*function addObserver() {
-    const ul = document.querySelector('.entrieslist');
-    const lastli = ul.lastElementChild;
-    bottomObserver.observe(lastli);
-  }
-  function removeObserver() {
-    const ul = document.querySelector('.entrieslist');
-    const lastli = ul.lastElementChild;
-    bottomObserver.unobserve(lastli);
-  }*/
-
 	async function getEntries(e) {
     // in some cases the observable of the previous 'lastelement' is still
     // threre, therefor the last entry has to be used instead of 0
-    if (e[e.length - 1].intersectionRatio <= 0) return;
+    if (e[e.length - 1].intersectionRatio <= 0) return [];
 
-    console.log("GETENTRIES")
+    console.log("GETENTIRESJF")
+
     const skip = entries.length;
 		const r = await apiGetRequest(entriesURL + '/' + user, {
       skip: skip
     });
 		if (!r.success) {
 			console.error(r)
+      userNotFound = true;
 			return [];
 		}
-    console.log(r.result)
+    userNotFound = false;
 		return r.result;
 	}
 
 	onMount(async () => {
-		entries = await getEntries([{intersectionRatio: 1}]);
+		//entries = await getEntries([{intersectionRatio: 1}]);
     const ul = document.querySelector('.entrieslist');
     ulMutationObserver.observe(ul, { childList: true });
-    updateObserver();
+    //updateObserver();
 	});
 </script>
 
@@ -74,11 +72,15 @@
   <div class="main-inner">
 	  <h1><div class="logobox"><UserLogo /></div>{user}</h1>
 	  <div class="entrieslist">
+    {#if userNotFound}
+      Ooops, user not found...
+    {:else}
 	  {#each entries as e}
       <Entry entry={e} />
 	  {:else}
 		  <p>loading...</p>
 	  {/each}
+    {/if}
 	  </div>
   </div>
 </div>
