@@ -3,11 +3,12 @@
 	import MenuButton from './MenuButton.svelte';
 	import Logo from './Logo.svelte';
 	import UserMenu from './UserMenu.svelte';
-	import Nav from './Nav.svelte';
+	import Menu from './Menu.svelte';
 	import Exampletext from './Exampletext.svelte';
 	import Overview from './Overview.svelte';
 	import OverviewButton from './OverviewButton.svelte';
 	import Entries from './Entries.svelte';
+	import SingleEntry from './SingleEntry.svelte';
 	import { setColorVariants } from './resources/colors.js';
 	import { myrouter } from './resources/router.js';
 	import { loggedIn } from './resources/auth.js';
@@ -33,10 +34,11 @@
 			console.log(_p0)
 			if (_p0[0]) {
 				if (_p0[0].startsWith('~')) {
-				// single entry
-				route = 'singleentry';
-				entryId = _p0.slice(1);
-			}} else {
+					// single entry
+					route = 'singleentry';
+					entryId = _p0[0].slice(1);
+				}
+			} else {
 				route = 'user';
 			}
 			overview = false;
@@ -84,7 +86,7 @@
 		<Logo off={!overview} />
 		<UserMenu />
 	</header>
-	<Nav {shownav} nomenu={overview} />
+	<Menu {shownav} nomenu={overview} />
 	<!-- (sidearea stays empty, menu is overlayed above) -->
 	<div class="sidearea"></div>
 
@@ -92,6 +94,8 @@
 	{#if route === 'user'}
 		<Entries user={viewUser} />
 		<!--<Exampletext n={5} />-->
+	{:else if route === 'singleentry'}
+		<SingleEntry user={viewUser} entryId={entryId} />
 	{:else if route === 'me'}
 		{#if loggedIn()}
 			[ SHOW MY ENTRIES ]
@@ -211,7 +215,7 @@
 				"main";
 		}
 	}*/
-	@media all and (min-width: 650px) {
+	@media all and (min-width: 700px) {
 		:global(body) {
 			--side-width: 230px;
 		}

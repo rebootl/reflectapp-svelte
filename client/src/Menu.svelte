@@ -52,7 +52,7 @@
 	nav.nomenu {
 		display: none;
 	}
-	@media all and (min-width: 650px) {
+	@media all and (min-width: 700px) {
 		nav {
 			left: 0;
 		}

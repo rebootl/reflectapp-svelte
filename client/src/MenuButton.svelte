@@ -68,7 +68,7 @@
 	.closebutton.active {
 		opacity: 1;
 	}
-	@media all and (min-width: 650px) {
+	@media all and (min-width: 700px) {
 		button {
 			display: none;
 		}

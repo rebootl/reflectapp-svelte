@@ -75,8 +75,11 @@
     {#if userNotFound}
       Ooops, user not found...
     {:else}
-	  {#each entries as e}
-      <Entry entry={e} />
+	  {#each entries as entry}
+      <div class="entrybox">
+        <Entry entry={entry} />
+        <a href={'#~' + entry.user + '/~' + entry.id}><span class="clickspan"></span></a>
+      </div>
 	  {:else}
 		  <p>loading...</p>
 	  {/each}
@@ -108,13 +111,20 @@
 	.entrieslist {
     background-color: var(--main-background-color);
 		box-sizing: border-box;
-		/*background-color: var(--main-background-color-dark);*/
-		/*max-width: var(--main-width);*/
-		/*padding-left: 20px;
-		padding-right: 10px;*/
-    /*width: 100%;*/
 		display: flex;
 		flex-wrap: wrap;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.25);
 	}
+  .entrybox {
+    position: relative;
+    width: 100%;
+  }
+  .clickspan {
+    position: absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    left: 0;
+    z-index: 1;
+  }
 </style>

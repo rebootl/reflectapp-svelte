@@ -52,6 +52,7 @@
 
 <style>
   .entry {
+    box-sizing: border-box;
     width: 100%;
     padding: 0 20px 0 20px;
     border-bottom: 1px solid var(--main-background-color-light);
@@ -81,7 +82,7 @@
     background-color: var(--main-background-color-light);
   }
   .linkbox {
-    max-width: 550px;
+    display: inline-block;
     background-color: var(--main-background-color);
     border: 1px solid var(--main-background-color-lighter);
     border-radius: 8px;
@@ -120,7 +121,7 @@
     height:100%;
     top:0;
     left: 0;
-    z-index: 1;
+    z-index: 10;
   }
   .tagbox {
     margin: 24px 0 24px 0;
