@@ -37,7 +37,7 @@
       <small class="linkcomment">{entry.comment}</small>
     </div>
   {:else}
-    oops entry type unknown...
+    <p>oops entry type unknown...</p>
   {/if}
   </div>
   <div class="tagbox">
@@ -61,9 +61,6 @@
     margin: 15px 0 15px 0;
     color: var(--main-text-color-low-emph);
   }
-  .date {
-    /*font-family: serif;*/
-  }
   .entrycontent {
     margin: 16px 0 16px 0;
   }
@@ -76,7 +73,7 @@
   .imagecomment {
     display: block;
     text-align: center;
-    margin-top: -16px;
+    margin-top: -20px;
     padding: 10px 0 10px 0;
     border-top: 1px solid var(--main-background-color-lighter);
     background-color: var(--main-background-color-light);

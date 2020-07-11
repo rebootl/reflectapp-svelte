@@ -19,7 +19,6 @@
   const bottomObserver = new IntersectionObserver(
     async (e) => {
       entries = [ ...entries, ...await getEntries(e) ]
-      console.log(entries)
     },
     { threshold: 0.5 }
   );
@@ -44,8 +43,6 @@
     // in some cases the observable of the previous 'lastelement' is still
     // threre, therefor the last entry has to be used instead of 0
     if (e[e.length - 1].intersectionRatio <= 0) return [];
-
-    console.log("GETENTIRESJF")
 
     const skip = entries.length;
 		const r = await apiGetRequest(entriesURL + '/' + user, {
@@ -73,16 +70,16 @@
 	  <h1><div class="logobox"><UserLogo /></div>{user}</h1>
 	  <div class="entrieslist">
     {#if userNotFound}
-      Ooops, user not found...
+      <p>Ooops, user not found...</p>
     {:else}
-	  {#each entries as entry}
-      <div class="entrybox">
-        <Entry entry={entry} />
-        <a href={'#~' + entry.user + '/~' + entry.id}><span class="clickspan"></span></a>
-      </div>
-	  {:else}
-		  <p>loading...</p>
-	  {/each}
+  	  {#each entries as entry}
+        <div class="entrybox">
+          <Entry entry={entry} />
+          <a href={'#~' + entry.user + '/~' + entry.id} class="clicklink"></a>
+        </div>
+  	  {:else}
+  		  <p>loading...</p>
+  	  {/each}
     {/if}
 	  </div>
   </div>
@@ -95,11 +92,8 @@
     justify-content: center;
   }
 	.main-inner {
-    box-sizing: border-box;
     width: 100%;
     max-width: var(--main-width);
-    /*padding-left: 20px;
-    padding-right: 10px;*/
 	}
   .logobox {
     height: 50px;
@@ -110,7 +104,6 @@
   }
 	.entrieslist {
     background-color: var(--main-background-color);
-		box-sizing: border-box;
 		display: flex;
 		flex-wrap: wrap;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.25);
@@ -119,7 +112,7 @@
     position: relative;
     width: 100%;
   }
-  .clickspan {
+  .clicklink {
     position: absolute;
     width:100%;
     height:100%;

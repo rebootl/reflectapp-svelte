@@ -31,7 +31,6 @@
 		const _p0 = myrouter.getParts(0);
 		if (_route.startsWith('~')) {
 			// user entries/entry
-			console.log(_p0)
 			if (_p0[0]) {
 				if (_p0[0].startsWith('~')) {
 					// single entry

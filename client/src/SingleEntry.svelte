@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from "svelte";
 	import { apiGetRequest } from './resources/requests.js';
 	import { entriesURL } from './resources/urls.js';
   import UserLogo from './UserLogo.svelte';
@@ -12,16 +11,15 @@
   let notFound = false;
 
   $: updateEntries(user);
+  $: updateEntries(entryId);
 
   async function updateEntries() {
     entries = await getEntry();
   }
 
 	async function getEntry() {
-    console.log(entryId)
 		const r = await apiGetRequest(entriesURL + '/' + user
       + '/' + entryId);
-    console.log(r);
 		if (!r.success) {
 			console.error(r)
       notFound = true;
@@ -30,9 +28,6 @@
     notFound = false;
 		return [ r.result ];
 	}
-
-	onMount(async () => {
-	});
 </script>
 
 <div class="main-container">
@@ -45,7 +40,7 @@
     	 </div>
       <div class="logobox"><UserLogo /></div>
       <h3>{user}</h3>
-      <a href={'#~' + user} title="To User"><span class="clickspan"></span></a>
+      <a href={'#~' + user} title="To User" class="clicklink"></a>
     </div>
 	  <div class="entrieslist">
     {#if notFound}
@@ -53,9 +48,9 @@
     {:else}
       {#each entries as e}
         <Entry entry={e} />
+	    {:else}
+	      <p>loading...</p>
       {/each}
-	  <!--{:else}
-	    <p>loading...</p>-->
     {/if}
 	  </div>
   </div>
@@ -110,7 +105,7 @@
 		flex-wrap: wrap;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.25);
 	}
-  .clickspan {
+  .clicklink {
     position:absolute;
     width:100%;
     height:100%;
