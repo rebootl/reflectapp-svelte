@@ -3,7 +3,8 @@
 
 ## now
 
-- work on entries (WIP)
+- work on menu
+- fix pre/code text overflow
 
 ### later
 
@@ -12,6 +13,7 @@
 
 ## done
 
+- work on entries => DONE
 - "no entries found" => DONE
 - create github repo. => DONE
 - add topics/tags on entries => DONE

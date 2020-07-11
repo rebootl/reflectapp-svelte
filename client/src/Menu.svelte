@@ -24,11 +24,6 @@
 
 <style>
 	nav {
-		/* alternatively have a border line on top */
-		/*border-top: 1px solid var(--side-background-color-light);*/
-		/*margin-top: var(--header-height);*/
-		/*padding-top: var(--header-height);*/
-
 		display: flex;
 		flex-direction: column;
 		width: 230px;
