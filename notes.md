@@ -3,7 +3,8 @@
 
 ## now
 
-- work on menu
+- work on menu (WIP)
+
 - fix pre/code text overflow
 
 ### later

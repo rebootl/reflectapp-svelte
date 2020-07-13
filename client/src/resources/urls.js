@@ -9,3 +9,4 @@ export const uploadMultiImagesUrl = '/api/uploadMultiImages';
 
 export const profilesURL = hostapi + '/profiles';
 export const entriesURL = hostapi + '/entries';
+export const topicsURL = hostapi + '/usermenu';

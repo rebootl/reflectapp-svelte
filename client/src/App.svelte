@@ -17,7 +17,7 @@
 	// route for template
 	let route = '';
 	// user for user entries
-	let viewUser = '';
+	let user = '';
 	// id for single entry
 	let entryId = '';
 
@@ -41,7 +41,7 @@
 				route = 'user';
 			}
 			overview = false;
-			viewUser = _route.slice(1);
+			user = _route.slice(1);
 		} else if (_route === 'editor' || _route === 'me' || _route === 'my-entries'
 				|| _route === 'myentries') {
 				if (loggedIn()) overview = false;
@@ -51,7 +51,7 @@
 			overview = true;
 			route = 'signup';
 		} else {
-			myrouter.setUrl('', [], []);
+			myrouter.setURL('', [], []);
 			overview = true;
 			route = 'overview';
 		}
@@ -85,16 +85,18 @@
 		<Logo off={!overview} />
 		<UserMenu />
 	</header>
-	<Menu {shownav} nomenu={overview} />
+	{#if !overview}
+		<Menu {shownav} nomenu={overview} />
+	{/if}
 	<!-- (sidearea stays empty, menu is overlayed above) -->
 	<div class="sidearea"></div>
 
 	<main>
 	{#if route === 'user'}
-		<Entries user={viewUser} />
+		<Entries />
 		<!--<Exampletext n={5} />-->
 	{:else if route === 'singleentry'}
-		<SingleEntry user={viewUser} entryId={entryId} />
+		<SingleEntry {user} entryId={entryId} />
 	{:else if route === 'me'}
 		{#if loggedIn()}
 			[ SHOW MY ENTRIES ]

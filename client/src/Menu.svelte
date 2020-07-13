@@ -1,24 +1,146 @@
 <script>
-
+	import { onMount, onDestroy } from "svelte";
+	import { apiGetRequest } from './resources/requests.js';
+	import { topicsURL } from './resources/urls.js';
+	import { myrouter } from './resources/router.js';
 	import Topic from './Topic.svelte';
-
-	let a = [ ...Array(2).keys() ];
+	import Tag from './Tag.svelte';
 
 	export let shownav;
 	export let nomenu;
+	//export let user;
 
+	//let user = "";
+	let topics = [];
+
+	let singleSelect = true;
+
+	onMount(async () => {
+		await loadMenu();
+		myrouter.registerSvelte(routerUpdate);
+		updateMenu();
+	})
+	onDestroy(() => {
+		myrouter.unregisterSvelte(routerUpdate);
+	});
+
+	function routerUpdate() {
+		updateMenu();
+	}
+
+	function updateMenu() {
+		const activeTopics = myrouter.getParts(0);
+		const activeTags = myrouter.getParts(1);
+		for (const topic of topics) {
+			if (activeTopics.includes(topic.name)) {
+				topic.active = true;
+				for (const tag of topic.tags) {
+					if (activeTags.includes(tag.name)) tag.active = true;
+					else tag.active = false;
+				}
+			} else {
+				topic.active = false;
+				resetTags(topic);
+			}
+		}
+		topics = topics
+	}
+
+	async function loadMenu() {
+		// reset for reload
+		topics = [];
+		const r = await getUserMenu();
+		for (const topic of r) {
+			const tags = topic.tags.map((t)=>{ return {
+				name: t,
+				active: false
+			}});
+			topics.push({
+				name: topic.name,
+				tags: tags,
+				active: false
+			});
+		}
+		// (set in updateMenu)
+		//topics = topics;
+	}
+
+	async function getUserMenu() {
+		const user = myrouter.getRoute().slice(1);
+		const r = await apiGetRequest(topicsURL + '/' + user);
+		if (!r.success) {
+			console.error(r)
+			return [];
+		}
+		return r.result;
+	}
+
+	function resetTags(topic) {
+		for (const tag of topic.tags) {
+			tag.active = false;
+		}
+	}
+
+	function toggleTopic(topic) {
+		// reset
+		if (singleSelect) {
+			for (const t of topics) {
+				if (t === topic) {
+					if (t.active) {
+						t.active = false;
+						// reset tags
+						resetTags(t);
+					} else t.active = true;
+				} else {
+					t.active = false;
+					resetTags(t);
+				}
+			}
+		} else {
+			// set
+			topic.active = !topic.active;
+		}
+		// update triggered by assignment!!
+		topics = topics;
+		updateURL();
+	}
+
+	function toggleTag(tag) {
+		tag.active = !tag.active;
+		topics = topics;
+		updateURL();
+	}
+
+	function updateURL() {
+		const activeTopics = [];
+		const activeTags = [];
+		for (const t of topics) {
+			if (t.active) activeTopics.push(t.name);
+			for (const tag of t.tags) {
+				if (tag.active) activeTags.push(tag.name);
+			}
+		}
+		myrouter.setURL(myrouter.getRoute(), [ activeTopics, activeTags ]);
+	}
 </script>
 
 <nav class:shownav class:nomenu>
 	<div class="marginbox"></div>
-	<div class="topics">
-		<Topic title={"Astro"} />
-		<Topic title={"Chess"} />
-		<Topic title={"Food"} />
-		<Topic title={"Music"} />
-		{#each a as p}
-			<Topic title={"Topic " + p} />
-		{/each}
+	<div class="scrollbox">
+		<div class="topics">
+			{#each topics as t}
+				<Topic title={t.name} active={t.active} on:click={()=>toggleTopic(t)} />
+				{#if t.active}
+				<div class="tags">
+					{#each t.tags as t}
+						<Tag title={t.name} active={t.active} on:click={()=>toggleTag(t)} />
+					{/each}
+				</div>
+				{/if}
+			{:else}
+			 	<p>loading...</p>
+			{/each}
+		</div>
 	</div>
 </nav>
 
@@ -33,11 +155,6 @@
 		top: 0;
 		bottom: 0;
 		background-color: var(--side-background-color);
-		overflow-y: auto;
-		overflow-x: hidden;
-		scrollbar-color:
-			var(--side-background-color-light)
-			var(--side-background-color-dark);
 		z-index: 15;
 	}
 	nav.shownav {
@@ -53,10 +170,23 @@
 		}
 	}
 	.marginbox {
-		height: calc(var(--header-height) - 1px);
+		min-height: calc(var(--header-height) - 1px);
 		border-bottom: 1px solid var(--side-background-color-light);
+	}
+	.scrollbox {
+		overflow-y: auto;
+		overflow-x: hidden;
+		scrollbar-color:
+			var(--side-background-color-light)
+			var(--side-background-color-dark);
 	}
 	.topics {
 		border-bottom: 1px solid var(--side-background-color-light);
+	}
+	.tags {
+		padding-top: 8px;
+		padding-bottom: 8px;
+		border-bottom: 1px solid var(--side-background-color-light);
+		background-color: rgba(0, 0, 0, 0.05);
 	}
 </style>

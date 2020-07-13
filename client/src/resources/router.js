@@ -32,6 +32,9 @@ class Router {
   registerSvelte(updateCallback) {
     updateCallbacks.add(updateCallback);
   }
+  unregisterSvelte(updateCallback) {
+    updateCallbacks.delete(updateCallback);
+  }
   register(comp) {
     console.log("router register");
     registeredComponents.add(comp);
@@ -76,7 +79,7 @@ class Router {
 
     this._parameters = parameters ? parameters.split('&').map((p)=>dec(p)) : [];
   }
-  setUrl(route, parts=[[]], parameters=[]) {
+  setURL(route, parts=[[]], parameters=[]) {
     const parameterString = parameters.map(p=>enc(p)).join('&');
     const pts = [];
     for (const p of parts) {
