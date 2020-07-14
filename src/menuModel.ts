@@ -1,3 +1,4 @@
+
 async function getPublicTopics(db, user) {
   const c = await db.collection('entries');
 
@@ -30,7 +31,7 @@ async function getPublicTags(db, user, topic) {
   return await c.aggregate(q).toArray();
 }
 
-async function getPublicUserMenu(db, user) {
+async function getPublicMenu(db, user) {
   const topics = await getPublicTopics(db, user);
   const r = [];
   for (const topic of topics) {
@@ -43,4 +44,4 @@ async function getPublicUserMenu(db, user) {
   return r;
 }
 
-export { getPublicUserMenu };
+export { getPublicMenu };

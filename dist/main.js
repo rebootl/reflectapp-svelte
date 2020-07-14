@@ -9,7 +9,7 @@ import routeUrlInfo from './routeUrlInfo.js';
 import routeUploadMultiImages from './routeUploadMultiImages.js';
 import profiles from './profiles.js';
 import entries from './entries.js';
-import userMenu from './userMenu.js';
+import menu from './menu.js';
 // db
 import getDb from './db.js';
 //import getEntriesEndpointConfig from './entriesEndpoint.js';
@@ -48,7 +48,7 @@ async function main() {
     // -> route userentries
     app.use('/api/profiles', profiles);
     app.use('/api/entries', entries);
-    app.use('/api/usermenu', userMenu);
+    app.use('/api/menu', menu);
     // projectData endpoints
     //app.use('/api/user', new Endpoint(await getUserEndpointConfig(db)).router);
     //app.use('/api/entries', new Endpoint(await getEntriesEndpointConfig(db)).router);

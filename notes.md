@@ -3,12 +3,11 @@
 
 ## now
 
-- work on menu (WIP)
-
-- fix pre/code text overflow
+- work on menu (working WIP)
 
 ### later
 
+- fix pre/code text overflow
 - fix/improve app loading/routing
 - unobserve "ul" on unmount -> no errors anymore?
 

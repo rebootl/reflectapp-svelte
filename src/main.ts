@@ -12,7 +12,7 @@ import routeUploadMultiImages from './routeUploadMultiImages.js';
 
 import profiles from './profiles.js';
 import entries from './entries.js';
-import userMenu from './userMenu.js';
+import menu from './menu.js';
 
 // db
 import getDb from './db.js';
@@ -63,7 +63,7 @@ async function main() {
 
   app.use('/api/profiles', profiles);
   app.use('/api/entries', entries);
-  app.use('/api/usermenu', userMenu);
+  app.use('/api/menu', menu);
 
   // projectData endpoints
   //app.use('/api/user', new Endpoint(await getUserEndpointConfig(db)).router);

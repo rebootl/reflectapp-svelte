@@ -1,7 +1,7 @@
 <script>
 	import { onMount, onDestroy } from "svelte";
 	import { apiGetRequest } from './resources/requests.js';
-	import { topicsURL } from './resources/urls.js';
+	import { menuURL } from './resources/urls.js';
 	import { myrouter } from './resources/router.js';
 	import Topic from './Topic.svelte';
 	import Tag from './Tag.svelte';
@@ -67,7 +67,7 @@
 
 	async function getUserMenu() {
 		const user = myrouter.getRoute().slice(1);
-		const r = await apiGetRequest(topicsURL + '/' + user);
+		const r = await apiGetRequest(menuURL + '/' + user);
 		if (!r.success) {
 			console.error(r)
 			return [];
