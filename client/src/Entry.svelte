@@ -64,6 +64,12 @@
   .entrycontent {
     margin: 16px 0 16px 0;
   }
+  :global(pre) {
+    overflow-x: scroll;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    z-index: 20;
+  }
   :global(.entryimage) {
     max-width: 100%;
   }

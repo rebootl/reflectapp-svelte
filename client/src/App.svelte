@@ -36,7 +36,7 @@
 					// single entry
 					route = 'singleentry';
 					entryId = _p0[0].slice(1);
-				}
+				} else route = 'user';
 			} else {
 				route = 'user';
 			}
@@ -160,13 +160,16 @@
 
 		/*** sizes ***/
 		--header-height: 50px;
-		--side-width: 230px;
 		--sidebar-width: 15px;
+		--side-width-extended: 230px;
 		--main-width: 650px;
+		--side-width: var(--sidebar-width);
 
 		margin: 0;
 		background-color: var(--main-background-color-dark);
 		font-family: sans-serif;
+		/* avoid layout shift when scrollbar appears... */
+		overflow-y: scroll;
 	}
 	:global(a) {
 		color: var(--primary-color);
@@ -176,12 +179,12 @@
 		grid-template-columns: auto;
 		/*transition: grid-template-columns 0.5s;*/
 		grid-template-rows: var(--header-height) auto;
-		grid-template-columns: var(--sidebar-width) calc(100% - var(--sidebar-width));
+		grid-template-columns: var(--side-width) minmax(0, 1fr);
 		grid-template-areas:
 			"header header"
 			"side main";
 		background-color: var(--main-background-color-dark);
-		min-height: 100vh;
+		/*min-height: 100vh;*/
 	}
 	header {
 		display: flex;
@@ -218,13 +221,14 @@
 	}*/
 	@media all and (min-width: 700px) {
 		:global(body) {
-			--side-width: 230px;
+			--side-width: var(--side-width-extended);
 		}
 		.wrapper {
-			grid-template-columns: var(--side-width) 1fr;
-			grid-template-areas:
+			/*grid-template-columns: var(--side-width) calc(100% - var(--side-width));*/
+			/*grid-template-columns: var(--side-width) minmax(0, 1fr);*/
+			/*grid-template-areas:
 				"header header"
-				"side main";
+				"side main";*/
 		}
 		.wrapper.nomenu {
 			--side-width: var(--sidebar-width);
@@ -234,7 +238,8 @@
 		 230px + 650px + 230px */
 	@media all and (min-width: 1110px) {
 	 .wrapper {
-			grid-template-columns: var(--side-width) auto var(--side-width);
+		 	/*grid-template-columns: var(--side-width) calc(100% - 2 * var(--side-width)) var(--side-width);*/
+			grid-template-columns: var(--side-width) minmax(0, 1fr) var(--side-width);
 			grid-template-areas:
 				"header header header"
 				"side main filler";

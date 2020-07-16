@@ -63,7 +63,7 @@
     justify-content: center;
   }
 	.main-inner {
-    box-sizing: border-box;
+    /*box-sizing: border-box;*/
     width: 100%;
     max-width: var(--main-width);
     margin-bottom: 30px;
@@ -82,7 +82,7 @@
     /*font-size: 1.3rem;*/
   }
   .arrow {
-    height: 25px;
+    height: 20px;
     display: inline-block;
     vertical-align: middle;
     margin-left: 15px;

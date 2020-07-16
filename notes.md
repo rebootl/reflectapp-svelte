@@ -3,16 +3,17 @@
 
 ## now
 
-- work on menu (working WIP)
+- fix pre/code text overflow
 
 ### later
 
-- fix pre/code text overflow
+- evtl. make menu selections possible
 - fix/improve app loading/routing
 - unobserve "ul" on unmount -> no errors anymore?
 
 ## done
 
+- work on menu => DONE
 - work on entries => DONE
 - "no entries found" => DONE
 - create github repo. => DONE

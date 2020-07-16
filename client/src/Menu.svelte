@@ -148,9 +148,9 @@
 	nav {
 		display: flex;
 		flex-direction: column;
-		width: 230px;
+		width: var(--side-width-extended);
 		position: fixed;
-		left: calc(-1 * var(--side-width));
+		left: calc(-1 * var(--side-width-extended));
 		transition: left 0.2s;
 		top: 0;
 		bottom: 0;
