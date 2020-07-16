@@ -36,7 +36,7 @@ router.get('/:user/:entryId', async (req, res) => {
   if (!u) return res.sendStatus(404);
   const entryId = req.params.entryId;
   const r = await getPublicEntry(db, user, entryId);
-  console.log(r)
+  //console.log(r)
   if (!r) return res.sendStatus(404);
   return res.send({ success: true, result: r });
 });

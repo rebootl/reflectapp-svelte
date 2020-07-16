@@ -3,16 +3,18 @@
 
 ## now
 
-- fix pre/code text overflow
+- ..
 
 ### later
 
 - evtl. make menu selections possible
 - fix/improve app loading/routing
+  - partially fixed by always displaying scrollbar
 - unobserve "ul" on unmount -> no errors anymore?
 
 ## done
 
+- fix pre/code text overflow => DONE
 - work on menu => DONE
 - work on entries => DONE
 - "no entries found" => DONE
