@@ -1,9 +1,9 @@
 <script>
 	import { afterUpdate } from 'svelte';
-	import MenuButton from './MenuButton.svelte';
+	import NavButton from './NavButton.svelte';
 	import Logo from './Logo.svelte';
 	import UserMenu from './UserMenu.svelte';
-	import Menu from './Menu.svelte';
+	import Nav from './Nav.svelte';
 	import Exampletext from './Exampletext.svelte';
 	import Overview from './Overview.svelte';
 	import OverviewButton from './OverviewButton.svelte';
@@ -79,18 +79,21 @@
 
 <div class="wrapper" class:nomenu={overview}>
 	<header>
-		<MenuButton active={shownav} nomenu={overview}
-								on:menuclicked={()=>shownav = !shownav} />
-		<OverviewButton off={overview} />
-		<Logo off={!overview} />
+		<div class="header-logo-sidespacer">
+			<NavButton active={shownav} nomenu={overview}
+									on:menuclicked={()=>shownav = !shownav} />
+			<OverviewButton off={overview} />
+			<Logo off={!overview} />
+		</div>
+		<div class="header-logo-spacer"></div>
 		<UserMenu />
 	</header>
 	{#if !overview}
-		<Menu {shownav} nomenu={overview} />
+		<Nav {shownav} nomenu={overview} />
 	{/if}
 	<!-- (sidearea stays empty, menu is overlayed above) -->
 	<div class="sidearea"></div>
-
+	<div class="spacer"></div>
 	<main>
 	{#if route === 'user'}
 		<Entries />
@@ -115,6 +118,9 @@
 
 <style>
 	:global(body) {
+		--logo-primary-color: #3dbbbb;
+		--logo-secondary-color: #8a8af8;
+
 		/*** colors ***/
 		/* links */
 		--primary-color: #9cdede;
@@ -123,17 +129,17 @@
 		--on-primary-variant-color: #eee;
 
 		/* header */
-		--header-background-color: #000;
+		--header-background-color: #20203a;
 		--header-line-color: #000;
 		--header-hover-color: var(--header-background-color-light);
 		--header-active-color: var(--header-background-color-light);
 		--header-text-color: #eee;
 
 		/* side */
-		--side-background-color: #bb0055;
+		--side-background-color: var(--main-background-color-dark);
 		--side-hover-color: var(--side-background-color-light);
 		--side-active-color: var(--side-background-color-lighter);
-		--side-text-color: #000;
+		--side-text-color: #ddd;
 
 		/* main */
 		--main-background-color: #34344e;
@@ -179,10 +185,10 @@
 		grid-template-columns: auto;
 		/*transition: grid-template-columns 0.5s;*/
 		grid-template-rows: var(--header-height) auto;
-		grid-template-columns: var(--side-width) minmax(0, 1fr);
+		grid-template-columns: var(--side-width) 5px minmax(0, 1fr);
 		grid-template-areas:
-			"header header"
-			"side main";
+			"header header header"
+			"side spacer main";
 		background-color: var(--main-background-color-dark);
 		/*min-height: 100vh;*/
 	}
@@ -194,10 +200,19 @@
 		z-index: 100;
 		box-shadow: 4px 0 8px 0 rgba(0, 0, 0, 0.25);
 	}
+	.header-logo-sidespacer {
+		width: var(--side-width);
+		border-right: 2px solid var(--logo-secondary-color);
+	}
+	.header-logo-spacer {
+		width: 3px;
+		border-right: 2px solid var(--logo-primary-color);
+	}
 	main {
 		/*padding-left: 20px;*/
 		grid-area: main;
 		color: var(--main-text-color);
+		border-left: solid 2px var(--logo-primary-color);
 		/*display: flex;*/
 	}
 	.sidearea {
@@ -206,6 +221,9 @@
 		min-height: calc(100vh - var(--header-height));
 		z-index: 10;
 		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
+	}
+	.spacer {
+		grid-area: spacer;
 	}
 	.filler {
 		grid-area: filler;

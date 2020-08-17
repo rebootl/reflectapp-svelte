@@ -17,14 +17,18 @@
 		line-height: 48px;
 		padding-left: 20px;
 		cursor: pointer;
+		/*color: var(--side-text-color);*/
+		color: var(--main-text-color-low-emph);
 	}
 	.item:hover {
+		/*color: var(--main-text-color);*/
 		background-color: var(--side-hover-color);
 	}
 	.item:active {
-		background-color: var(--focus-color);
+		/*background-color: var(--focus-color);*/
 	}
 	.item.active {
+		color: var(--main-text-color);
 		background-color: var(--side-active-color);
 	}
 	/*a {

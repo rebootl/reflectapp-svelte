@@ -156,6 +156,7 @@
 		bottom: 0;
 		background-color: var(--side-background-color);
 		z-index: 15;
+		border-right: 2px solid var(--logo-secondary-color);
 	}
 	nav.shownav {
 		left: 0;
@@ -184,9 +185,8 @@
 		border-bottom: 1px solid var(--side-background-color-light);
 	}
 	.tags {
-		padding-top: 8px;
-		padding-bottom: 8px;
+		padding: 8px 10px 8px 10px;
 		border-bottom: 1px solid var(--side-background-color-light);
-		background-color: rgba(0, 0, 0, 0.05);
+		/*background-color: rgba(0, 0, 0, 0.05);*/
 	}
 </style>

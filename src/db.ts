@@ -15,7 +15,8 @@ async function getDb() {
     try {
       await client.connect();
       console.log("Connected successfully to server");
-      return await client.db(config.dbName);
+      db = await client.db(config.dbName);
+      return db;
     } catch(e) {
       throw e;
     }
