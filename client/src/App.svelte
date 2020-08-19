@@ -76,17 +76,22 @@
 	//<svelte:component ref={comp} />
 </script>
 
-
 <div class="wrapper" class:nomenu={overview}>
 	<header>
-		<div class="header-logo-sidespacer">
+		<div class="header-left">
 			<NavButton active={shownav} nomenu={overview}
 									on:menuclicked={()=>shownav = !shownav} />
 			<OverviewButton off={overview} />
 			<Logo off={!overview} />
 		</div>
-		<div class="header-logo-spacer"></div>
-		<UserMenu />
+		<div class="header-spacer"></div>
+		<div class="header-right">
+			<img class="header-r-right" src="/icons/R-right.svg" />
+			<div class="header-spacer-right-box"></div>
+			<div class="header-button-right-box">
+				<UserMenu />
+			</div>
+		</div>
 	</header>
 	{#if !overview}
 		<Nav {shownav} nomenu={overview} />
@@ -193,20 +198,38 @@
 		/*min-height: 100vh;*/
 	}
 	header {
-		display: flex;
+		display: grid;
 		grid-area: header;
 		background-color: var(--header-background-color);
 		border-bottom: 1px solid var(--header-line-color);
 		z-index: 100;
 		box-shadow: 4px 0 8px 0 rgba(0, 0, 0, 0.25);
+		grid-template-columns: var(--side-width) 5px minmax(0, 1fr);
+		grid-template-rows: var(--header-height);
+		grid-template-areas: "header-left header-spacer header-right";
 	}
-	.header-logo-sidespacer {
-		width: var(--side-width);
+	.header-left {
+		grid-area: header-left;
 		border-right: 2px solid var(--logo-secondary-color);
 	}
-	.header-logo-spacer {
-		width: 3px;
-		border-right: 2px solid var(--logo-primary-color);
+	.header-spacer {
+		grid-area: header-spacer;
+	}
+	.header-right {
+		border-left: 2px solid var(--logo-primary-color);
+		grid-area: header-right;
+		display: flex;
+	}
+	.header-r-right {
+		height: 100%;
+	}
+	.header-spacer-right-box {
+		width: 100%;
+		border-bottom: 2px solid var(--logo-primary-color);
+	}
+	.header-button-right-box {
+		/*border-bottom: 2px solid var(--logo-primary-color);
+		padding-top: 2px;*/
 	}
 	main {
 		/*padding-left: 20px;*/

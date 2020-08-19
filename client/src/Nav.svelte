@@ -146,6 +146,7 @@
 
 <style>
 	nav {
+		box-sizing: border-box;
 		display: flex;
 		flex-direction: column;
 		width: var(--side-width-extended);
@@ -178,14 +179,15 @@
 		overflow-y: auto;
 		overflow-x: hidden;
 		scrollbar-color:
-			var(--side-background-color-light)
-			var(--side-background-color-dark);
+			var(--side-background-color-dark)
+			var(--side-background-color);
+		scrollbar-width: thin;
 	}
 	.topics {
 		border-bottom: 1px solid var(--side-background-color-light);
 	}
 	.tags {
-		padding: 8px 10px 8px 10px;
+		padding: 4px 10px 4px 10px;
 		border-bottom: 1px solid var(--side-background-color-light);
 		/*background-color: rgba(0, 0, 0, 0.05);*/
 	}
