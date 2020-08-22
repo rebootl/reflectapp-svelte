@@ -122,10 +122,11 @@
     margin-left: 10px;
   }
 	.entrieslist {
-    background-color: var(--main-background-color);
+    background-color: var(--main-content-background-color);
 		display: flex;
 		flex-wrap: wrap;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--main-background-color-lighter);
+    /*box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.25);*/
 	}
   .entrybox {
     position: relative;

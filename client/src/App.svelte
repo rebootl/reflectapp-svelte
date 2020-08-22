@@ -79,10 +79,14 @@
 <div class="wrapper" class:nomenu={overview}>
 	<header>
 		<div class="header-left">
-			<NavButton active={shownav} nomenu={overview}
-									on:menuclicked={()=>shownav = !shownav} />
-			<OverviewButton off={overview} />
-			<Logo off={!overview} />
+			<div class="header-button-left-box">
+				<NavButton active={shownav} nomenu={overview}
+									 on:menuclicked={()=>shownav = !shownav} />
+				<OverviewButton off={overview} />
+				<Logo off={!overview} />
+			</div>
+			<div class="header-spacer-left-box"></div>
+			<img class="header-r-right" src="/icons/R-left.svg" />
 		</div>
 		<div class="header-spacer"></div>
 		<div class="header-right">
@@ -122,6 +126,9 @@
 </div>
 
 <style>
+	:global(*) {
+		box-sizing: border-box;
+	}
 	:global(body) {
 		--logo-primary-color: #3dbbbb;
 		--logo-secondary-color: #8a8af8;
@@ -134,20 +141,22 @@
 		--on-primary-variant-color: #eee;
 
 		/* header */
-		--header-background-color: #20203a;
+		/*--header-background-color: #20203a;*/
+		--header-background-color: #17171d;
 		--header-line-color: #000;
 		--header-hover-color: var(--header-background-color-light);
 		--header-active-color: var(--header-background-color-light);
 		--header-text-color: #eee;
 
 		/* side */
-		--side-background-color: var(--main-background-color-dark);
+		--side-background-color: #17171d;
 		--side-hover-color: var(--side-background-color-light);
 		--side-active-color: var(--side-background-color-lighter);
 		--side-text-color: #ddd;
 
 		/* main */
-		--main-background-color: #34344e;
+		--main-background-color: #17171d;
+		--main-content-background-color: #26262f;
 		--main-text-color: #eee;
 		--main-text-color-low-emph: #aaa;
 		/* light */
@@ -177,7 +186,7 @@
 		--side-width: var(--sidebar-width);
 
 		margin: 0;
-		background-color: var(--main-background-color-dark);
+		background-color: var(--main-background-color);
 		font-family: sans-serif;
 		/* avoid layout shift when scrollbar appears... */
 		overflow-y: scroll;
@@ -194,7 +203,7 @@
 		grid-template-areas:
 			"header header header"
 			"side spacer main";
-		background-color: var(--main-background-color-dark);
+		background-color: var(--main-background-color);
 		/*min-height: 100vh;*/
 	}
 	header {
@@ -210,13 +219,21 @@
 	}
 	.header-left {
 		grid-area: header-left;
-		border-right: 2px solid var(--logo-secondary-color);
+		/*border-right: 2px solid var(--logo-secondary-color);*/
+		display: flex;
+	}
+	.header-button-left-box {
+		border-bottom: 2px solid var(--logo-secondary-color);
+	}
+	.header-spacer-left-box {
+		width: 100%;
+		border-bottom: 2px solid var(--logo-secondary-color);
 	}
 	.header-spacer {
 		grid-area: header-spacer;
 	}
 	.header-right {
-		border-left: 2px solid var(--logo-primary-color);
+		/*border-left: 2px solid var(--logo-primary-color);*/
 		grid-area: header-right;
 		display: flex;
 	}
