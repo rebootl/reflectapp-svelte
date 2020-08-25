@@ -63,7 +63,6 @@
     justify-content: center;
   }
 	.main-inner {
-    /*box-sizing: border-box;*/
     width: 100%;
     max-width: var(--main-width);
     margin-bottom: 30px;
@@ -75,11 +74,10 @@
     align-items: center;
   }
   .viewheader:hover {
-    background-color: rgba(255, 255, 255, 0.025);
+    background-color: var(--main-hover-color);
   }
   .viewheader h3 {
     margin: 0;
-    /*font-size: 1.3rem;*/
   }
   .arrow {
     height: 20px;
@@ -103,7 +101,13 @@
 		box-sizing: border-box;
 		display: flex;
 		flex-wrap: wrap;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.25);
+		border-top: 1px solid var(--main-lines-color);
+	}
+	@media all and (min-width: 700px) {
+		.entrieslist {
+			border: 1px solid var(--main-lines-color);
+			border-bottom: 0;
+		}
 	}
   .clicklink {
     position:absolute;

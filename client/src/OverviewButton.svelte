@@ -28,13 +28,13 @@
 		justify-content: center;
 		align-items: center;
 		border-bottom: 2px solid var(--logo-primary-color);
-		border-right: 1px solid var(--header-hover-color);
+		border-right: 1px solid var(--header-lines-color);
 	}
 	div.off {
 		display: none;
 	}
 	div:hover {
-		background-color: var(--header-background-color-light);
+		background-color: var(--header-hover-color);
 	}
 	a {
 		height: 20px;

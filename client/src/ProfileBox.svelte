@@ -27,7 +27,7 @@
     width: 200px;
     height: 120px;
     background-color: var(--main-background-color);
-    border: 1px solid var(--main-background-color-light);
+    border: 1px solid var(--main-lines-color);
     /*grid-template-rows: 20px auto;
     grid-template-columns: 20px auto;
     grid-template-areas:

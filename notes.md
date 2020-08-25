@@ -3,7 +3,6 @@
 
 ## now
 
-- fix overview
 - fix border sides on mobile
 - fix height on mobile
 - fix tags wrap if many
@@ -17,6 +16,7 @@
 
 ## done
 
+- fix overview => DONE
 - fix pre/code text overflow => DONE
 - work on menu => DONE
 - work on entries => DONE

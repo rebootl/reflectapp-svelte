@@ -55,7 +55,7 @@
     box-sizing: border-box;
     width: 100%;
     padding: 0 20px 0 20px;
-    border-bottom: 1px solid var(--main-background-color-light);
+    border-bottom: 1px solid var(--main-lines-color);
   }
   .entryheader {
     margin: 15px 0 15px 0;

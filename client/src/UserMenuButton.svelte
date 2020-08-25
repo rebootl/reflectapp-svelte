@@ -54,7 +54,7 @@
 	button:focus {
 		outline-style: dotted;
 		outline-offset: -1px;
-		outline-color: var(--elements-focus-color);
+		outline-color: var(--focus-color);
 		outline-width: 1px;
 	}
 	button::-moz-focus-inner {

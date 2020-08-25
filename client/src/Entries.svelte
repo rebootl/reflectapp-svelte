@@ -125,9 +125,14 @@
     background-color: var(--main-content-background-color);
 		display: flex;
 		flex-wrap: wrap;
-    border: 1px solid var(--main-background-color-lighter);
-    /*box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.25);*/
+    border-top: 1px solid var(--main-lines-color);
 	}
+  @media all and (min-width: 700px) {
+    .entrieslist {
+      border: 1px solid var(--main-lines-color);
+      border-bottom: 0;
+    }
+  }
   .entrybox {
     position: relative;
     width: 100%;

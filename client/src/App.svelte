@@ -107,43 +107,48 @@
 		box-sizing: border-box;
 	}
 	:global(body) {
+		/*** colors ***/
+
+		/* logo lines */
 		--logo-primary-color: #3dbbbb;
 		--logo-secondary-color: #8a8af8;
 
-		/*** colors ***/
 		/* links */
 		--primary-color: #9cdede;
 		/* input elements */
 		--primary-variant-color: #287b7b;
 		--on-primary-variant-color: #eee;
 
+		/* base colors */
+		--background-color: #17171d;
+		--background-color-light: #2b2b31;
+		--background-color-lighter: #404046;
+		--background-color-dark: #030309;
+
 		/* header */
-		/*--header-background-color: #20203a;*/
-		--header-background-color: #17171d;
-		--header-line-color: #000;
-		--header-hover-color: var(--header-background-color-light);
-		--header-active-color: var(--header-background-color-light);
+		--header-background-color: var(--background-color);
+		--header-hover-color: var(--background-color-light);
+		--header-active-color: var(--background-color-light);
+		--header-hline-color: #000;
+		--header-lines-color: var(--background-color-light);
 		--header-text-color: #eee;
 
 		/* side */
-		--side-background-color: #17171d;
-		--side-hover-color: var(--side-background-color-light);
-		--side-active-color: var(--side-background-color-lighter);
-		--side-text-color: #ddd;
-
+		--side-background-color: var(--background-color);
+		--side-hover-color: var(--background-color-light);
+		--side-active-color: var(--background-color-lighter);
+		--side-lines-color: var(--background-color-light);
+		--side-scrollbar-color: var(--background-color-dark);
+		--side-text-color: var(--main-text-color-low-emph);
+		--side-text-color-active: var(--main-text-color);
 
 		/* main */
-		--main-line-color: #404046;
-		--main-background-color: #17171d;
-		--main-content-background-color: #26262f;
-		--main-content-background-color: #19191f;
-		--main-content-background-color: #17171d;
+		--main-background-color: var(--background-color);
+		--main-content-background-color: var(--background-color);
+		--main-hover-color: var(--background-color-light);
+		--main-lines-color: var(--background-color-lighter);
 		--main-text-color: #eee;
 		--main-text-color-low-emph: #aaa;
-		/* light */
-		/*--main-background-color: #eef;
-		--main-text-color: #555;
-		--main-text-color-low-emph: #655;*/
 
 		/* specials */
 		--focus-color: hsl(220, 100%, 70%);
@@ -153,7 +158,6 @@
 
 		/* elements (input, buttons etc.) */
 		--elements-primary-color: var(--primary-variant-color);
-		/* -> test --primary-variant-color-light; */
 		--elements-primary-color-light: var(--primary-variant-color-light);
 		--elements-on-primary-color: var(--on-primary-variant-color);
 		--elements-text-color: var(--main-text-color);

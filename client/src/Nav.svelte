@@ -173,22 +173,21 @@
 	}
 	.marginbox {
 		min-height: calc(var(--header-height) - 1px);
-		border-bottom: 1px solid var(--side-background-color-light);
+		border-bottom: 1px solid var(--side-lines-color);
 	}
 	.scrollbox {
 		overflow-y: auto;
 		overflow-x: hidden;
 		scrollbar-color:
-			var(--side-background-color-dark)
+			var(--side-scrollbar-color)
 			var(--side-background-color);
 		scrollbar-width: thin;
 	}
 	.topics {
-		border-bottom: 1px solid var(--side-background-color-light);
+		border-bottom: 1px solid var(--side-lines-color);
 	}
 	.tags {
 		padding: 4px 10px 4px 10px;
-		border-bottom: 1px solid var(--side-background-color-light);
-		/*background-color: rgba(0, 0, 0, 0.05);*/
+		border-bottom: 1px solid var(--side-lines-color);
 	}
 </style>
