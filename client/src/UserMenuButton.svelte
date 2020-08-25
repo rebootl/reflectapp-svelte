@@ -49,7 +49,7 @@
 		/*margin-left: auto;*/
 		color: var(--header-text-color);
 		border-bottom: 2px solid var(--logo-primary-color);
-		padding-top: 2px;
+		/*padding-top: 2px;*/
 	}
 	button:focus {
 		outline-style: dotted;

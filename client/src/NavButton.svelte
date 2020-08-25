@@ -25,15 +25,19 @@
 <style>
 	button {
 		padding: 0;
-		background-color: rgba(0, 0, 0, 0);
+		background-color: var(--header-background-color);
 		border: 0;
-		height: 100%;
+		height: 50px;
 		width: 50px;
 		cursor: pointer;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		/*border-right: 1px solid var(--header-background-color-lighter);*/
+		position: absolute;
+		top: 0;
+		left: 0;
+		border-right: 2px solid var(--logo-secondary-color);
+		border-bottom: 2px solid var(--logo-secondary-color);
 	}
 	button.nomenu {
 		display: none;

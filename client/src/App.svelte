@@ -1,12 +1,8 @@
 <script>
 	import { afterUpdate } from 'svelte';
-	import NavButton from './NavButton.svelte';
-	import Logo from './Logo.svelte';
-	import UserMenu from './UserMenu.svelte';
+	import Header from './Header.svelte';
 	import Nav from './Nav.svelte';
-	import Exampletext from './Exampletext.svelte';
 	import Overview from './Overview.svelte';
-	import OverviewButton from './OverviewButton.svelte';
 	import Entries from './Entries.svelte';
 	import SingleEntry from './SingleEntry.svelte';
 	import { setColorVariants } from './resources/colors.js';
@@ -76,34 +72,15 @@
 	//<svelte:component ref={comp} />
 </script>
 
-<div class="wrapper" class:nomenu={overview}>
-	<header>
-		<div class="header-left">
-			<div class="header-button-left-box">
-				<NavButton active={shownav} nomenu={overview}
-									 on:menuclicked={()=>shownav = !shownav} />
-				<OverviewButton off={overview} />
-				<Logo off={!overview} />
-			</div>
-			<div class="header-spacer-left-box"></div>
-			<img class="header-r-right" src="/icons/R-left.svg" />
-		</div>
-		<div class="header-spacer"></div>
-		<div class="header-right">
-			<img class="header-r-right" src="/icons/R-right.svg" />
-			<div class="header-spacer-right-box"></div>
-			<div class="header-button-right-box">
-				<UserMenu />
-			</div>
-		</div>
-	</header>
+<div class="wrapper" class:nomenu={overview} class:overview>
+	<Header {shownav} {overview} on:togglenav={ () => shownav = !shownav } />
 	{#if !overview}
 		<Nav {shownav} nomenu={overview} />
 	{/if}
 	<!-- (sidearea stays empty, menu is overlayed above) -->
 	<div class="sidearea"></div>
-	<div class="spacer"></div>
-	<main>
+	<div class="spacer" class:overview></div>
+	<main class:overview>
 	{#if route === 'user'}
 		<Entries />
 		<!--<Exampletext n={5} />-->
@@ -154,9 +131,13 @@
 		--side-active-color: var(--side-background-color-lighter);
 		--side-text-color: #ddd;
 
+
 		/* main */
+		--main-line-color: #404046;
 		--main-background-color: #17171d;
 		--main-content-background-color: #26262f;
+		--main-content-background-color: #19191f;
+		--main-content-background-color: #17171d;
 		--main-text-color: #eee;
 		--main-text-color-low-emph: #aaa;
 		/* light */
@@ -202,58 +183,25 @@
 		grid-template-columns: var(--side-width) 5px minmax(0, 1fr);
 		grid-template-areas:
 			"header header header"
-			"side spacer main";
+			"main main main";
 		background-color: var(--main-background-color);
 		/*min-height: 100vh;*/
 	}
-	header {
-		display: grid;
-		grid-area: header;
-		background-color: var(--header-background-color);
-		border-bottom: 1px solid var(--header-line-color);
-		z-index: 100;
-		box-shadow: 4px 0 8px 0 rgba(0, 0, 0, 0.25);
-		grid-template-columns: var(--side-width) 5px minmax(0, 1fr);
-		grid-template-rows: var(--header-height);
-		grid-template-areas: "header-left header-spacer header-right";
-	}
-	.header-left {
-		grid-area: header-left;
-		/*border-right: 2px solid var(--logo-secondary-color);*/
-		display: flex;
-	}
-	.header-button-left-box {
-		border-bottom: 2px solid var(--logo-secondary-color);
-	}
-	.header-spacer-left-box {
-		width: 100%;
-		border-bottom: 2px solid var(--logo-secondary-color);
-	}
-	.header-spacer {
-		grid-area: header-spacer;
-	}
-	.header-right {
-		/*border-left: 2px solid var(--logo-primary-color);*/
-		grid-area: header-right;
-		display: flex;
-	}
-	.header-r-right {
-		height: 100%;
-	}
-	.header-spacer-right-box {
-		width: 100%;
-		border-bottom: 2px solid var(--logo-primary-color);
-	}
-	.header-button-right-box {
-		/*border-bottom: 2px solid var(--logo-primary-color);
-		padding-top: 2px;*/
+	.wrapper.overview {
+		grid-template-columns: 26px 2px minmax(0, 1fr);
+		grid-template-areas:
+			"header header header"
+			"side spacer main";
 	}
 	main {
 		/*padding-left: 20px;*/
 		grid-area: main;
 		color: var(--main-text-color);
-		border-left: solid 2px var(--logo-primary-color);
+		/*border-left: solid 2px var(--logo-primary-color);*/
 		/*display: flex;*/
+	}
+	main.overview {
+		border-left: 2px solid var(--logo-primary-color);
 	}
 	.sidearea {
 		grid-area: side;
@@ -264,6 +212,9 @@
 	}
 	.spacer {
 		grid-area: spacer;
+	}
+	.spacer.overview {
+		border-left: 2px solid var(--logo-secondary-color);
 	}
 	.filler {
 		grid-area: filler;
@@ -287,6 +238,12 @@
 			/*grid-template-areas:
 				"header header"
 				"side main";*/
+			grid-template-areas:
+				"header header header"
+				"side spacer main";
+		}
+		main {
+			border-left: 2px solid var(--logo-primary-color);
 		}
 		.wrapper.nomenu {
 			--side-width: var(--sidebar-width);
@@ -294,10 +251,11 @@
 	}
 	/* side-width + main-width-max + side-width
 		 230px + 650px + 230px */
+	/*
 	@media all and (min-width: 1110px) {
-	 .wrapper {
+	 .wrapper {*/
 		 	/*grid-template-columns: var(--side-width) calc(100% - 2 * var(--side-width)) var(--side-width);*/
-			grid-template-columns: var(--side-width) minmax(0, 1fr) var(--side-width);
+	/*		grid-template-columns: var(--side-width) minmax(0, 1fr) var(--side-width);
 			grid-template-areas:
 				"header header header"
 				"side main filler";
@@ -305,5 +263,5 @@
 		main {
 			justify-content: center;
 		}
-	}
+	}*/
 </style>

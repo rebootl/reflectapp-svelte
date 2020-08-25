@@ -27,6 +27,8 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		border-bottom: 2px solid var(--logo-primary-color);
+		border-right: 1px solid var(--header-hover-color);
 	}
 	div.off {
 		display: none;
@@ -44,6 +46,8 @@
 	}
 	.clickspan {
 		position: absolute;
+		left: 0;
+		top: 0;
 		width: 100%;
 		height: 100%;
 	}
