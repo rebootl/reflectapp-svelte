@@ -3,7 +3,7 @@
 
 ## now
 
-- fix border sides on mobile
+- fix/improve hover color incl. on entry and links
 - fix height on mobile
 - fix tags wrap if many
 
@@ -16,6 +16,7 @@
 
 ## done
 
+- fix border sides on mobile => DONE
 - fix overview => DONE
 - fix pre/code text overflow => DONE
 - work on menu => DONE

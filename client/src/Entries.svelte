@@ -137,6 +137,9 @@
     position: relative;
     width: 100%;
   }
+  .entrybox:hover {
+    background-color: var(--main-hover-color);
+  }
   .clicklink {
     position: absolute;
     width:100%;

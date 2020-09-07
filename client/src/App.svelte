@@ -124,10 +124,12 @@
 		--background-color-light: #2b2b31;
 		--background-color-lighter: #404046;
 		--background-color-dark: #030309;
+		--hover-color: #23232c;
+		--active-color: #2b2b31;
 
 		/* header */
 		--header-background-color: var(--background-color);
-		--header-hover-color: var(--background-color-light);
+		--header-hover-color: var(--hover-color);
 		--header-active-color: var(--background-color-light);
 		--header-hline-color: #000;
 		--header-lines-color: var(--background-color-light);
@@ -135,8 +137,8 @@
 
 		/* side */
 		--side-background-color: var(--background-color);
-		--side-hover-color: var(--background-color-light);
-		--side-active-color: var(--background-color-lighter);
+		--side-hover-color: var(--hover-color);
+		--side-active-color: var(--background-color-light);
 		--side-lines-color: var(--background-color-light);
 		--side-scrollbar-color: var(--background-color-dark);
 		--side-text-color: var(--main-text-color-low-emph);
@@ -145,7 +147,7 @@
 		/* main */
 		--main-background-color: var(--background-color);
 		--main-content-background-color: var(--background-color);
-		--main-hover-color: var(--background-color-light);
+		--main-hover-color: var(--hover-color);
 		--main-lines-color: var(--background-color-lighter);
 		--main-text-color: #eee;
 		--main-text-color-low-emph: #aaa;

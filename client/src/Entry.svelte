@@ -94,7 +94,7 @@
     position: relative;
   }
   .linkbox:hover {
-    background-color: rgba(255, 255, 255, 0.04);
+    background-color: var(--main-hover-color);
   }
   .linkref {
     display: block;

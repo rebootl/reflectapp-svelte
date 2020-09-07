@@ -28,6 +28,7 @@
     height: 120px;
     background-color: var(--main-background-color);
     border: 1px solid var(--main-lines-color);
+    border: 2px solid var(--logo-primary-color);
     /*grid-template-rows: 20px auto;
     grid-template-columns: 20px auto;
     grid-template-areas:
@@ -35,7 +36,7 @@
     	"mini-sidebar bg";*/
 	}
   .wrapper:hover {
-    background-color: rgba(255, 255, 255, 0.12);
+    background-color: var(--main-hover-color);
   }
   /*.miniheader {
     grid-area: mini-header;
@@ -61,15 +62,14 @@
     top: 20px;
     margin-top: 0;
     font-size: 1.2em;
-    text-decoration: underline;
     font-weight: bold;
   }
   a {
     position: absolute;
     width: 100%;
     height: 100%;
-    /*text-decoration: none;
-    color: var(--main-text-color);*/
+    text-decoration: none;
+    color: var(--main-text-color);
   }
   .clickspan {
     position:absolute;

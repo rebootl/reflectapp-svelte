@@ -43,10 +43,10 @@
 		display: none;
 	}
 	button:hover {
-		background-color: var(--header-background-color-light);
+		background-color: var(--header-hover-color);
 	}
 	button.active {
-		background-color: var(--header-background-color-light);
+		background-color: var(--header-active-color);
 	}
 	button:focus {
 		outline-style: dotted;
