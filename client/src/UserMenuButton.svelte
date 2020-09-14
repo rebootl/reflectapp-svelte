@@ -52,10 +52,11 @@
 		/*padding-top: 2px;*/
 	}
 	button:focus {
-		outline-style: dotted;
+		outline-style: solid;
 		outline-offset: -1px;
 		outline-color: var(--focus-color);
 		outline-width: 1px;
+		background-color: var(--header-hover-color);
 	}
 	button::-moz-focus-inner {
 		/* -> needed for username text? */

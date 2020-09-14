@@ -163,6 +163,7 @@
 		--elements-primary-color-light: var(--primary-variant-color-light);
 		--elements-on-primary-color: var(--on-primary-variant-color);
 		--elements-text-color: var(--main-text-color);
+		--elements-hover-color: var(--hover-color);
 		--elements-focus-color: var(--focus-color);
 
 		/*** sizes ***/

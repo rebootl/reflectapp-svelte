@@ -33,17 +33,17 @@
 
 <style>
 	.dialog {
-		box-sizing: border-box;
-		min-width: 10rem;
+		min-width: 160px;
 		flex-direction: column;
 		align-items: center;
 		position: absolute;
-		right: 0.5rem;
-		top: calc(var(--header-height) + 0.5rem);
-		background-color: var(--main-background-color-light);
-		/*border: 1px solid rgba(0, 0, 0, 0.5);*/
-		box-shadow: 0 0.1rem 0.25rem rgba(0, 0, 0, 0.5);
-		border-radius: 0.3rem;
+		right: 8px;
+		top: calc(var(--header-height) + 8px);
+		background-color: var(--main-background-color);
+		border: 1px solid var(--main-lines-color);
+		/*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);*/
+		border-radius: 8px;
+		overflow: hidden;
 		display: none;
 	}
 	.dialog.active {

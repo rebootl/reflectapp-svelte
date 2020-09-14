@@ -12,7 +12,7 @@
 	let dark = true;
 
 	function _logout() {
-		if (!confirm("Warning, logging out will delete all locally stored images!"));
+		if (!confirm("Do u really wanna logout!"));
 			return;
 		logout();
 		dispatch('logout');
@@ -42,7 +42,7 @@
 		border: 1px solid rgba(0, 0, 0, 0.5);
 	}*/
 	.menuitems {
-		border-bottom: 1px solid rgba(0, 0, 0, 0.3);;
+		border-bottom: 1px solid var(--main-lines-color);
 	}
 	.logoutbutton {
 		padding: 10px 30px 10px 30px;

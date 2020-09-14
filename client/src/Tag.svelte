@@ -7,10 +7,20 @@
 	export let active = false;
 </script>
 
-<div class="item" class:active on:click={()=>dispatch('click')}>{title}</div>
+<button class="item" class:active
+				on:click={()=>dispatch('click')}>{title}</button>
 
 <style>
 	.item {
+		padding: 0;
+		background-color: rgba(0, 0, 0, 0);
+		border: 0;
+		height: 100%;
+		width: 100%;
+		font-size: 16px;
+		font-family: sans-serif;
+		text-align: start;
+
 		display: block;
 		padding: 5px 5px 5px 12px;
 		margin: 5px;
@@ -22,6 +32,13 @@
 	}
 	.item:hover {
 		background-color: var(--side-hover-color);
+	}
+  .item:focus {
+		outline-style: solid;
+		outline-offset: -1px;
+		outline-width: 1px;
+		outline-color: var(--elements-focus-color);
+		background-color: var(--elements-hover-color);
 	}
 	.item.active {
 		color: var(--side-text-color-active);
