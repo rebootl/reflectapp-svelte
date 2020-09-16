@@ -16,7 +16,7 @@
 		background-color: rgba(0, 0, 0, 0);
 		border: 0;
 		height: 100%;
-		width: 100%;
+		width: 192px;
 		font-size: 16px;
 		font-family: sans-serif;
 		text-align: start;

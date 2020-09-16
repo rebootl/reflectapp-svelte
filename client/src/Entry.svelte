@@ -28,11 +28,10 @@
     {/if}
   {:else if entry.type === 'link'}
     <div class="linkbox">
-      <small class="linkref">
-        <a href={entry.text} target="_blank">
-          <span class="clickspan"></span>{entry.text}
-        </a>
-      </small>
+      <a href={entry.text} target="_blank">
+        <span class="clickspan"></span>
+        <small class="linkref">{entry.text}</small>
+      </a>
       <p class="linktitle">{entry.title}</p>
       <small class="linkcomment">{entry.comment}</small>
     </div>
@@ -96,6 +95,13 @@
   .linkbox:hover {
     background-color: var(--main-hover-color);
   }
+  .linkbox:focus-within {
+    outline-style: solid;
+    outline-offset: -1px;
+    outline-color: var(--focus-color);
+    outline-width: 1px;
+    background-color: var(--main-hover-color);
+  }
   .linkref {
     display: block;
     margin: 10px 16px 0 16px;
@@ -119,7 +125,7 @@
     border-bottom-right-radius: 7px;
   }
   .clickspan {
-    position:absolute;
+    position: absolute;
     width:100%;
     height:100%;
     top:0;

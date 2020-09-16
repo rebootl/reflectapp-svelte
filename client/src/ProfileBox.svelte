@@ -6,12 +6,11 @@
 
 <div class="wrapper">
   <a href={ "#~" + username }>
-    <span class="clickspan"></span>
     <span class="username">{username}</span>
   </a>
-  <div class="miniheader"></div>
+  <!--<div class="miniheader"></div>
   <div class="minisidebar"></div>
-  <div class="bg"></div>
+  <div class="bg"></div>-->
   <div class="logobox">
     <UserLogo />
   </div>
@@ -27,7 +26,7 @@
     width: 200px;
     height: 120px;
     background-color: var(--main-background-color);
-    border: 1px solid var(--main-lines-color);
+    /*border: 1px solid var(--main-lines-color);*/
     border: 2px solid var(--logo-primary-color);
     /*grid-template-rows: 20px auto;
     grid-template-columns: 20px auto;
@@ -71,12 +70,11 @@
     text-decoration: none;
     color: var(--main-text-color);
   }
-  .clickspan {
-    position:absolute;
-    width:100%;
-    height:100%;
-    top:0;
-    left: 0;
-    z-index: 1;
-  }
+  a:focus {
+		outline-style: solid;
+		outline-offset: 10px;
+		outline-color: var(--focus-color);
+		outline-width: 1px;
+		background-color: var(--header-hover-color);
+	}
 </style>

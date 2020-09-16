@@ -140,12 +140,20 @@
   .entrybox:hover {
     background-color: var(--main-hover-color);
   }
-  .clicklink {
+  .entrybox:focus-within {
+    background-color: var(--main-hover-color);
+  }
+  a {
     position: absolute;
-    width:100%;
-    height:100%;
-    top:0;
+    top: 0;
     left: 0;
-    z-index: 1;
+    width: 100%;
+    height: 100%;
+  }
+  a:focus {
+    outline-style: solid;
+    outline-offset: -1px;
+    outline-color: var(--focus-color);
+    outline-width: 1px;
   }
 </style>

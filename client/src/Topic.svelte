@@ -5,11 +5,6 @@
 
 	export let title = "Title";
 	export let active = false;
-
-	/*function keypress(e) {
-		if (e.keyCode === 13)
-			document.activeElement.click();
-	}*/
 </script>
 
 <button class="item" class:active
@@ -23,7 +18,6 @@
 		height: 100%;
 		font-size: 16px;
 		font-family: sans-serif;
-		cursor: pointer;
 		display: flex;
 
 		width: 100%;
