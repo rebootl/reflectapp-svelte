@@ -12,8 +12,6 @@ import entries from './entries.js';
 import menu from './menu.js';
 // db
 import getDb from './db.js';
-//import getEntriesEndpointConfig from './entriesEndpoint.js';
-//import getUserEndpointConfig from './userEndpoint.js';
 // config
 import * as config from '../config.js';
 // setup app
