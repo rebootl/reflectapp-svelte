@@ -10,19 +10,19 @@
 
 	// state of the menu
 	export let shownav = false;
-	// disables and hides menu and menu button
+	// hides menu button
 	export let overview = true;
 
 </script>
 
-<header class:overview>
-	<div class="header-left" class:overview>
-		<div class="header-button-left-box" class:overview>
-			<NavButton active={shownav} nomenu={overview}
+<header>
+	<div class="header-left">
+		<div class="header-button-left-box">
+			<NavButton active={shownav}
 							   on:menuclicked={ () => dispatch('togglenav') } />
 		</div>
 		<div class="header-spacer-left-box"></div>
-		<img class="header-r-left" class:overview src="/icons/R-left.svg" />
+		<img class="header-r-left" src="/icons/R-left.svg" />
 	</div>
 	<div class="header-spacer"></div>
 	<div class="header-right">
@@ -48,22 +48,13 @@
 		grid-template-rows: var(--header-height);
 		grid-template-areas: "header-left header-spacer header-right";
 	}
-	header.overview {
-		grid-template-columns: 28px 0px minmax(0, 1fr);
-	}
 	.header-left {
 		grid-area: header-left;
 		display: flex;
 	}
-	.header-left.overview {
-		margin-left: 0;
-	}
 	.header-button-left-box {
 		display: flex;
 		border-right: 2px solid var(--logo-secondary-color);
-	}
-	.header-button-left-box.overview {
-		border-right: 0;
 	}
 	.header-spacer-left-box {
 		width: 100%;
@@ -96,9 +87,6 @@
 	@media all and (min-width: 700px) {
 		header {
 			grid-template-columns: var(--side-width) 5px minmax(0, 1fr);
-		}
-		header.overview {
-			grid-template-columns: 28px 0px minmax(0, 1fr);
 		}
 		.header-button-left-box {
 			border-right: 0;

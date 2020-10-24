@@ -1,8 +1,18 @@
 import express from 'express';
-import { getPublicEntries, getPublicEntry } from './entriesModel.js';
+import { getAllPublicEntries, getPublicEntries, getPublicEntry } from './entriesModel.js';
 import { getValidUser } from './userModel.js';
 
 const router = express.Router();
+
+router.get('/', async (req, res) => {
+  const db = req.app.locals.db;
+
+  const skip = parseInt(req.query.skip) || 0;
+  const limit = parseInt(req.query.limit) || 10;
+
+  const r = await getAllPublicEntries(db, skip, limit);
+  return res.send({ success: true, result: r });
+});
 
 router.get('/:user', async (req, res) => {
   const db = req.app.locals.db;

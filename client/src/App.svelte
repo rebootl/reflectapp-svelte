@@ -8,6 +8,7 @@
 	import { setColorVariants } from './resources/colors.js';
 	import { myrouter } from './resources/router.js';
 	import { loggedIn } from './resources/auth.js';
+	import { getEntries, getAllEntries } from './resources/getEntries.js';
 
 	//let route = myrouter.getRoute();
 	// route for template
@@ -17,85 +18,80 @@
 	// id for single entry
 	let entryId = '';
 
+	// entries
+	let entries = [];
+
 	// state of the menu
 	let shownav = false;
-	// disables and hides menu and menu button
+
+	// disables and hides menu button
 	let overview = true;
 
-	function routerUpdate() {
+
+
+	async function routerUpdate() {
 		const _route = myrouter.getRoute();
 		const _p0 = myrouter.getParts(0);
+
+		// user entries/entry
 		if (_route.startsWith('~')) {
-			// user entries/entry
+			user = _route.slice(1);
+
+			// single user entry
 			if (_p0[0]) {
 				if (_p0[0].startsWith('~')) {
-					// single entry
-					route = 'singleentry';
+					console.log('singleentry')
 					entryId = _p0[0].slice(1);
-				} else route = 'user';
-			} else {
-				route = 'user';
+					route = 'singleentry';
+					overview = false;
+					return;
+				}
 			}
+
+			// user entries
+			const topics = myrouter.getParts(0);
+			const tags = myrouter.getParts(1);
+			entries = await getEntries(user, topics, tags)
+			route = 'user';
 			overview = false;
-			user = _route.slice(1);
-		} else if (_route === 'editor' || _route === 'me' || _route === 'my-entries'
-				|| _route === 'myentries') {
-				if (loggedIn()) overview = false;
-				else overview = true;
-				route = 'me';
-		} else if (_route === 'signup') {
-			overview = true;
-			route = 'signup';
-		} else {
-			myrouter.setURL('', [], []);
-			overview = true;
-			route = 'overview';
+			return;
 		}
+
+		// overview
+		entries = await getAllEntries();
+		myrouter.setURL('', [], []);
+		overview = true;
+		route = 'overview';
 	}
 
 	myrouter.registerSvelte(routerUpdate);
 
+	// -> remove this
 	const colorVariantProps = [
 		'--header-background-color',
 		'--main-background-color',
 		'--side-background-color',
 		'--primary-variant-color',
 	];
-
 	const body = document.querySelector('body');
 	for (const p of colorVariantProps) {
 		setColorVariants(body, p);
 	}
-
-	// compile to webcomponent
-	//<svelte:options tag="my-app" />
-	//<svelte:component ref={comp} />
 </script>
 
-<div class="wrapper" class:nomenu={overview} class:overview>
-	<Header {shownav} {overview} on:togglenav={ () => shownav = !shownav } />
-	{#if !overview}
-		<Nav {shownav} nomenu={overview} />
-	{/if}
+<div class="wrapper">
+	<Header {overview} on:togglenav={ () => shownav = !shownav } />
+	<Nav {overview} {shownav} />
+
 	<!-- (sidearea stays empty, menu is overlayed above) -->
 	<div class="sidearea"></div>
-	<div class="spacer" class:overview></div>
-	<main class:overview>
-	{#if route === 'user'}
-		<Entries />
-		<!--<Exampletext n={5} />-->
-	{:else if route === 'singleentry'}
+	<div class="spacer"></div>
+
+	<main>
+	{#if route === 'singleentry'}
 		<SingleEntry {user} entryId={entryId} />
-	{:else if route === 'me'}
-		{#if loggedIn()}
-			[ SHOW MY ENTRIES ]
-		{:else}
-			[ LOGIN OR SIGNUP ]
-		{/if}
-	{:else if route === 'signup'}
-		[ SHOW SIGNUP PAGE ]
 	{:else}
-		<Overview />
+		<Entries {user} {entries} />
 	{/if}
 	</main>
 
@@ -168,10 +164,9 @@
 
 		/*** sizes ***/
 		--header-height: 50px;
-		--sidebar-width: 15px;
+		--side-width: 0;
 		--side-width-extended: 230px;
 		--main-width: 650px;
-		--side-width: var(--sidebar-width);
 
 		margin: 0;
 		background-color: var(--main-background-color);
@@ -185,30 +180,16 @@
 	.wrapper {
 		display: grid;
 		grid-template-columns: auto;
-		/*transition: grid-template-columns 0.5s;*/
 		grid-template-rows: var(--header-height) auto;
 		grid-template-columns: var(--side-width) 5px minmax(0, 1fr);
 		grid-template-areas:
 			"header header header"
 			"main main main";
 		background-color: var(--main-background-color);
-		/*min-height: 100vh;*/
-	}
-	.wrapper.overview {
-		grid-template-columns: 26px 2px minmax(0, 1fr);
-		grid-template-areas:
-			"header header header"
-			"side spacer main";
 	}
 	main {
-		/*padding-left: 20px;*/
 		grid-area: main;
 		color: var(--main-text-color);
-		/*border-left: solid 2px var(--logo-primary-color);*/
-		/*display: flex;*/
-	}
-	main.overview {
-		border-left: 2px solid var(--logo-primary-color);
 	}
 	.sidearea {
 		grid-area: side;
@@ -220,31 +201,14 @@
 	.spacer {
 		grid-area: spacer;
 	}
-	.spacer.overview {
-		border-left: 2px solid var(--logo-secondary-color);
-	}
 	.filler {
 		grid-area: filler;
 	}
-	/* don't show sidebar for very small width */
-	/*@media all and (min-width: 360px) {
-		.wrapper {
-			grid-template-columns: auto;
-			grid-template-areas:
-				"header"
-				"main";
-		}
-	}*/
 	@media all and (min-width: 700px) {
 		:global(body) {
 			--side-width: var(--side-width-extended);
 		}
 		.wrapper {
-			/*grid-template-columns: var(--side-width) calc(100% - var(--side-width));*/
-			/*grid-template-columns: var(--side-width) minmax(0, 1fr);*/
-			/*grid-template-areas:
-				"header header"
-				"side main";*/
 			grid-template-areas:
 				"header header header"
 				"side spacer main";
@@ -252,23 +216,5 @@
 		main {
 			border-left: 2px solid var(--logo-primary-color);
 		}
-		.wrapper.nomenu {
-			--side-width: var(--sidebar-width);
-		}
 	}
-	/* side-width + main-width-max + side-width
-		 230px + 650px + 230px */
-	/*
-	@media all and (min-width: 1110px) {
-	 .wrapper {*/
-		 	/*grid-template-columns: var(--side-width) calc(100% - 2 * var(--side-width)) var(--side-width);*/
-	/*		grid-template-columns: var(--side-width) minmax(0, 1fr) var(--side-width);
-			grid-template-areas:
-				"header header header"
-				"side main filler";
-		}
-		main {
-			justify-content: center;
-		}
-	}*/
 </style>

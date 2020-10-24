@@ -1,3 +1,10 @@
+async function getAllPublicEntries(db, skip, limit) {
+  const c = await db.collection('entries');
+
+  return await c.find({ private: false })
+    .sort({ date: -1 }).skip(skip).limit(limit).toArray();
+}
+
 async function getPublicEntries(db, user, topics, tags, skip, limit) {
   const c = await db.collection('entries');
   let q;
@@ -41,4 +48,4 @@ async function getPublicEntry(db, user, id) {
   ]});
 }
 
-export { getPublicEntries, getPublicEntry };
+export { getAllPublicEntries, getPublicEntries, getPublicEntry };

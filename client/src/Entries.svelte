@@ -1,30 +1,30 @@
 <script>
   import { onMount, onDestroy } from "svelte";
-	import { apiGetRequest } from './resources/requests.js';
-	import { entriesURL } from './resources/urls.js';
-  import { myrouter } from './resources/router.js';
+	//import { apiGetRequest } from './resources/requests.js';
+	//import { entriesURL } from './resources/urls.js';
+  //import { myrouter } from './resources/router.js';
   import UserLogo from './UserLogo.svelte';
 	import Entry from './Entry.svelte';
 
   //export let user;
-  let user = "";
-	let entries = [];
+  export let user = '';
+  export let entries = [];
   let userNotFound = false;
 
   //$: updateEntries(user);
-  function routerUpdate() {
+  /*function routerUpdate() {
     updateEntries();
-  }
+  }*/
 
   const updateEntries = async (user) => {
     console.log("CALLED")
-    entries = [];
-    entries = await getEntries([{intersectionRatio: 1}]);
+    //entries = [];
+    //entries = await getEntries([{intersectionRatio: 1}]);
   }
 
   const bottomObserver = new IntersectionObserver(
     async (e) => {
-      entries = [ ...entries, ...await getEntries(e) ]
+      //entries = [ ...entries, ...await getEntries(e) ]
     },
     { threshold: 0.5 }
   );
@@ -45,7 +45,11 @@
     bottomObserver.observe(newLastli);
   }
 
-	async function getEntries(e) {
+  function fetchEntries() {
+
+  }
+
+	/*async function getEntries(e) {
     // in some cases the observable of the previous 'lastelement' is still
     // threre, therefor the last entry has to be used instead of 0
     if (e[e.length - 1].intersectionRatio <= 0) return [];
@@ -55,7 +59,7 @@
     if (user === "") return;
     const topics = myrouter.getParts(0);
     const tags = myrouter.getParts(1);
-    console.log(user, topics, tags)
+    //console.log(user, topics, tags)
 
     const skip = entries.length;
 		const r = await apiGetRequest(entriesURL + '/' + user, {
@@ -70,17 +74,17 @@
 		}
     userNotFound = false;
 		return r.result;
-	}
+	}*/
 
 	onMount(async () => {
-    myrouter.registerSvelte(routerUpdate);
-		entries = await getEntries([{intersectionRatio: 1}]);
+    //myrouter.registerSvelte(routerUpdate);
+		//entries = await getEntries([{intersectionRatio: 1}]);
     const ul = document.querySelector('.entrieslist');
     ulMutationObserver.observe(ul, { childList: true });
     //updateObserver();
 	});
   onDestroy(() => {
-    myrouter.unregisterSvelte(routerUpdate);
+    //myrouter.unregisterSvelte(routerUpdate);
   });
 </script>
 
