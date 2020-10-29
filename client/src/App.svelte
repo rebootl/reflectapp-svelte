@@ -1,5 +1,6 @@
 <script>
-	import { afterUpdate } from 'svelte';
+	//import { onMount } from "svelte";
+	//import { afterUpdate } from 'svelte';
 	import Header from './Header.svelte';
 	import Nav from './Nav.svelte';
 	import Overview from './Overview.svelte';
@@ -8,18 +9,16 @@
 	import { setColorVariants } from './resources/colors.js';
 	import { myrouter } from './resources/router.js';
 	import { loggedIn } from './resources/auth.js';
-	import { getEntries, getAllEntries } from './resources/getEntries.js';
 
-	//let route = myrouter.getRoute();
 	// route for template
 	let route = '';
-	// user for user entries
+	// router
+	let routerReady = false;
 	let user = '';
+	let topics = [];
+	let tags = [];
 	// id for single entry
 	let entryId = '';
-
-	// entries
-	let entries = [];
 
 	// state of the menu
 	let shownav = false;
@@ -27,41 +26,38 @@
 	// disables and hides menu button
 	let overview = true;
 
-
-
 	async function routerUpdate() {
-		const _route = myrouter.getRoute();
-		const _p0 = myrouter.getParts(0);
 
-		// user entries/entry
-		if (_route.startsWith('~')) {
-			user = _route.slice(1);
+		route = myrouter.getRouteNamed();
+		//console.log("App/route: ", route)
 
-			// single user entry
-			if (_p0[0]) {
-				if (_p0[0].startsWith('~')) {
-					console.log('singleentry')
-					entryId = _p0[0].slice(1);
-					route = 'singleentry';
-					overview = false;
-					return;
-				}
-			}
-
-			// user entries
-			const topics = myrouter.getParts(0);
-			const tags = myrouter.getParts(1);
-			entries = await getEntries(user, topics, tags)
-			route = 'user';
+		if (route === 'singleentry') {
+			user = myrouter.getUser();
+			entryId = myrouter.getEntryId();
+			//console.log("App/entryId: ", entryId)
+			topics = [];
+			tags = [];
 			overview = false;
-			return;
+		} else if (route === 'user') {
+			// get user
+			user = myrouter.getUser();
+			//console.log('App/user: ', user)
+			// get topics/tags
+			topics = myrouter.getTopics();
+			tags = myrouter.getTags();
+			overview = false;
+			//console.log('App/user, topics, tags: ', user, topics, tags)
+		} else {
+			// overview
+			route = 'overview';
+			overview = true;
+			user = '';
+			topics = [];
+			tags = [];
+			// reset url
+			myrouter.setURL('', [], []);
 		}
-
-		// overview
-		entries = await getAllEntries();
-		myrouter.setURL('', [], []);
-		overview = true;
-		route = 'overview';
+		routerReady = true;
 	}
 
 	myrouter.registerSvelte(routerUpdate);
@@ -81,21 +77,22 @@
 
 <div class="wrapper">
 	<Header {overview} on:togglenav={ () => shownav = !shownav } />
-	<Nav {overview} {shownav} />
+	<Nav {overview} {shownav} {user} activeTopics={topics} activeTags={tags} />
 
 	<!-- (sidearea stays empty, menu is overlayed above) -->
 	<div class="sidearea"></div>
+	<!-- (spacer between the two vertical lines) -->
 	<div class="spacer"></div>
 
 	<main>
 	{#if route === 'singleentry'}
 		<SingleEntry {user} entryId={entryId} />
 	{:else}
-		<Entries {user} {entries} />
+		<Entries {user} {topics} {tags} {routerReady} />
 	{/if}
 	</main>
 
-	<div class="filler"></div>
+	<!--<div class="filler"></div>-->
 </div>
 
 <style>
@@ -201,9 +198,9 @@
 	.spacer {
 		grid-area: spacer;
 	}
-	.filler {
+	/*.filler {
 		grid-area: filler;
-	}
+	}*/
 	@media all and (min-width: 700px) {
 		:global(body) {
 			--side-width: var(--side-width-extended);

@@ -47,7 +47,7 @@ class Router {
   }
   urlChange() {
     this.parseUrl();
-    console.log("router update");
+    //console.log("router update");
     for (const c of registeredComponents) {
       c.routerUpdate();
     }
@@ -56,7 +56,43 @@ class Router {
     }
   }
   getRoute() {
-    return this._route;
+    return this._route || '';
+  }
+  getRouteNamed() {
+    // user entries/entry
+    if (this._route.startsWith('~')) {
+      const _p0 = this.getParts(0);
+      // single user entry
+      if (_p0[0]) {
+        if (_p0[0].startsWith('~')) {
+          return 'singleentry';
+        }
+      }
+      return 'user';
+    }
+    return 'overview';
+  }
+  getUser() {
+    if (this._route.startsWith('~'))
+      return this._route.slice(1);
+    return '';
+  }
+  getEntryId() {
+    const p = this.getParts(0)[0];
+    //console.log(p)
+    if (p) {
+      if (p.startsWith('~')) {
+        return p.slice(1);
+      }
+      return '';
+    }
+    return '';
+  }
+  getTopics() {
+    return this.getParts(0);
+  }
+  getTags() {
+    return this.getParts(1);
   }
   getParts(n) {
     return this._parts[n] || [];
