@@ -2,7 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import NavButton from './NavButton.svelte';
 	import Logo from './Logo.svelte';
-	import UserMenu from './UserMenu.svelte';
+	import ProfileMenu from './ProfileMenu.svelte';
 	import OverviewButton from './OverviewButton.svelte';
 	import { loggedIn } from './resources/auth.js';
 
@@ -30,7 +30,7 @@
 		<div class="header-spacer-right-box"></div>
 		<div class="header-button-right-box">
 			<OverviewButton off={overview} />
-			<UserMenu />
+			<ProfileMenu />
 		</div>
 	</div>
 </header>

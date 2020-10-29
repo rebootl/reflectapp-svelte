@@ -1,7 +1,7 @@
 <script>
 	import { apiGetRequest } from './resources/requests.js';
 	import { entriesURL } from './resources/urls.js';
-  import UserLogo from './UserLogo.svelte';
+  import ProfilePicture from './ProfilePicture.svelte';
 	import Entry from './Entry.svelte';
 
   export let user;
@@ -38,7 +38,7 @@
     		  <polyline points="31,12 69,50 31,88" fill="none" stroke="currentColor" stroke-width="12px" />
     	  </svg>
     	 </div>
-      <div class="logobox"><UserLogo /></div>
+      <div class="logobox"><ProfilePicture /></div>
       <h3>{user}</h3>
       <a href={'#~' + user} title="To User" class="clicklink"></a>
     </div>

@@ -1,36 +1,46 @@
 <script>
-	import { onMount, onDestroy } from "svelte";
-	import { apiGetRequest } from './resources/requests.js';
-	import { menuURL } from './resources/urls.js';
 	import { myrouter } from './resources/router.js';
+	import { getUserMenu } from './resources/getData.js';
 	import Topic from './Topic.svelte';
 	import Tag from './Tag.svelte';
+	import UserList from './UserList.svelte';
 
+	export let overview = true;
 	export let shownav;
-	export let nomenu;
-	//export let user;
 
-	//let user = "";
-	let topics = [];
+	export let user = '';
+	export let activeTopics = [];
+	export let activeTags = [];
 
 	let singleSelect = true;
+	let topics = [];
 
-	onMount(async () => {
-		await loadMenu();
-		myrouter.registerSvelte(routerUpdate);
-		updateMenu();
-	})
-	onDestroy(() => {
-		myrouter.unregisterSvelte(routerUpdate);
-	});
+	$: loadUserMenu(overview, user);
+	$: updateUserMenu(activeTopics, activeTags);
 
-	function routerUpdate() {
-		updateMenu();
+	async function loadUserMenu() {
+		// reset for reload
+		topics = [];
+		if (overview) return;
+		const r = await getUserMenu(user);
+		for (const topic of r) {
+			const tags = topic.tags.map((t)=>{ return {
+				name: t,
+				active: false
+			}});
+			topics.push({
+				name: topic.name,
+				tags: tags,
+				active: false
+			});
+		}
+		//topics = topics;
+		updateUserMenu();
 	}
 
-	function updateMenu() {
-		const activeTopics = myrouter.getParts(0);
-		const activeTags = myrouter.getParts(1);
+	function updateUserMenu() {
+		//console.log('updateUserMenu')
+		//console.log('Nav/topics, activeTopics: ', topics, activeTopics)
 		for (const topic of topics) {
 			if (activeTopics.includes(topic.name)) {
 				topic.active = true;
@@ -44,35 +54,6 @@
 			}
 		}
 		topics = topics
-	}
-
-	async function loadMenu() {
-		// reset for reload
-		topics = [];
-		const r = await getUserMenu();
-		for (const topic of r) {
-			const tags = topic.tags.map((t)=>{ return {
-				name: t,
-				active: false
-			}});
-			topics.push({
-				name: topic.name,
-				tags: tags,
-				active: false
-			});
-		}
-		// (set in updateMenu)
-		//topics = topics;
-	}
-
-	async function getUserMenu() {
-		const user = myrouter.getRoute().slice(1);
-		const r = await apiGetRequest(menuURL + '/' + user);
-		if (!r.success) {
-			console.error(r)
-			return [];
-		}
-		return r.result;
 	}
 
 	function resetTags(topic) {
@@ -105,8 +86,12 @@
 		updateURL();
 	}
 
-	function toggleTag(tag) {
-		tag.active = !tag.active;
+	function toggleTag(topic, tag) {
+		const v = tag.active;
+		for (const t of topic.tags) {
+			t.active = false;
+		}
+		tag.active = !v;
 		topics = topics;
 		updateURL();
 	}
@@ -122,18 +107,22 @@
 		}
 		myrouter.setURL(myrouter.getRoute(), [ activeTopics, activeTags ]);
 	}
+
 </script>
 
-<nav class:shownav class:nomenu>
+<nav class:shownav>
 	<div class="marginbox"></div>
 	<div class="scrollbox">
+	{#if overview}
+		<UserList />
+	{:else}
 		<div class="topics">
-			{#each topics as t}
-				<Topic title={t.name} active={t.active} on:click={()=>toggleTopic(t)} />
-				{#if t.active}
+			{#each topics as topic}
+				<Topic title={topic.name} active={topic.active} on:click={()=>toggleTopic(topic)} />
+				{#if topic.active}
 				<div class="tags">
-					{#each t.tags as t}
-						<Tag title={t.name} active={t.active} on:click={()=>toggleTag(t)} />
+					{#each topic.tags as tag}
+						<Tag title={tag.name} active={tag.active} on:click={()=>toggleTag(topic, tag)} />
 					{/each}
 				</div>
 				{/if}
@@ -141,6 +130,7 @@
 			 	<p>loading...</p>
 			{/each}
 		</div>
+	{/if}
 	</div>
 </nav>
 
@@ -163,9 +153,9 @@
 		left: 0;
 		transition: left 0.2s;
 	}
-	nav.nomenu {
+	/*nav.nomenu {
 		display: none;
-	}
+	}*/
 	@media all and (min-width: 700px) {
 		nav {
 			left: 0;

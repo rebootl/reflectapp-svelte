@@ -1,8 +1,8 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 	import { loggedIn } from './resources/auth.js';
-	import UserMenuLoggedIn from './UserMenuLoggedIn.svelte';
-	import UserMenuLogin from './UserMenuLogin.svelte';
+	import ProfileMenuLoggedIn from './ProfileMenuLoggedIn.svelte';
+	import ProfileMenuLogin from './ProfileMenuLogin.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -23,9 +23,9 @@
 
 <div class="dialog" class:active>
 	{#if _loggedIn}
-		<UserMenuLoggedIn on:logout={()=>logoutEvent()}/>
+		<ProfileMenuLoggedIn on:logout={()=>logoutEvent()}/>
 	{:else}
-		<UserMenuLogin {active} on:login={()=>loginEvent()}/>
+		<ProfileMenuLogin {active} on:login={()=>loginEvent()}/>
 	{/if}
 </div>
 <!--<div class="overlay">

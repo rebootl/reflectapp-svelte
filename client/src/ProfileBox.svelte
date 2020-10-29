@@ -1,5 +1,5 @@
 <script>
-  import UserLogo from './UserLogo.svelte';
+  import ProfilePicture from './ProfilePicture.svelte';
 
 	export let username = "";
 </script>

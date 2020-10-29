@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 	import { loggedIn, getUserName } from './resources/auth.js';
-	import UserLogo from './UserLogo.svelte';
+	import ProfilePicture from './ProfilePicture.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -22,7 +22,7 @@
 
 <button class="button" class:active
 		 on:click={()=>dispatch('clicked')}>
-	<div class="logobox"><UserLogo /></div>
+	<div class="logobox"><ProfilePicture /></div>
 	<span class="username">{username}</span>
 	<div class="arrowdown" class:close={active}>
 		<svg class="arrowdownsvg" viewbox="0 0 100 100">
