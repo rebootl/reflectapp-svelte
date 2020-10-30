@@ -15,8 +15,8 @@
 	// router
 	let routerReady = false;
 	let user = '';
-	let topics = [];
-	let tags = [];
+	let activeTopics = [];
+	let activeTags = [];
 	// id for single entry
 	let entryId = '';
 
@@ -35,16 +35,16 @@
 			user = myrouter.getUser();
 			entryId = myrouter.getEntryId();
 			//console.log("App/entryId: ", entryId)
-			topics = [];
-			tags = [];
+			activeTopics = [];
+			activeTags = [];
 			overview = false;
 		} else if (route === 'user') {
 			// get user
 			user = myrouter.getUser();
 			//console.log('App/user: ', user)
 			// get topics/tags
-			topics = myrouter.getTopics();
-			tags = myrouter.getTags();
+			activeTopics = myrouter.getTopics();
+			activeTags = myrouter.getTags();
 			overview = false;
 			//console.log('App/user, topics, tags: ', user, topics, tags)
 		} else {
@@ -52,8 +52,8 @@
 			route = 'overview';
 			overview = true;
 			user = '';
-			topics = [];
-			tags = [];
+			activeTopics = [];
+			activeTags = [];
 			// reset url
 			myrouter.setURL('', [], []);
 		}
@@ -77,7 +77,8 @@
 
 <div class="wrapper">
 	<Header {overview} on:togglenav={ () => shownav = !shownav } />
-	<Nav {overview} {shownav} {user} activeTopics={topics} activeTags={tags} />
+	<Nav {overview} {shownav} {user}
+			 activeTopics={activeTopics} activeTags={activeTags} />
 
 	<!-- (sidearea stays empty, menu is overlayed above) -->
 	<div class="sidearea"></div>
@@ -88,7 +89,8 @@
 	{#if route === 'singleentry'}
 		<SingleEntry {user} entryId={entryId} />
 	{:else}
-		<Entries {user} {topics} {tags} {routerReady} />
+		<Entries {user} {routerReady}
+						 activeTopics={activeTopics} activeTags={activeTags} />
 	{/if}
 	</main>
 

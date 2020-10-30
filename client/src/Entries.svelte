@@ -5,13 +5,13 @@
 
   export let routerReady = false;
   export let user = '';
-  export let topics = [];
-  export let tags = [];
+  export let activeTopics = [];
+  export let activeTags = [];
 
   let entries = [];
   let userNotFound = false;
 
-  $: update(user, topics, tags);
+  $: update(user, activeTopics, activeTags);
 
   async function update() {
     if (!routerReady) return;
@@ -20,7 +20,7 @@
     if (user === '')
       entries = await getAllEntries();
     else
-      entries = await getEntries(user, topics, tags)
+      entries = await getEntries(user, activeTopics, activeTags)
     //console.log('Entries/entries: ', entries)
   }
 </script>
