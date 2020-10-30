@@ -9,7 +9,12 @@
   export let activeTags = [];
 
   let entries = [];
+
   let userNotFound = false;
+  // -> add some error handling
+  /*{#if userNotFound}
+    <p>Ooops, user not found...</p>
+  {:else}*/
 
   $: update(user, activeTopics, activeTags);
 
@@ -23,6 +28,14 @@
       entries = await getEntries(user, activeTopics, activeTags)
     //console.log('Entries/entries: ', entries)
   }
+
+  async function fetchEntries() {
+    const s = entries.length;
+    entries = [
+      ...entries,
+      ...await getEntries(user, activeTopics, activeTags, s)
+    ];
+  }
 </script>
 
 <div class="main-container">
@@ -30,7 +43,7 @@
     {#if user !== ''}
 	    <h1><div class="logobox"><ProfilePicture /></div>{user}</h1>
     {/if}
-    <EntriesList {entries} />
+    <EntriesList {entries} on:fetch={ ()=>fetchEntries() } />
   </div>
 </div>
 

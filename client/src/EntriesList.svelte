@@ -1,25 +1,24 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
-	//import { apiGetRequest } from './resources/requests.js';
-	//import { entriesURL } from './resources/urls.js';
-  //import { myrouter } from './resources/router.js';
-  //import UserLogo from './UserLogo.svelte';
+  import { onMount } from "svelte";
+  import { createEventDispatcher } from 'svelte';
 	import Entry from './Entry.svelte';
 
+  const dispatch = createEventDispatcher();
+
   export let entries = [];
-  let userNotFound = false;
 
+  // trigger fetch at nth element from the bottom
+  // -> loading get's stuck at some point when using 4, why?
+  const n = 3;
 
-  const updateEntries = async (user) => {
-    console.log("CALLED")
-    //entries = [];
-    //entries = await getEntries([{intersectionRatio: 1}]);
+  function lazyload(e) {
+    if (e[e.length - 1].intersectionRatio <= 0) return;
+    console.log('FETCH!')
+		dispatch('fetch');
   }
 
   const bottomObserver = new IntersectionObserver(
-    async (e) => {
-      //entries = [ ...entries, ...await getEntries(e) ]
-    },
+    (e) => { lazyload(e) },
     { threshold: 0.5 }
   );
 
@@ -28,45 +27,35 @@
   );
 
   function updateObserver(m, o) {
-    const lastli = document.querySelector('.lastelement');
-    if (lastli) {
-      lastli.classList.remove('lastelement');
-      bottomObserver.unobserve(lastli);
+    const triggerElement = document.querySelector('.triggerelement');
+    if (triggerElement) {
+      triggerElement.classList.remove('triggerelement');
+      bottomObserver.unobserve(triggerElement);
     }
-    const ul = document.querySelector('.entrieslist');
-    const newLastli = ul.lastElementChild;
-    newLastli.classList.add('lastelement')
-    bottomObserver.observe(newLastli);
-  }
-
-  function fetchEntries() {
-
+    const el = document.querySelector('.entrieslist');
+    const newTriggerElement = el.children[el.children.length - n];
+    if (newTriggerElement) {
+      console.log('add observer')
+      newTriggerElement.classList.add('triggerelement')
+      bottomObserver.observe(newTriggerElement);
+    }
   }
 
 	onMount(async () => {
     const ul = document.querySelector('.entrieslist');
     ulMutationObserver.observe(ul, { childList: true });
-    //console.log(entries)
-    //updateObserver();
 	});
-  onDestroy(() => {
-    //myrouter.unregisterSvelte(routerUpdate);
-  });
 </script>
 
 <div class="entrieslist">
-{#if userNotFound}
-  <p>Ooops, user not found...</p>
+{#each entries as entry}
+  <div class="entrybox">
+    <Entry entry={entry} />
+    <a href={'#~' + entry.user + '/~' + entry.id} class="clicklink"></a>
+  </div>
 {:else}
-  {#each entries as entry}
-    <div class="entrybox">
-      <Entry entry={entry} />
-      <a href={'#~' + entry.user + '/~' + entry.id} class="clicklink"></a>
-    </div>
-  {:else}
-	  <p>loading...</p>
-  {/each}
-{/if}
+  <p>loading...</p>
+{/each}
 </div>
 
 <style>
