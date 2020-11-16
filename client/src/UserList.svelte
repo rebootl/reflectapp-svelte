@@ -30,9 +30,8 @@
 
 <style>
 	.box {
-		padding-left: 20px;
-    display: flex;
-    flex-wrap: wrap;
+		/*display: flex;
+    flex-wrap: wrap;*/
     border-bottom: 1px solid var(--side-lines-color);
 	}
 </style>
