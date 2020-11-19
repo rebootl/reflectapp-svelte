@@ -1,18 +1,24 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
+	import IconButton from '@smui/icon-button';
+	import MenuSurface from '@smui/menu-surface';
+	// own components
 	import NavButton from './NavButton.svelte';
-	import Logo from './Logo.svelte';
-	import ProfileMenu from './ProfileMenu.svelte';
-	import OverviewButton from './OverviewButton.svelte';
-	import { loggedIn } from './resources/auth.js';
+	import ProfileMenuDialog from './ProfileMenuDialog.svelte';
 
 	const dispatch = createEventDispatcher();
 
 	// state of the menu
 	export let shownav = false;
-	// hides menu button
-	export let overview = true;
+	// show/hide overview button
+	// (inactive for now, always show)
+	//export let overview = true;
 
+	// control for ProfileMenu MenuSurface
+	let formSurface;
+
+	// login (empty for now)
+	function loginEvent() {}
 </script>
 
 <header>
@@ -29,8 +35,13 @@
 		<img class="header-r-right" src="/icons/R-right.svg" />
 		<div class="header-spacer-right-box"></div>
 		<div class="header-button-right-box">
-			<OverviewButton off={overview} />
-			<ProfileMenu />
+			<IconButton class="material-icons" href="/#"
+								 	title="Overview">people</IconButton>
+			<IconButton class="material-icons" on:click={() => formSurface.setOpen(true)}
+									title="Profile">face</IconButton>
+			<MenuSurface bind:this={formSurface} anchorCorner="BOTTOM_LEFT">
+				<ProfileMenuDialog on:login={() => loginEvent()} />
+			</MenuSurface>
 		</div>
 	</div>
 </header>
@@ -51,6 +62,9 @@
 	.header-left {
 		grid-area: header-left;
 		display: flex;
+		position: fixed;
+		height: var(--header-height);
+		width: var(--side-width);
 	}
 	.header-button-left-box {
 		display: flex;
@@ -83,6 +97,9 @@
 	}
 	.header-button-right-box {
 		display: flex;
+		color: var(--header-text-color);
+		border-bottom: 2px solid var(--logo-primary-color);
+		padding-right: 5px;
 	}
 	@media all and (min-width: 700px) {
 		header {

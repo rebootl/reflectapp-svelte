@@ -2,9 +2,11 @@
 	import { createEventDispatcher } from 'svelte';
 	import { myrouter } from './resources/router.js';
 	import { login } from './resources/auth.js';
-	import Input from './Elements/Input.svelte';
+	//import Input from './Elements/Input.svelte';
+	import Textfield from '@smui/textfield';
 	import Password from './Elements/Password.svelte';
-	import Button from './Elements/Button.svelte';
+	//import Button from './Elements/Button.svelte';
+	import Button from '@smui/button';
 
 	const dispatch = createEventDispatcher();
 
@@ -47,26 +49,37 @@
 </script>
 
 <div class="loginbox">
-	<Input placeholder="Username" loadValue={username}
-				 on:input={(e)=>username = e.detail} />
-	<Password placeholder="Password" loadValue={password}
-						on:input={(e)=>password = e.detail}
-						on:enter={()=>_login()} />
-	<Button on:click={()=>_login()}>Login</Button>
+	<div class="inputelement">
+		<Textfield variant="outlined" bind:value={username} label="Username"
+						 	 input$size="10" />
+	</div>
+	<div class="inputelement">
+		<Textfield variant="outlined" class="shaped" bind:value={password} label="Password"
+		  				 input$size="10" input$type="password"
+			  			 on:enter={()=>_login()} />
+	</div>
+	<div class="buttonelement">
+		<Button on:click={()=>_login()} variant="unelevated">Login</Button>
+	</div>
 	{#if loginFailed}<small class="fail">{failedMessage}</small>{/if}
-	<small><a href="#signup">Sign up</a></small>
 </div>
 
 <style>
 	.loginbox {
-		padding: 20px 22px 10px 22px;
 		padding: 30px 30px 20px 30px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 	}
+	.inputelement {
+		margin-bottom: 15px;
+	}
+	.buttonelement {
+		margin-top: 5px;
+		margin-bottom: 5px
+	}
 	.fail {
-		color: var(--warn-color);
+		color: var(--error-color);
 		margin-bottom: 10px;
 	}
 	small {

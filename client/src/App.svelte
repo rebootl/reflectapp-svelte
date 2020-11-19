@@ -3,10 +3,9 @@
 	//import { afterUpdate } from 'svelte';
 	import Header from './Header.svelte';
 	import Nav from './Nav.svelte';
-	import Overview from './Overview.svelte';
 	import Entries from './Entries.svelte';
 	import SingleEntry from './SingleEntry.svelte';
-	import { setColorVariants } from './resources/colors.js';
+	//import { setColorVariants } from './resources/colors.js';
 	import { myrouter } from './resources/router.js';
 	import { loggedIn } from './resources/auth.js';
 
@@ -71,7 +70,7 @@
 	];
 	const body = document.querySelector('body');
 	for (const p of colorVariantProps) {
-		setColorVariants(body, p);
+		//setColorVariants(body, p);
 	}
 </script>
 
