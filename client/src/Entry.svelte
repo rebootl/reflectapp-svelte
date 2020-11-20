@@ -57,11 +57,11 @@
     border-bottom: 1px solid var(--main-lines-color);
   }
   .entryheader {
-    margin: 15px 0 15px 0;
+    margin: 15px 0 35px 0;
     color: var(--main-text-color-low-emph);
   }
   .entrycontent {
-    margin: 16px 0 16px 0;
+    margin: 35px 0 35px 0;
   }
   :global(pre) {
     overflow-x: scroll;
@@ -85,10 +85,10 @@
   }
   .linkbox {
     display: inline-block;
-    background-color: var(--main-background-color);
+    background-color: var(--linbox-color);
     border: 1px solid var(--main-background-color-lighter);
     border-radius: 8px;
-    box-shadow: 0 6px 0 -2px rgba(0, 0, 0, 0.4);
+    /*box-shadow: 0 6px 0 -2px rgba(0, 0, 0, 0.4);*/
     /* for clickspan */
     position: relative;
   }
@@ -137,17 +137,17 @@
   }
   .topictag {
     margin-right: 5px;
-    padding: 5px;
+    padding: 5px 10px 5px 10px;
     border-radius: 3px;
-    font-size: 0.9em;
+    font-size: small;
     background-color: var(--main-background-color-lighter);
     color: var(--main-text-color);
   }
   .tagtag {
     margin-right: 5px;
-    padding: 5px;
-    border-radius: 10px;
-    font-size: 0.9em;
+    padding: 5px 10px 5px 10px;
+    border-radius: 12px;
+    font-size: small;
     border: 1px solid var(--main-background-color-lighter);
     color: var(--main-text-color-low-emph);
   }

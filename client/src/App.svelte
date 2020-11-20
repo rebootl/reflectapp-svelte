@@ -1,11 +1,8 @@
 <script>
-	//import { onMount } from "svelte";
-	//import { afterUpdate } from 'svelte';
 	import Header from './Header.svelte';
 	import Nav from './Nav.svelte';
 	import Entries from './Entries.svelte';
 	import SingleEntry from './SingleEntry.svelte';
-	//import { setColorVariants } from './resources/colors.js';
 	import { myrouter } from './resources/router.js';
 	import { loggedIn } from './resources/auth.js';
 
@@ -60,18 +57,6 @@
 	}
 
 	myrouter.registerSvelte(routerUpdate);
-
-	// -> remove this
-	const colorVariantProps = [
-		'--header-background-color',
-		'--main-background-color',
-		'--side-background-color',
-		'--primary-variant-color',
-	];
-	const body = document.querySelector('body');
-	for (const p of colorVariantProps) {
-		//setColorVariants(body, p);
-	}
 </script>
 
 <div class="wrapper">
@@ -141,11 +126,14 @@
 
 		/* main */
 		--main-background-color: var(--background-color);
+		--main-background-color-light: var(--background-color-light);
+		--main-background-color-lighter: var(--background-color-lighter);
 		--main-content-background-color: var(--background-color);
 		--main-hover-color: var(--hover-color);
 		--main-lines-color: var(--background-color-lighter);
 		--main-text-color: #eee;
 		--main-text-color-low-emph: #aaa;
+		--linbox-color: #212131;
 
 		/* specials */
 		--focus-color: hsl(220, 100%, 70%);

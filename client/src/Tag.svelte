@@ -17,7 +17,6 @@
 		border: 0;
 		height: 100%;
 		width: 192px;
-		font-size: 16px;
 		font-family: "Roboto", sans-serif;
 		text-align: start;
 

@@ -61,7 +61,7 @@
     height: 50px;
     display: inline-block;
     vertical-align: middle;
-    margin-right: 10px;
-    margin-left: 10px;
+    margin-right: 15px;
+    margin-left: 25px;
   }
 </style>
