@@ -12,19 +12,19 @@
 
 <style>
 	.item {
-		padding: 0;
-		background-color: rgba(0, 0, 0, 0);
-		border: 0;
-		height: 100%;
-		font-size: 16px;
-		font-family: "Roboto", sans-serif;
 		display: flex;
-
 		width: 100%;
 		height: 48px;
-		line-height: 48px;
-		padding-left: 20px;
+
+		background-color: rgba(0, 0, 0, 0);
+		border: 0;
 		cursor: pointer;
+		padding: 0;
+		padding-left: 20px;
+
+		line-height: 48px;
+		font-size: 16px;
+		font-family: "Roboto", sans-serif;
 		color: var(--side-text-color);
 	}
 	.item:hover {

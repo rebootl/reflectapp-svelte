@@ -103,6 +103,9 @@
 		border-bottom: 2px solid var(--logo-primary-color);
 		padding-right: 5px;
 	}
+	:global(.mdc-menu-surface--open) {
+		border-radius: 8px;
+	}
 	@media all and (min-width: 700px) {
 		header {
 			grid-template-columns: var(--side-width) 5px minmax(0, 1fr);

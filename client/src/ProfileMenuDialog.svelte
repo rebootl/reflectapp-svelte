@@ -33,12 +33,7 @@
 	.dialog {
 		margin-top: 8px;
 		margin-right: 8px;
-		min-width: 200px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
 		border: 1px solid var(--main-lines-color);
 		border-radius: 8px;
-
 	}
 </style>

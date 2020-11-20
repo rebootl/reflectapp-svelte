@@ -147,6 +147,7 @@
 		--elements-on-primary-color: var(--on-primary-variant-color);
 		--elements-text-color: var(--main-text-color);
 		--elements-hover-color: var(--hover-color);
+		--elements-active-color: var(--active-color);
 		--elements-focus-color: var(--focus-color);
 
 		/*** sizes ***/
