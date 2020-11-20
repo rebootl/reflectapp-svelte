@@ -18,7 +18,7 @@
 		height: 100%;
 		width: 192px;
 		font-size: 16px;
-		font-family: sans-serif;
+		font-family: "Roboto", sans-serif;
 		text-align: start;
 
 		display: block;
@@ -34,10 +34,10 @@
 		background-color: var(--side-hover-color);
 	}
   .item:focus {
-		outline-style: solid;
-		outline-offset: -1px;
+		outline-style: none;
+		/*outline-offset: -1px;
 		outline-width: 1px;
-		outline-color: var(--elements-focus-color);
+		outline-color: var(--elements-focus-color);*/
 		background-color: var(--elements-hover-color);
 	}
 	.item.active {

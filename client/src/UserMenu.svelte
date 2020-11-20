@@ -1,9 +1,12 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
 	import { myrouter } from './resources/router.js';
 	import { getUserMenu } from './resources/getData.js';
 	import Topic from './Topic.svelte';
 	import Tag from './Tag.svelte';
 	import UserList from './UserList.svelte';
+
+	const dispatch = createEventDispatcher();
 
 	export let user = '';
 	export let activeTopics = [];
@@ -90,6 +93,7 @@
 		tag.active = !v;
 		topics = topics;
 		updateURL();
+		dispatch('tagclick');
 	}
 
 	function updateURL() {

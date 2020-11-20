@@ -17,7 +17,7 @@
 		border: 0;
 		height: 100%;
 		font-size: 16px;
-		font-family: sans-serif;
+		font-family: "Roboto", sans-serif;
 		display: flex;
 
 		width: 100%;
@@ -31,11 +31,11 @@
 		background-color: var(--side-hover-color);
 	}
 	.item:focus {
-		outline-style: solid;
-		outline-offset: -1px;
+		outline-style: none;
+		/*outline-offset: -1px;
 		outline-color: var(--focus-color);
-		outline-width: 1px;
-		background-color: var(--side-hover-color);
+		outline-width: 1px;*/
+		background-color: var(--side-active-color);
 	}
 	.item.active {
 		color: var(--side-text-color-active);

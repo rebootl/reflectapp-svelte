@@ -77,7 +77,8 @@
 <div class="wrapper">
 	<Header {overview} on:togglenav={ () => shownav = !shownav } />
 	<Nav {overview} {shownav} {user}
-			 activeTopics={activeTopics} activeTags={activeTags} />
+			 activeTopics={activeTopics} activeTags={activeTags}
+			 on:togglenav={ () => shownav = !shownav } />
 
 	<!-- (sidearea stays empty, menu is overlayed above) -->
 	<div class="sidearea"></div>
@@ -168,7 +169,7 @@
 
 		margin: 0;
 		background-color: var(--main-background-color);
-		font-family: sans-serif;
+		font-family: Roboto, sans-serif;
 		/* avoid layout shift when scrollbar appears... */
 		overflow-y: scroll;
 	}

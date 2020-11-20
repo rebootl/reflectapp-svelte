@@ -3,7 +3,6 @@
 	import IconButton from '@smui/icon-button';
 	import MenuSurface from '@smui/menu-surface';
 	// own components
-	import NavButton from './NavButton.svelte';
 	import ProfileMenuDialog from './ProfileMenuDialog.svelte';
 
 	const dispatch = createEventDispatcher();
@@ -24,8 +23,9 @@
 <header>
 	<div class="header-left">
 		<div class="header-button-left-box">
-			<NavButton active={shownav}
-							   on:menuclicked={ () => dispatch('togglenav') } />
+			<IconButton class="material-icons"
+									title="Show Menu"
+									on:click={() => dispatch('togglenav')}>menu</IconButton>
 		</div>
 		<div class="header-spacer-left-box"></div>
 		<img class="header-r-left" src="/icons/R-left.svg" />
@@ -58,6 +58,7 @@
 		grid-template-columns: 50px 0px minmax(0, 1fr);
 		grid-template-rows: var(--header-height);
 		grid-template-areas: "header-left header-spacer header-right";
+		color: var(--header-text-color);
 	}
 	.header-left {
 		grid-area: header-left;
@@ -69,6 +70,8 @@
 	.header-button-left-box {
 		display: flex;
 		border-right: 2px solid var(--logo-secondary-color);
+		border-bottom: 2px solid var(--logo-secondary-color);
+		background-color: var(--header-background-color);
 	}
 	.header-spacer-left-box {
 		width: 100%;
@@ -97,7 +100,6 @@
 	}
 	.header-button-right-box {
 		display: flex;
-		color: var(--header-text-color);
 		border-bottom: 2px solid var(--logo-primary-color);
 		padding-right: 5px;
 	}
@@ -106,7 +108,7 @@
 			grid-template-columns: var(--side-width) 5px minmax(0, 1fr);
 		}
 		.header-button-left-box {
-			border-right: 0;
+			display: none;
 		}
 		.header-r-left {
 			height: 100%;

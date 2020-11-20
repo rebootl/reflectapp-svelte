@@ -4,8 +4,7 @@
 	export let username = "Username";
 </script>
 
-<div class="item"
-		 		on:click={()=>dispatch('click')}>
+<div class="item">
 	<div class="profilepicturebox">
 		<ProfilePicture />
 	</div>
@@ -29,7 +28,7 @@
 		outline-offset: -1px;
 		outline-color: var(--focus-color);
 		outline-width: 1px;
-		/*background-color: var(--side-hover-color);*/
+		/*background-color: var(--side-active-color);*/
 	}
 	.profilepicturebox {
 		height: 35px;
