@@ -1,5 +1,8 @@
 <script>
   import moment from 'moment';
+  import Linkbox from './Linkbox.svelte';
+  import TopicTag from './TopicTag.svelte';
+  import TagTag from './TagTag.svelte';
   import { getHTML } from './resources/helpers.js';
 
 	export let entry = {};
@@ -27,24 +30,19 @@
       <small class="imagecomment">{entry.comment}</small>
     {/if}
   {:else if entry.type === 'link'}
-    <div class="linkbox">
-      <a href={entry.text} target="_blank">
-        <span class="clickspan"></span>
-        <small class="linkref">{entry.text}</small>
-      </a>
-      <p class="linktitle">{entry.title}</p>
-      <small class="linkcomment">{entry.comment}</small>
-    </div>
+    <Linkbox href={entry.text}
+             title={entry.title}
+             comment={entry.comment} />
   {:else}
     <p>oops entry type unknown...</p>
   {/if}
   </div>
   <div class="tagbox">
     {#each entry.topics as title}
-      <small class="topictag">{title}</small>
+      <TopicTag>{title}</TopicTag>
     {/each}
     {#each entry.tags as title}
-      <small class="tagtag">{title}</small>
+      <TagTag>{title}</TagTag>
     {/each}
   </div>
 </div>
@@ -83,72 +81,7 @@
     border-top: 1px solid var(--main-background-color-lighter);
     background-color: var(--main-background-color-light);
   }
-  .linkbox {
-    display: inline-block;
-    background-color: var(--linbox-color);
-    border: 1px solid var(--main-background-color-lighter);
-    border-radius: 8px;
-    /*box-shadow: 0 6px 0 -2px rgba(0, 0, 0, 0.4);*/
-    /* for clickspan */
-    position: relative;
-  }
-  .linkbox:hover {
-    background-color: var(--main-hover-color);
-  }
-  .linkbox:focus-within {
-    outline-style: solid;
-    outline-offset: -1px;
-    outline-color: var(--focus-color);
-    outline-width: 1px;
-    background-color: var(--main-hover-color);
-  }
-  .linkref {
-    display: block;
-    margin: 10px 16px 0 16px;
-  }
-  .linktitle {
-    margin: 16px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    /* -> only needed for corrupted title w/ long words, remove later */
-    word-break: break-all;
-  }
-  .linkcomment {
-    /* -> test */
-    /*margin: 0;*/
-    display: block;
-    text-align: center;
-    padding: 10px 0 10px 0;
-    border-top: 1px solid var(--main-background-color-lighter);
-    background-color: var(--main-background-color-light);
-    border-bottom-left-radius: 7px;
-    border-bottom-right-radius: 7px;
-  }
-  .clickspan {
-    position: absolute;
-    width:100%;
-    height:100%;
-    top:0;
-    left: 0;
-    z-index: 10;
-  }
   .tagbox {
     margin: 24px 0 24px 0;
-  }
-  .topictag {
-    margin-right: 5px;
-    padding: 5px 10px 5px 10px;
-    border-radius: 3px;
-    font-size: small;
-    background-color: var(--main-background-color-lighter);
-    color: var(--main-text-color);
-  }
-  .tagtag {
-    margin-right: 5px;
-    padding: 5px 10px 5px 10px;
-    border-radius: 12px;
-    font-size: small;
-    border: 1px solid var(--main-background-color-lighter);
-    color: var(--main-text-color-low-emph);
   }
 </style>

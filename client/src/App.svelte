@@ -133,7 +133,7 @@
 		--main-lines-color: var(--background-color-lighter);
 		--main-text-color: #eee;
 		--main-text-color-low-emph: #aaa;
-		--linbox-color: #212131;
+		--linkbox-color: #212131;
 
 		/* specials */
 		--focus-color: hsl(220, 100%, 70%);
