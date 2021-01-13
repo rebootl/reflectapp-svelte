@@ -1,7 +1,9 @@
 <script>
   import ProfilePicture from './ProfilePicture.svelte';
+  import EntryInput from './EntryInput.svelte';
 	import EntriesList from './EntriesList.svelte';
 	import { getEntries, getAllEntries } from './resources/getData.js';
+  import { loggedIn } from './resources/auth.js';
 
   export let routerReady = false;
   export let user = '';
@@ -42,6 +44,9 @@
   <div class="main-inner">
     {#if user !== ''}
 	    <h1><div class="logobox"><ProfilePicture /></div>{user}</h1>
+    {/if}
+    {#if loggedIn()}
+      <EntryInput />
     {/if}
     <EntriesList {entries} on:fetch={ ()=>fetchEntries() } />
   </div>
