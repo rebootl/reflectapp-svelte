@@ -1,6 +1,6 @@
-/client/node_modules/
-/client/public/build/
-/client/public/media/
-/node_modules/
-
+/server/client/node_modules/
+/server/client/public/build/
+/server/client/public/media/
+/server/node_modules/
+/server/config.js
 .DS_Store
