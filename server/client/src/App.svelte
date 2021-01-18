@@ -1,6 +1,6 @@
 <script>
 	import Header from './Header.svelte';
-	import Nav from './Nav.svelte';
+	import Menu from './Menu.svelte';
 	import Entries from './Entries.svelte';
 	import SingleEntry from './SingleEntry.svelte';
 	import { myrouter } from './resources/router.js';
@@ -17,10 +17,7 @@
 	let entryId = '';
 
 	// state of the menu
-	let shownav = false;
-
-	// disables and hides menu button
-	let overview = true;
+	let showmenu = false;
 
 	async function routerUpdate() {
 
@@ -33,7 +30,6 @@
 			//console.log("App/entryId: ", entryId)
 			activeTopics = [];
 			activeTags = [];
-			overview = false;
 		} else if (route === 'user') {
 			// get user
 			user = myrouter.getUser();
@@ -41,12 +37,10 @@
 			// get topics/tags
 			activeTopics = myrouter.getTopics();
 			activeTags = myrouter.getTags();
-			overview = false;
 			//console.log('App/user, topics, tags: ', user, topics, tags)
 		} else {
 			// overview
 			route = 'overview';
-			overview = true;
 			user = '';
 			activeTopics = [];
 			activeTags = [];
@@ -59,16 +53,16 @@
 	myrouter.registerSvelte(routerUpdate);
 </script>
 
-<div class="wrapper">
-	<Header {overview} on:togglenav={ () => shownav = !shownav } />
-	<Nav {overview} {shownav} {user}
+<div class="wrapper" class:showmenu>
+	<Header on:togglemenu={ () => showmenu = !showmenu } />
+	<Menu {showmenu} {user}
 			 activeTopics={activeTopics} activeTags={activeTags}
-			 on:togglenav={ () => shownav = !shownav } />
+			 on:togglemenu={ () => showmenu = !showmenu } />
 
 	<!-- (sidearea stays empty, menu is overlayed above) -->
 	<div class="sidearea"></div>
 	<!-- (spacer between the two vertical lines) -->
-	<div class="spacer"></div>
+	<!--<div class="spacer"></div>-->
 
 	<main>
 	{#if route === 'singleentry'}
@@ -111,8 +105,8 @@
 		--header-background-color: var(--background-color);
 		--header-hover-color: var(--hover-color);
 		--header-active-color: var(--background-color-light);
-		--header-hline-color: #000;
-		--header-lines-color: var(--background-color-light);
+		--header-hline-color: var(--background-color-lighter);
+		--header-lines-color: var(--background-color-lighter);
 		--header-text-color: #eee;
 
 		/* side */
@@ -167,12 +161,12 @@
 	}
 	.wrapper {
 		display: grid;
-		grid-template-columns: auto;
+		/*grid-template-columns: auto;*/
 		grid-template-rows: var(--header-height) auto;
-		grid-template-columns: var(--side-width) 5px minmax(0, 1fr);
+		grid-template-columns: var(--side-width) minmax(0, 1fr);
 		grid-template-areas:
-			"header header header"
-			"main main main";
+			"header header"
+			"main main";
 		background-color: var(--main-background-color);
 	}
 	main {
@@ -186,9 +180,9 @@
 		z-index: 10;
 		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
 	}
-	.spacer {
+	/*.spacer {
 		grid-area: spacer;
-	}
+	}*/
 	/*.filler {
 		grid-area: filler;
 	}*/
@@ -198,11 +192,16 @@
 		}
 		.wrapper {
 			grid-template-areas:
-				"header header header"
-				"side spacer main";
+				"header header"
+				"side main";
+		}
+		.wrapper.showmenu {
+			grid-template-areas:
+				"header header"
+				"main main";
 		}
 		main {
-			border-left: 2px solid var(--logo-primary-color);
+			/*border-left: 2px solid var(--logo-primary-color);*/
 		}
 	}
 </style>

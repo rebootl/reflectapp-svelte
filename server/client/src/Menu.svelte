@@ -9,8 +9,7 @@
 
 	const dispatch = createEventDispatcher();
 
-	export let overview = true;
-	export let shownav;
+	export let showmenu;
 
 	export let user = '';
 	export let activeTopics = [];
@@ -20,24 +19,24 @@
 	let topics = [];
 
 	function tagclicked() {
-		//console.log(shownav)
-		if (shownav) dispatch('togglenav');
+		if (showmenu) dispatch('togglemenu');
 	}
+	/*{#if overview}
+			<UserList />
+		{:else}-->
+		{/if}
+	*/
 </script>
 
-<nav class:shownav>
+<nav class:showmenu>
 	<div class="marginbox"></div>
 	<div class="scrollbox">
 	<div class="spacer"></div>
-	{#if overview}
-		<UserList />
-	{:else}
 		<UserMenu {user} activeTopics={activeTopics} activeTags={activeTags}
 		 					on:tagclick={() => tagclicked()}/>
-	{/if}
 	</div>
 </nav>
-<div class="overlay" class:shownav on:click={() => dispatch('togglenav')}></div>
+<div class="overlay" class:showmenu on:click={() => dispatch('togglemenu')}></div>
 
 <style>
 	nav {
@@ -54,7 +53,7 @@
 		z-index: 25;
 		border-right: 2px solid var(--logo-secondary-color);
 	}
-	nav.shownav {
+	nav.showmenu {
 		left: 0;
 		transition: left 0.2s;
 	}
@@ -67,7 +66,7 @@
 		z-index: 15;
 		display: none;
 	}
-	.overlay.shownav {
+	.overlay.showmenu {
 		display: flex;
 		opacity: 0.5;
 		/* transition opacity somehow doesn't work */
@@ -75,11 +74,6 @@
 	}
 	.spacer {
 		height: 20px;
-	}
-	@media all and (min-width: 700px) {
-		nav {
-			left: 0;
-		}
 	}
 	.marginbox {
 		min-height: calc(var(--header-height) - 1px);
@@ -92,5 +86,17 @@
 			var(--side-scrollbar-color)
 			var(--side-background-color);
 		scrollbar-width: thin;
+	}
+	@media all and (min-width: 700px) {
+		nav {
+			left: 0;
+		}
+		nav.showmenu {
+			left: calc(-1 * var(--side-width-extended));
+			transition: left 0.2s;
+		}
+		.overlay.showmenu {
+			display: none;
+		}
 	}
 </style>
