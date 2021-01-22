@@ -2,7 +2,9 @@
   import { onMount } from "svelte";
 	import { apiGetRequest } from './resources/requests.js';
 	import { profilesURL } from './resources/urls.js';
-	import UserItem from './UserItem.svelte';
+  import MenuItem from './Elements/MenuItem.svelte';
+
+  export let user = '';
 
 	let profiles = [];
 
@@ -22,7 +24,8 @@
 
 <div class="box">
 {#each profiles as p}
-	<UserItem username={p.name} />
+  <MenuItem href={'#~' + p.name} icon={'person'}
+            active={ user === p.name ? true : false }>{p.name}</MenuItem>
 {:else}
 	<p>loading...</p>
 {/each}

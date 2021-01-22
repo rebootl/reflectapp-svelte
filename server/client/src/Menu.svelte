@@ -2,6 +2,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { myrouter } from './resources/router.js';
 	import { getUserMenu } from './resources/getData.js';
+	import MenuItem from './Elements/MenuItem.svelte';
 	import UserList from './UserList.svelte';
 	import TopicsTags from './TopicsTags.svelte';
 
@@ -29,9 +30,10 @@
 <nav class:showmenu>
 	<div class="marginbox"></div>
 	<div class="scrollbox">
+		<MenuItem active={overview} href="#">Overview</MenuItem>
 		<!--<div class="spacer"></div>-->
 		<h4 class="subtitle">Users</h4>
-		<UserList />
+		<UserList {user} />
 		{#if !overview}
 			<TopicsTags {user} {activeTopics} {activeTags}
 								  on:tagclick={() => tagclicked()}/>

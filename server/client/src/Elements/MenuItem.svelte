@@ -1,8 +1,34 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
+	import {Icon} from '@smui/icon-button';
+
+	const dispatch = createEventDispatcher();
+
 	export let href = null;
+	export let active = false;
+	export let icon = null;
 </script>
 
-<a class="item" href={href}><slot></slot></a>
+{#if href}
+	<a class="item" class:active class:icon={icon} href={href}>
+		{#if icon}
+			<div class="icon-box">
+				<Icon class="material-icons">{icon}</Icon>
+			</div>
+		{/if}
+		<slot></slot>
+	</a>
+{:else}
+	<button class="item" class:active class:icon={icon}
+			 on:click={ ()=>dispatch('click') }>
+		{#if icon}
+			<div class="icon-box">
+				<Icon class="material-icons">{icon}</Icon>
+			</div>
+		{/if}
+		<slot></slot>
+	</button>
+{/if}
 
 <style>
 	.item {
@@ -15,6 +41,11 @@
 	.item:hover {
 		background-color: var(--elements-hover-color);
 	}
+	button {
+		background-color: rgba(0, 0, 0, 0);
+		border: 0;
+		cursor: pointer;
+	}
 	a {
 		box-sizing: border-box;
 		padding-left: 20px;
@@ -25,10 +56,22 @@
 		color: var(--elements-text-color);
 	}
 	a:focus {
-		outline-style: none;	
+		outline-style: none;
 		background-color: var(--elements-active-color);
 	}
 	a:active {
 		background-color: var(--elements-active-color);
+	}
+	.active {
+		background-color: var(--elements-active-color);
+	}
+	.icon-box {
+		padding-left: 6px;
+		padding-right: 6px;
+		display: flex;
+		align-items: center;
+	}
+	.icon {
+		padding-left: 0;
 	}
 </style>
