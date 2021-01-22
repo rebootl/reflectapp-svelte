@@ -3,4 +3,10 @@
 /server/client/public/media/
 /server/node_modules/
 /server/config.js
+
+/db/mongodb-data/
+/db/config.sh
+/db/users.json
+/db/entries.json
+
 .DS_Store
