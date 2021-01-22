@@ -1,5 +1,5 @@
 APP="reflectapp"
-COLLECTIONS=( "entries" "users" )
+COLLECTIONS=( "users" )
 
 for c in "${COLLECTIONS[@]}"; do
   mongoimport --db "$APP" \
