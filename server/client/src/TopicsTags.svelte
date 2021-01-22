@@ -4,7 +4,6 @@
 	import { getUserMenu } from './resources/getData.js';
 	import Topic from './Topic.svelte';
 	import Tag from './Tag.svelte';
-	import UserList from './UserList.svelte';
 
 	const dispatch = createEventDispatcher();
 

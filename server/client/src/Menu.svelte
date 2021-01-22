@@ -2,15 +2,14 @@
 	import { createEventDispatcher } from 'svelte';
 	import { myrouter } from './resources/router.js';
 	import { getUserMenu } from './resources/getData.js';
-	import Topic from './Topic.svelte';
-	import Tag from './Tag.svelte';
 	import UserList from './UserList.svelte';
-	import UserMenu from './UserMenu.svelte';
+	import TopicsTags from './TopicsTags.svelte';
 
 	const dispatch = createEventDispatcher();
 
 	export let showmenu;
 
+	export let overview = true;
 	export let user = '';
 	export let activeTopics = [];
 	export let activeTags = [];
@@ -18,22 +17,25 @@
 	let singleSelect = true;
 	let topics = [];
 
+	let foo = false;
+
+	console.log(overview)
+
 	function tagclicked() {
 		if (showmenu) dispatch('togglemenu');
 	}
-	/*{#if overview}
-			<UserList />
-		{:else}-->
-		{/if}
-	*/
 </script>
 
 <nav class:showmenu>
 	<div class="marginbox"></div>
 	<div class="scrollbox">
-	<div class="spacer"></div>
-		<UserMenu {user} activeTopics={activeTopics} activeTags={activeTags}
-		 					on:tagclick={() => tagclicked()}/>
+		<!--<div class="spacer"></div>-->
+		<h4 class="subtitle">Users</h4>
+		<UserList />
+		{#if !overview}
+			<TopicsTags {user} {activeTopics} {activeTags}
+								  on:tagclick={() => tagclicked()}/>
+		{/if}
 	</div>
 </nav>
 <div class="overlay" class:showmenu on:click={() => dispatch('togglemenu')}></div>
@@ -49,9 +51,13 @@
 		transition: left 0.2s;
 		top: 0;
 		bottom: 0;
-		background-color: var(--side-background-color);
 		z-index: 25;
+		color: var(--side-text-color);
+		background-color: var(--side-background-color);
 		border-right: 2px solid var(--logo-secondary-color);
+	}
+	.subtitle {
+		text-align: center;
 	}
 	nav.showmenu {
 		left: 0;

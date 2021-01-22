@@ -16,6 +16,8 @@
 	// id for single entry
 	let entryId = '';
 
+	let overview = true;
+
 	// state of the menu
 	let showmenu = false;
 
@@ -47,6 +49,7 @@
 			// reset url
 			myrouter.setURL('', [], []);
 		}
+		overview = route == 'overview' ? true : false;
 		routerReady = true;
 	}
 
@@ -55,7 +58,7 @@
 
 <div class="wrapper" class:showmenu>
 	<Header on:togglemenu={ () => showmenu = !showmenu } />
-	<Menu {showmenu} {user}
+	<Menu {showmenu} {user} {overview}
 			 activeTopics={activeTopics} activeTags={activeTags}
 			 on:togglemenu={ () => showmenu = !showmenu } />
 
@@ -67,6 +70,9 @@
 	<main>
 	{#if route === 'singleentry'}
 		<SingleEntry {user} entryId={entryId} />
+	{:else if route === 'overview'}
+		<h1>Welcome!</h1>
+		landing page, blabla
 	{:else}
 		<Entries {user} {routerReady}
 						 activeTopics={activeTopics} activeTags={activeTags} />
@@ -115,7 +121,7 @@
 		--side-active-color: var(--background-color-light);
 		--side-lines-color: var(--background-color-light);
 		--side-scrollbar-color: var(--background-color-dark);
-		--side-text-color: var(--main-text-color-low-emph);
+		--side-text-color: var(--main-text-color);
 		--side-text-color-active: var(--main-text-color);
 
 		/* main */
@@ -161,7 +167,6 @@
 	}
 	.wrapper {
 		display: grid;
-		/*grid-template-columns: auto;*/
 		grid-template-rows: var(--header-height) auto;
 		grid-template-columns: var(--side-width) minmax(0, 1fr);
 		grid-template-areas:
@@ -172,6 +177,8 @@
 	main {
 		grid-area: main;
 		color: var(--main-text-color);
+		padding-left: 20px;
+		padding-right: 20px;
 	}
 	.sidearea {
 		grid-area: side;
@@ -180,12 +187,6 @@
 		z-index: 10;
 		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
 	}
-	/*.spacer {
-		grid-area: spacer;
-	}*/
-	/*.filler {
-		grid-area: filler;
-	}*/
 	@media all and (min-width: 700px) {
 		:global(body) {
 			--side-width: var(--side-width-extended);
@@ -199,9 +200,6 @@
 			grid-template-areas:
 				"header header"
 				"main main";
-		}
-		main {
-			/*border-left: 2px solid var(--logo-primary-color);*/
 		}
 	}
 </style>
