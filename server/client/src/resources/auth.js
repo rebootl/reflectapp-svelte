@@ -1,36 +1,19 @@
 import { apiPostRequest } from './requests.js'
-import { loginUrl } from './urls.js';
-//import { imagestore } from './imagestore.js';
+import { apiGetRequest } from './requests.js'
+import { authURL } from './urls.js';
 
 export function loggedIn() {
-  if (localStorage.getItem('access_token')) return true;
+  if (localStorage.getItem('username')) return true;
   return false;
 }
 
 export function getUserName() {
-  if (!loggedIn()) return "";
+  if (!loggedIn()) return '';
   return localStorage.getItem('username');
 }
 
-export function getAuthHeaderJSON() {
-  if (loggedIn()) return {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization':  'Bearer ' + localStorage.getItem('access_token')
-  };
-  return {};
-}
-
-export function getAuthHeader() {
-  if (loggedIn())
-    return {
-      'Authorization':  'Bearer ' + localStorage.getItem('access_token')
-    };
-  return {};
-}
-
 export async function login(username, pw) {
-  const r = await apiPostRequest(loginUrl, {
+  const r = await apiPostRequest(authURL + '/login', {
     username: username,
     password: pw
   });
@@ -40,17 +23,18 @@ export async function login(username, pw) {
     return r;
   }
   console.log("Login successful!");
-  // store JWT
-  localStorage.setItem('access_token', r.token);
   localStorage.setItem('username', username);
   return r;
 }
 
 export async function logout() {
+  const r = await apiGetRequest(authURL + '/logout');
+  if (!r.success) {
+    console.log("Logout unsuccessful :/");
+    return r;
+  }
   localStorage.removeItem('username');
-  localStorage.removeItem('access_token');
-  // delete locally stored images
-  //imagestore.cleanupLocalStorage();
-  //api.headers = {};
-  //await api.reset();
+  console.log("Logout successful, bye...");
+  location.reload();
+  //return r;
 }

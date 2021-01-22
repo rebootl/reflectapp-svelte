@@ -1,4 +1,4 @@
-import { getAuthHeader } from './auth.js';
+//import { getAuthHeader } from './auth.js';
 
 const defaultHeader = {
   'Accept': 'application/json',
@@ -94,7 +94,7 @@ export async function uploadFile(apiUrl, data) {
   const options = {
     method: 'POST',
     body: formData,
-    headers: getAuthHeader()
+    //headers: getAuthHeader()
   };
   const response = await fetch(apiUrl, options);
   if (!response.ok) {
@@ -148,7 +148,7 @@ export async function* uploadMultiFilesGenerator(apiUrl, files) {
   });
   xhr.responseType = 'json';
   xhr.open('post', apiUrl);
-  xhr.setRequestHeader('Authorization', getAuthHeader()['Authorization']);
+  //xhr.setRequestHeader('Authorization', getAuthHeader()['Authorization']);
   xhr.send(formData);
   while(!done) {
     await p;

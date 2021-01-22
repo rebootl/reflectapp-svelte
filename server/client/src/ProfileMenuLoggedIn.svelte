@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 	import Button from '@smui/button';
-	import { logout } from './resources/auth.js';
+	import { getUserName, logout } from './resources/auth.js';
 	import MenuItem from './Elements/MenuItem.svelte';
 	//import Button from './Elements/Button.svelte';
 
@@ -19,8 +19,7 @@
 
 <div class="loggedinbox">
 	<div class="menuitems">
-		<MenuItem href="#">Overview</MenuItem>
-		<MenuItem href="#editor">My Entries</MenuItem>
+		<MenuItem href={'/#~' + getUserName()}>My Entries</MenuItem>
 	</div>
 	<div class="logoutbutton">
 		<Button variant="unelevated" on:click={()=>_logout()}>Logout</Button>

@@ -5,7 +5,7 @@ import HTMLParser from 'node-html-parser';
 const htmlParser : any = HTMLParser;
 
 export default async (req : any, res : any) => {
-  if (!req.user) {
+  if (!req.session.loggedIn) {
     console.log('unallowed urlinfo request rejected');
     res.sendStatus(401);
     return;
