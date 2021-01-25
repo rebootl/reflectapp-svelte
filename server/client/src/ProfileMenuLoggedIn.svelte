@@ -18,6 +18,7 @@
 </script>
 
 <div class="loggedinbox">
+	<h4 class="username">{getUserName()}</h4>
 	<div class="menuitems">
 		<MenuItem href={'/#~' + getUserName()}>My Entries</MenuItem>
 	</div>
@@ -39,6 +40,9 @@
 		background-color: rgba(255, 255, 255, 0.093);
 		border: 1px solid rgba(0, 0, 0, 0.5);
 	}*/
+	.username {
+		text-align: center;
+	}
 	.menuitems {
 		width: 100%;
 		border-bottom: 1px solid var(--main-lines-color);

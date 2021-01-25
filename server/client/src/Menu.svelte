@@ -20,8 +20,6 @@
 
 	let foo = false;
 
-	console.log(overview)
-
 	function tagclicked() {
 		if (showmenu) dispatch('togglemenu');
 	}
@@ -30,7 +28,7 @@
 <nav class:showmenu>
 	<div class="marginbox"></div>
 	<div class="scrollbox">
-		<MenuItem active={overview} href="#">Overview</MenuItem>
+		<MenuItem active={overview} href="#">Home</MenuItem>
 		<!--<div class="spacer"></div>-->
 		<h4 class="subtitle">Users</h4>
 		<UserList {user} />

@@ -1,6 +1,6 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
-	import {Icon} from '@smui/icon-button';
+	import { Icon } from '@smui/icon-button';
 
 	const dispatch = createEventDispatcher();
 

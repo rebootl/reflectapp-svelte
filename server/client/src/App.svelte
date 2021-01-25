@@ -95,9 +95,17 @@
 
 		/* links */
 		--primary-color: #9cdede;
+
 		/* input elements */
 		--primary-variant-color: #287b7b;
 		--on-primary-variant-color: #eee;
+
+		--form-line-color: #6f6f73; /* from material-ui */
+
+		--tasks-color: #f2f259;
+		--links-color: #06e8ff;
+		--notes-color: #e8e8e8;
+		--images-color: #82ff70;
 
 		/* base colors */
 		--background-color: #17171d;
@@ -149,6 +157,7 @@
 		--elements-hover-color: var(--hover-color);
 		--elements-active-color: var(--active-color);
 		--elements-focus-color: var(--focus-color);
+		--elements-form-line-color: var(--form-line-color);
 
 		/*** sizes ***/
 		--header-height: 50px;

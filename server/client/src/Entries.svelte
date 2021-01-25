@@ -1,5 +1,6 @@
 <script>
-  import ProfilePicture from './ProfilePicture.svelte';
+  //import ProfilePicture from './ProfilePicture.svelte';
+  import EntryTypes from './EntryTypes.svelte';
   import EntryInput from './EntryInput.svelte';
 	import EntriesList from './EntriesList.svelte';
 	import { getEntries, getAllEntries } from './resources/getData.js';
@@ -10,6 +11,7 @@
   export let activeTopics = [];
   export let activeTags = [];
 
+  let typeSelect = '';
   let entries = [];
 
   let userNotFound = false;
@@ -18,55 +20,38 @@
     <p>Ooops, user not found...</p>
   {:else}*/
 
-  $: update(user, activeTopics, activeTags);
+  $: update(user, activeTopics, activeTags, typeSelect);
 
   async function update() {
     if (!routerReady) return;
     entries = [];
-    //console.log('Entries/user, topics, tags: ', user, topics, tags)
-    if (user === '')
-      entries = await getAllEntries();
-    else
-      entries = await getEntries(user, activeTopics, activeTags)
-    //console.log('Entries/entries: ', entries)
+    console.log(typeSelect)
+    entries = await getEntries(user, activeTopics, activeTags, typeSelect)
   }
 
   async function fetchEntries() {
     const s = entries.length;
     entries = [
       ...entries,
-      ...await getEntries(user, activeTopics, activeTags, s)
+      ...await getEntries(user, activeTopics, activeTags, typeSelect, s)
     ];
   }
 </script>
 
 <div class="main-container">
-  <div class="main-inner">
-    {#if user !== ''}
-	    <h1><div class="logobox"><ProfilePicture /></div>{user}</h1>
-    {/if}
-    {#if loggedIn()}
-      <EntryInput />
-    {/if}
-    <EntriesList {entries} on:fetch={ ()=>fetchEntries() } />
-  </div>
+  <EntryTypes on:change={ (e) => typeSelect = e.detail.type }/>
+  {#if loggedIn()}
+    <EntryInput type={typeSelect} />
+  {/if}
+  <EntriesList {entries} on:fetch={ ()=>fetchEntries() } />
 </div>
 
 <style>
   .main-container {
     display: flex;
-    /* -> add media query? */
-    justify-content: center;
-  }
-	.main-inner {
-    width: 100%;
-    max-width: var(--main-width);
-	}
-  .logobox {
-    height: 50px;
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 15px;
-    margin-left: 25px;
+    /*justify-content: center;*/
+    flex-flow: column;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
 </style>

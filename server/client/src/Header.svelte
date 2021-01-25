@@ -68,5 +68,6 @@
 	}
 	:global(.mdc-menu-surface--open) {
 		border-radius: 8px;
+		margin-top: 1px;
 	}
 </style>
