@@ -6,6 +6,7 @@
   const dispatch = createEventDispatcher();
 
   export let entries = [];
+  export let edit = false;
 
   // trigger fetch at nth element from the bottom
   // -> loading get's stuck at some point when using 4, why?
@@ -50,7 +51,7 @@
 <div class="entrieslist">
 {#each entries as entry}
   <div class="entrybox">
-    <Entry entry={entry} />
+    <Entry entry={entry} {edit} />
     <a href={'#~' + entry.user + '/~' + entry.id} class="clicklink"></a>
   </div>
 {:else}

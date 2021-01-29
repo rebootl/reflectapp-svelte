@@ -9,8 +9,10 @@
   const md = window.markdownit();
 
 	export let entry = {};
+  export let edit = false;
+  //console.log(entry)
 
-  let html = "";
+  let html = '';
 
   let iconsTypes = {
     task: 'task_alt',
@@ -29,43 +31,34 @@
 
 <div class="entry">
   <div class="entryheader">
-    <span class="link-icon">
+    <div>
       <i class="material-icons">{iconsTypes[entry.type]}</i>
-    </span>
+      {#if entry.private}<i class="material-icons">lock</i>{/if}
+    </div>
     <small class="date">
       {date}
     </small>
+    <a class="entrylink" href={'/#~' + entry.user + '/~' + entry.id}></a>
+    {#if edit}<i class="material-icons">create</i>{/if}
   </div>
-  <div class="entrycontent">
   {#if entry.type === 'task'}
-    {@html html}
+    <div class="entrycontent">
+      {@html html}
+    </div>
   {:else if entry.type === 'article'}
-    {@html html}
+    <div class="entrycontent">
+      {@html html}
+    </div>
   {:else if entry.type === 'link'}
     <Linkbox href={entry.text}
              title={entry.title}
              comment={entry.comment} />
   {:else if entry.type === 'image'}
-    {@html html}
-    {#if entry.comment && entry.comment !== ""}
-      <small class="imagecomment">{entry.comment}</small>
-    {/if}
-  {:else if entry.type === 'link'}
-    <Linkbox href={entry.text}
-             title={entry.title}
-             comment={entry.comment} />
   {:else}
-    <p>oops entry type unknown...</p>
+    <div class="entrycontent">
+      <p>oops entry type unknown...</p>
+    </div>
   {/if}
-  </div>
-  <div class="tagbox">
-    {#each entry.topics as title}
-      <TopicTag>{title}</TopicTag>
-    {/each}
-    {#each entry.tags as title}
-      <TagTag>{title}</TagTag>
-    {/each}
-  </div>
 </div>
 
 <style>
@@ -77,18 +70,40 @@
   }
   .entryheader {
     display: flex;
-    padding: 7px 0 7px 10px;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 7px 10px 7px 10px;
     font-size: smaller;
     color: var(--main-text-color-low-emph);
     border-bottom: 1px solid var(--main-lines-color);
   }
+  .entryheader:hover {
+    background-color: var(--main-hover-color);
+  }
+  .entrylink {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+  }
   .link {
     color: var(--links-color);
   }
-  /*.entrycontent {
-    margin: 35px 0 35px 0;
+  .entrycontent {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
-  :global(pre) {
+  /*.tagbox {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 10px;
+  }*/
+  /*:global(pre) {
     overflow-x: scroll;
     background-color: rgba(0, 0, 0, 0.3);
     padding: 20px;
@@ -108,7 +123,5 @@
     border-top: 1px solid var(--main-background-color-lighter);
     background-color: var(--main-background-color-light);
   }
-  .tagbox {
-    margin: 24px 0 24px 0;
-  }*/
+*/
 </style>

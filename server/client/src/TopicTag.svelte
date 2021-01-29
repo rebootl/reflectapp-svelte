@@ -1,11 +1,10 @@
 <script>
 </script>
 
-<small class="topictag"><slot></slot></small>
+<div class="topictag"><slot></slot></div>
 
 <style>
   .topictag {
-    margin-right: 5px;
     padding: 5px 10px 5px 10px;
     border-radius: 3px;
     font-size: small;

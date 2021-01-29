@@ -87,7 +87,8 @@
     d.tags = [ ...newTags, ...selectedTags ];
 
     // generate Id
-    d.id = makeId(d);
+    d.id = await makeId(d);
+    console.log(d.id)
 
     const r = await apiPostRequest(entriesURL, d);
     if (!r.success) {
@@ -172,7 +173,9 @@
     </div>
   </div>
 
-  <Button on:click={create} variant="unelevated" disabled={!ready}>Create</Button>
+  <div class="buttons-box">
+    <Button on:click={create} variant="unelevated" disabled={!ready}>Create</Button>
+  </div>
   {/if}
 {:else}
   <small>Select type to add entry.</small>
@@ -181,10 +184,9 @@
 
 <style>
   .entry-input-box {
+    padding-bottom: 20px;
     margin-bottom: 20px;
-  }
-  .inputs-box {
-    margin-bottom: 20px;
+    border-bottom: 1px solid var(--main-lines-color);
   }
   .inputs-links-box {
     display: flex;
@@ -200,7 +202,7 @@
     gap: 20px;
   }
   .topics-box {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
   .new-topic-box {
     margin-bottom: 5px;

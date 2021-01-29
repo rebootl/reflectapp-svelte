@@ -4,7 +4,7 @@
   import EntryInput from './EntryInput.svelte';
 	import EntriesList from './EntriesList.svelte';
 	import { getEntries, getAllEntries } from './resources/getData.js';
-  import { loggedIn } from './resources/auth.js';
+  import { loggedIn, getUserName } from './resources/auth.js';
 
   export let routerReady = false;
   export let user = '';
@@ -43,7 +43,9 @@
   {#if loggedIn()}
     <EntryInput type={typeSelect} />
   {/if}
-  <EntriesList {entries} on:fetch={ ()=>fetchEntries() } />
+  <EntriesList {entries}
+               edit={ loggedIn() && getUserName() === user ? true : false }
+               on:fetch={ ()=>fetchEntries() } />
 </div>
 
 <style>
