@@ -1,7 +1,9 @@
 import express from 'express';
-import { getAllPublicEntries, getPublicEntries, getPublicEntry } from './entriesModel.js';
+import { getAllPublicEntries, getUserEntries, getPublicEntry } from './entriesModel.js';
 import { getValidUser } from './userModel.js';
 const router = express.Router();
+const allowedTypes = ['any', 'task', 'link', 'article', 'image'];
+const requiredFields = ['id', 'type', 'date', 'topics', 'tags'];
 router.get('/', async (req, res) => {
     const db = req.app.locals.db;
     const skip = parseInt(req.query.skip) || 0;
@@ -16,19 +18,31 @@ router.get('/:user', async (req, res) => {
     const u = await getValidUser(db, user);
     if (!u)
         return res.sendStatus(404);
+    console.log(req.query.type);
+    const type = allowedTypes.includes(req.query.type) ? req.query.type
+        : 'any' || 'any';
     const skip = parseInt(req.query.skip) || 0;
     const limit = parseInt(req.query.limit) || 10;
-    let topics = req.query.topics || [];
-    let tags = req.query.tags || [];
-    // check tags/topics
-    if (!Array.isArray(topics))
-        topics = [];
-    if (!Array.isArray(tags))
-        tags = [];
+    const topics = Array.isArray(req.query.topics) || [];
+    const tags = Array.isArray(req.query.tags) || [];
     // check if logged in
     //console.log(req.user);
-    const r = await getPublicEntries(db, user, topics, tags, skip, limit);
-    return res.send({ success: true, result: r });
+    const r = await getUserEntries(db, user, topics, tags, skip, limit);
+    // if not logged in or request user not equals logged in user filter private entries
+    let e = [];
+    if (!req.session.loggedIn || req.session.username !== user) {
+        e = r.filter(e => {
+            if (e.private)
+                if (e.private === false)
+                    return e;
+        });
+    }
+    else
+        e = r;
+    if (type !== 'any') {
+        e = e.filter(e => e.type === type);
+    }
+    return res.send({ success: true, result: e });
 });
 router.get('/:user/:entryId', async (req, res) => {
     const db = req.app.locals.db;
@@ -42,6 +56,29 @@ router.get('/:user/:entryId', async (req, res) => {
     //console.log(r)
     if (!r)
         return res.sendStatus(404);
+    return res.send({ success: true, result: r });
+});
+router.post('/', async (req, res) => {
+    if (!req.session.loggedIn || req.session.username !== req.body.user) {
+        console.log('unallowed entry post rejected');
+        res.sendStatus(401);
+        return;
+    }
+    console.log(req.session);
+    console.log(req.body);
+    const db = req.app.locals.db;
+    // check required fields
+    for (const f of requiredFields) {
+        if (!req.body.hasOwnProperty(f))
+            return res.sendStatus(400);
+    }
+    // more checks?
+    // - length
+    // insert into db
+    const c = await db.collection('entries');
+    const r = await c.insertOne({ ...req.body });
+    if (!r)
+        return res.sendStatus(400);
     return res.send({ success: true, result: r });
 });
 export default router;

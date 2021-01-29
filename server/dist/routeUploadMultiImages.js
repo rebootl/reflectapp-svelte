@@ -1,6 +1,6 @@
 import { storeImage } from './imageStorage.js';
 export default async (req, res) => {
-    if (!req.user) {
+    if (!req.session.loggedIn) {
         console.log('unallowed image upload rejected');
         res.sendStatus(401);
         return;

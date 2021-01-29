@@ -1,16 +1,26 @@
 <script>
+  import { Icon } from '@smui/icon-button';
   import moment from 'moment';
   import Linkbox from './Linkbox.svelte';
   import TopicTag from './TopicTag.svelte';
   import TagTag from './TagTag.svelte';
   import { getHTML } from './resources/helpers.js';
 
+  const md = window.markdownit();
+
 	export let entry = {};
 
   let html = "";
 
-  if (entry.type === 'note' || entry.type === 'image')
-    html = getHTML(entry.text, entry.images);
+  let iconsTypes = {
+    task: 'task_alt',
+    link: 'link',
+    article: 'article',
+    image: 'image'
+  };
+
+  if (entry.type === 'task' || entry.type === 'article')
+    html = md.render(entry.text);
 
   //let dateFormat = 'ddd MMM D YYYY - HH:mm:ss';
   const dateFormat = 'MMM D YYYY - HH:mm';
@@ -19,11 +29,22 @@
 
 <div class="entry">
   <div class="entryheader">
-    <em class="date"><small>{date}</small></em>
+    <span class="link-icon">
+      <i class="material-icons">{iconsTypes[entry.type]}</i>
+    </span>
+    <small class="date">
+      {date}
+    </small>
   </div>
   <div class="entrycontent">
-  {#if entry.type === 'note'}
+  {#if entry.type === 'task'}
     {@html html}
+  {:else if entry.type === 'article'}
+    {@html html}
+  {:else if entry.type === 'link'}
+    <Linkbox href={entry.text}
+             title={entry.title}
+             comment={entry.comment} />
   {:else if entry.type === 'image'}
     {@html html}
     {#if entry.comment && entry.comment !== ""}
@@ -50,15 +71,21 @@
 <style>
   .entry {
     box-sizing: border-box;
-    width: 100%;
-    padding: 0 20px 0 20px;
-    border-bottom: 1px solid var(--main-lines-color);
+    width: 220px;
+    border: 1px solid var(--main-lines-color);
+    border-radius: 4px;
   }
   .entryheader {
-    margin: 15px 0 35px 0;
+    display: flex;
+    padding: 7px 0 7px 10px;
+    font-size: smaller;
     color: var(--main-text-color-low-emph);
+    border-bottom: 1px solid var(--main-lines-color);
   }
-  .entrycontent {
+  .link {
+    color: var(--links-color);
+  }
+  /*.entrycontent {
     margin: 35px 0 35px 0;
   }
   :global(pre) {
@@ -83,5 +110,5 @@
   }
   .tagbox {
     margin: 24px 0 24px 0;
-  }
+  }*/
 </style>

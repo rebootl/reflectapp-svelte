@@ -3,6 +3,10 @@
   import Button from '@smui/button';
   import Chip, { Set, Icon, Checkmark, Text } from '@smui/chips';
   import TextArea from './Elements/TextArea.svelte';
+  import { apiPostRequest } from './resources/requests.js';
+  import { entriesURL } from './resources/urls.js';
+  import { getUserName } from './resources/auth.js';
+  import { digestMessage, getPrefix } from './resources/helpers.js';
 
   export let type = 'any';
 
@@ -54,55 +58,58 @@
     newTags = f;
   }
 
-  function create() {
-    console.log(selectedTopics)
+  async function makeId(entry) {
+    // create id/ref
+    // -> the digest function is total overkill but meh... :D
+    const digest = await digestMessage(JSON.stringify(entry));
+    return entry.type + "-" + digest.slice(0, 12);
   }
 
-  /*let type = "Autodetect";
-  const urlInfoDefault = {
-    info: '',
-    title: ''
-  };
-  let urlInfo = urlInfoDefault;
-  let detecting = false;
+  async function create() {
 
-  $: typeDetect(inputText);
+    const d = {
+      user: getUserName(),
+      type: type.slice(0, -1),
+    };
 
-  let inDebounce = null;
-  function debounce(f, t=1000) {
-    return new Promise((res, rej) => {
-      clearTimeout(inDebounce);
-      inDebounce = setTimeout(() => res(f()), t);
-    });
-  }
+    d.date = new Date();
 
-  function getUrlInfo() {
-    // dummy test function that takes some time
-    // to execute
-    //console.log("called")
-    return new Promise((res, rej) => {
-      setTimeout(() => res("url dummy info"), 2000);
-    });
-  }
-
-  async function typeDetect() {
-    if (inputText == '') {
-      type = 'Autodetect';
-      urlInfo = urlInfoDefault;
-    } else if (inputText.startsWith("http://")
-        || inputText.startsWith("https://")) {
-      type = "link";
-      detecting = true;
-      urlInfo = await debounce(getUrlInfo);
-      detecting = false;
-      //console.log("urlInfo:", urlInfo);
-    } else if (/^<image_placeholder .*?>/.test(inputText)) {
-      type = "image";
-    } else {
-      type = "note";
+    if (type === 'tasks' || type === 'articles' || type === 'links') {
+      d.text = inputText; // -> escape or anything???
     }
-    //console.log(inputText)
-  }*/
+    if (type === 'links') {
+      d.title = linkTitle;
+      d.comment = comment;
+    }
+    // -> type images
+
+    d.topics = [ ...newTopics, ...selectedTopics ];
+    d.tags = [ ...newTags, ...selectedTags ];
+
+    // generate Id
+    d.id = makeId(d);
+
+    const r = await apiPostRequest(entriesURL, d);
+    if (!r.success) {
+      console.error(r);
+    }
+    // reset
+    reset();
+  }
+
+  function reset() {
+    inputText = '';
+    comment = '';
+    linkTitle = '';
+    newTopic = '';
+    newTopics = [];
+    topics = [ 'abc', '123', 'test' ];
+    selectedTopics = [];
+    newTag = '';
+    newTags = [];
+    tags = [ 'lala', '123', 'test' ];
+    selectedTags = [];
+  }
 
 </script>
 
@@ -167,16 +174,6 @@
 
   <Button on:click={create} variant="unelevated" disabled={!ready}>Create</Button>
   {/if}
-  <!--<small>Type: {type}
-  {#if type === 'link'}
-    {#if detecting}
-      ...
-    {:else}
-      {urlInfo.info}
-      {urlInfo.type}
-    {/if}
-  {/if}
-  </small>-->
 {:else}
   <small>Select type to add entry.</small>
 {/if}

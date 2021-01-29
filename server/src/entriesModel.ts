@@ -5,22 +5,18 @@ async function getAllPublicEntries(db, skip, limit) {
     .sort({ date: -1 }).skip(skip).limit(limit).toArray();
 }
 
-async function getPublicEntries(db, user, topics, tags, skip, limit) {
+async function getUserEntries(db, user, topics, tags, skip, limit) {
   const c = await db.collection('entries');
   let q;
   if (topics < 1) {
     q = [
-      { $match: { $and: [
-        { user: user },
-        { private: false }
-      ]}},
+      { $match: { user: user }},
       { $sort: { pinned: -1, date: -1 }}
     ];
   } else if (tags < 1) {
     q = [
       { $match: { $and: [
         { user: user },
-        { private: false },
         { topics: { $in: topics }}
       ]}},
       { $sort: { pinned: -1, date: -1 }}
@@ -29,7 +25,6 @@ async function getPublicEntries(db, user, topics, tags, skip, limit) {
     q = [
       { $match: { $and: [
         { user: user },
-        { private: false },
         { topics: { $in: topics }},
         { tags: { $in: tags }}
       ]}},
@@ -48,4 +43,4 @@ async function getPublicEntry(db, user, id) {
   ]});
 }
 
-export { getAllPublicEntries, getPublicEntries, getPublicEntry };
+export { getAllPublicEntries, getUserEntries, getPublicEntry };

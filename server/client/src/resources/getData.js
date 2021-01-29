@@ -1,10 +1,11 @@
 import { apiGetRequest } from './requests.js';
 import { entriesURL, menuURL } from './urls.js';
 
-export async function getEntries(user, topics, tags, skip = 0) {
+export async function getEntries(user, topics, tags, type, skip = 0) {
   const r = await apiGetRequest(entriesURL + '/' + user, {
     topics: topics,
     tags: tags,
+    type: type,
     skip: skip
   });
   if (!r.success) {

@@ -25,8 +25,8 @@
   async function update() {
     if (!routerReady) return;
     entries = [];
-    console.log(typeSelect)
-    entries = await getEntries(user, activeTopics, activeTags, typeSelect)
+    entries = await getEntries(user, activeTopics, activeTags, typeSelect.slice(0, -1))
+    console.log(entries)
   }
 
   async function fetchEntries() {

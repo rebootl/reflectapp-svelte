@@ -8,5 +8,6 @@
 /db/config.sh
 /db/users.json
 /db/entries.json
+/db/export/
 
 .DS_Store

@@ -63,35 +63,6 @@
     background-color: var(--main-content-background-color);
 		display: flex;
 		flex-wrap: wrap;
-    border-top: 1px solid var(--main-lines-color);
+    gap: 20px;
 	}
-  @media all and (min-width: 700px) {
-    .entrieslist {
-      border: 1px solid var(--main-lines-color);
-      border-bottom: 0;
-    }
-  }
-  .entrybox {
-    position: relative;
-    width: 100%;
-  }
-  .entrybox:hover {
-    background-color: var(--main-hover-color);
-  }
-  .entrybox:focus-within {
-    background-color: var(--main-hover-color);
-  }
-  a {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-  a:focus {
-    outline-style: solid;
-    outline-offset: -1px;
-    outline-color: var(--focus-color);
-    outline-width: 1px;
-  }
 </style>
