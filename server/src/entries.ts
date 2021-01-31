@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllPublicEntries, getUserEntries, getPublicEntry } from './entriesModel.js';
+import { getAllPublicEntries, getUserEntries, getEntry } from './entriesModel.js';
 import { getValidUser } from './userModel.js';
 
 const router = express.Router();
@@ -60,11 +60,23 @@ router.get('/:user/:entryId', async (req, res) => {
   // check if user exists _and valid_ !!
   const u = await getValidUser(db, user);
   if (!u) return res.sendStatus(404);
+
   const entryId = req.params.entryId;
-  const r = await getPublicEntry(db, user, entryId);
+  const r = await getEntry(db, user, entryId);
+  console.log("R", r);
+  
+  // if not logged in or request user not equals logged in user filter private entries
+  let e = {};
+  if (req.session.loggedIn || req.session.username === user)
+    e = r;
+  else {
+    if (e.private)
+      if (e.private === false) e = r;
+  }
+
   //console.log(r)
-  if (!r) return res.sendStatus(404);
-  return res.send({ success: true, result: r });
+  if (!e) return res.sendStatus(404);
+  return res.send({ success: true, result: e });
 });
 
 router.post('/', async (req, res) => {

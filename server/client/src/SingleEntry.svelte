@@ -1,33 +1,21 @@
 <script>
-	import { apiGetRequest } from './resources/requests.js';
-	import { entriesURL } from './resources/urls.js';
+	import { getEntry } from './resources/getData.js';
+
   import ProfilePicture from './ProfilePicture.svelte';
 	import Entry from './Entry.svelte';
 
   export let user;
-  export let entryId;
+  export let id;
 
-	let entries = [];
+	let entry = {};
   let notFound = false;
 
-  $: updateEntries(user);
-  $: updateEntries(entryId);
+  $: update(user, id);
 
-  async function updateEntries() {
-    entries = await getEntry();
-  }
-
-	async function getEntry() {
-		const r = await apiGetRequest(entriesURL + '/' + user
-      + '/' + entryId);
-		if (!r.success) {
-			console.error(r)
-      notFound = true;
-			return [];
-		}
-    notFound = false;
-		return [ r.result ];
+	async function update() {
+		entry = await getEntry(user, id)
 	}
+	update();
 </script>
 
 <div class="main-container">
@@ -46,11 +34,7 @@
     {#if notFound}
       <p>Ooops, user/entry not found...</p>
     {:else}
-      {#each entries as e}
-        <Entry entry={e} />
-	    {:else}
-	      <p>loading...</p>
-      {/each}
+      <Entry {entry} />
     {/if}
 	  </div>
   </div>

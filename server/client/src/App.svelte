@@ -69,7 +69,7 @@
 
 	<main>
 	{#if route === 'singleentry'}
-		<SingleEntry {user} entryId={entryId} />
+		<SingleEntry {user} id={entryId} />
 	{:else if route === 'overview'}
 		<h1>Welcome!</h1>
 		landing page, blabla

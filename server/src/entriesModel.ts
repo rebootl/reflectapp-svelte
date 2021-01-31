@@ -34,13 +34,12 @@ async function getUserEntries(db, user, topics, tags, skip, limit) {
   return await c.aggregate(q).skip(skip).limit(limit).toArray();
 }
 
-async function getPublicEntry(db, user, id) {
+async function getEntry(db, user, id) {
   const c = await db.collection('entries');
   return await c.findOne({ $and: [
     { user: user },
-    { private: false },
     { id: id }
   ]});
 }
 
-export { getAllPublicEntries, getUserEntries, getPublicEntry };
+export { getAllPublicEntries, getUserEntries, getEntry };
