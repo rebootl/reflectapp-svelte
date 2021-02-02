@@ -1,13 +1,16 @@
 <script>
   //import ProfilePicture from './ProfilePicture.svelte';
+  import Button, { Icon } from '@smui/button';
   import EntryTypes from './EntryTypes.svelte';
   import EntryInput from './EntryInput.svelte';
 	import EntriesList from './EntriesList.svelte';
-	import { getEntries, getAllEntries } from './resources/getData.js';
+	import { getEntries, getEntry } from './resources/getData.js';
   import { loggedIn, getUserName } from './resources/auth.js';
 
   export let routerReady = false;
   export let user = '';
+  export let entryId = '';
+  export let single = false;
   export let activeTopics = [];
   export let activeTags = [];
 
@@ -20,12 +23,16 @@
     <p>Ooops, user not found...</p>
   {:else}*/
 
-  $: update(user, activeTopics, activeTags, typeSelect);
+  $: update(user, single, activeTopics, activeTags, typeSelect);
 
   async function update() {
     if (!routerReady) return;
     entries = [];
-    entries = await getEntries(user, activeTopics, activeTags, typeSelect.slice(0, -1))
+    if (single) {
+      entries = [ await getEntry(user, entryId) ];
+    } else {
+      entries = await getEntries(user, activeTopics, activeTags, typeSelect.slice(0, -1))
+    }
     console.log(entries)
   }
 
@@ -33,16 +40,26 @@
     const s = entries.length;
     entries = [
       ...entries,
-      ...await getEntries(user, activeTopics, activeTags, typeSelect, s)
+      ...await getEntries(user, activeTopics, activeTags, typeSelect.slice(0, -1), s)
     ];
   }
 </script>
 
 <div class="main-container">
-  <EntryTypes on:change={ (e) => typeSelect = e.detail.type }/>
-  {#if loggedIn()}
-    <EntryInput type={typeSelect} />
-  {/if}
+  <div class="entries-header-box">
+    <EntryTypes on:change={ (e) => typeSelect = e.detail.type }/>
+    {#if loggedIn()}
+      <EntryInput type={typeSelect} />
+    {/if}
+    {#if single}
+      <div class="single-buttons-box">
+        <Button href={'/#~' + user}>View All</Button>
+        {#if loggedIn()}
+          <Button on:click={()=>null}><Icon class="material-icons">create</Icon>Edit</Button>
+        {/if}
+      </div>
+    {/if}
+  </div>
   <EntriesList {entries}
                edit={ loggedIn() && getUserName() === user ? true : false }
                on:fetch={ ()=>fetchEntries() } />
@@ -55,5 +72,12 @@
     flex-flow: column;
     padding-top: 20px;
     padding-bottom: 20px;
+  }
+  .entries-header-box {
+    border-bottom: 1px solid var(--main-lines-color);
+    margin-bottom: 20px;
+  }
+  .single-buttons-box {
+    margin-bottom: 5px;
   }
 </style>

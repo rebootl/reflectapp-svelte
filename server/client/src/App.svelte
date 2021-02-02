@@ -17,6 +17,7 @@
 	let entryId = '';
 
 	let overview = true;
+	let single = false;
 
 	// state of the menu
 	let showmenu = false;
@@ -49,7 +50,8 @@
 			// reset url
 			myrouter.setURL('', [], []);
 		}
-		overview = route == 'overview' ? true : false;
+		overview = route === 'overview' ? true : false;
+		single = route === 'singleentry' ? true : false;
 		routerReady = true;
 	}
 
@@ -68,13 +70,13 @@
 	<!--<div class="spacer"></div>-->
 
 	<main>
-	{#if route === 'singleentry'}
-		<SingleEntry {user} id={entryId} />
-	{:else if route === 'overview'}
+	<!--{#if route === 'singleentry'}
+		<SingleEntry {user} id={entryId} />-->
+	{#if route === 'overview'}
 		<h1>Welcome!</h1>
 		landing page, blabla
 	{:else}
-		<Entries {user} {routerReady}
+		<Entries {user} {entryId} {single} {routerReady}
 						 activeTopics={activeTopics} activeTags={activeTags} />
 	{/if}
 	</main>

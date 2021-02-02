@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte';
   import { Icon } from '@smui/icon-button';
   import moment from 'moment';
   import Linkbox from './Linkbox.svelte';
@@ -7,12 +8,13 @@
   import { getHTML } from './resources/helpers.js';
 
   const md = window.markdownit();
+  const dateFormat = 'MMM D YYYY - HH:mm';
 
 	export let entry = {};
   export let edit = false;
-  //console.log(entry)
 
   let html = '';
+  let date = '';
 
   let iconsTypes = {
     task: 'task_alt',
@@ -21,12 +23,14 @@
     image: 'image'
   };
 
-  if (entry.type === 'task' || entry.type === 'article')
-    html = md.render(entry.text);
+  $: update(entry);
 
-  //let dateFormat = 'ddd MMM D YYYY - HH:mm:ss';
-  const dateFormat = 'MMM D YYYY - HH:mm';
-  const date = moment(new Date(entry.date)).format(dateFormat);
+  function update() {
+    if (entry.type === 'task' || entry.type === 'article')
+      html = md.render(entry.text);
+
+    date = moment(new Date(entry.date)).format(dateFormat);
+  }
 </script>
 
 <div class="entry">
@@ -39,7 +43,7 @@
       {date}
     </small>
     <a class="entrylink" href={'/#~' + entry.user + '/~' + entry.id}></a>
-    {#if edit}<i class="material-icons">create</i>{/if}
+    <!--{#if edit}<i class="material-icons">create</i>{/if}-->
   </div>
   {#if entry.type === 'task'}
     <div class="entrycontent">
