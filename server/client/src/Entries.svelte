@@ -17,6 +17,10 @@
   let typeSelect = '';
   let entries = [];
 
+  let editEntry = {
+    text: ''
+  };
+
   let userNotFound = false;
   // -> add some error handling
   /*{#if userNotFound}
@@ -31,7 +35,7 @@
     if (single) {
       entries = [ await getEntry(user, entryId) ];
     } else {
-      entries = await getEntries(user, activeTopics, activeTags, typeSelect.slice(0, -1))
+      entries = await getEntries(user, activeTopics, activeTags, typeSelect)
     }
     console.log(entries)
   }
@@ -40,22 +44,28 @@
     const s = entries.length;
     entries = [
       ...entries,
-      ...await getEntries(user, activeTopics, activeTags, typeSelect.slice(0, -1), s)
+      ...await getEntries(user, activeTopics, activeTags, typeSelect, s)
     ];
+  }
+
+  function loadEdit() {
+    if (!single) return;
+    if (!entries[0]) return;
+    editEntry = entries[0];
   }
 </script>
 
 <div class="main-container">
   <div class="entries-header-box">
-    <EntryTypes on:change={ (e) => typeSelect = e.detail.type }/>
+    <EntryTypes on:change={ (e) => typeSelect = e.detail.type } {editEntry} />
     {#if loggedIn()}
-      <EntryInput type={typeSelect} />
+      <EntryInput type={typeSelect} {editEntry} />
     {/if}
     {#if single}
       <div class="single-buttons-box">
         <Button href={'/#~' + user}>View All</Button>
         {#if loggedIn()}
-          <Button on:click={()=>null}><Icon class="material-icons">create</Icon>Edit</Button>
+          <Button on:click={()=>loadEdit()}><Icon class="material-icons">create</Icon>Edit</Button>
         {/if}
       </div>
     {/if}

@@ -53,7 +53,7 @@ router.get('/:user/:entryId', async (req, res) => {
         return res.sendStatus(404);
     const entryId = req.params.entryId;
     const r = await getEntry(db, user, entryId);
-    console.log("R", r);
+    //console.log("R", r);
     // if not logged in or request user not equals logged in user filter private entries
     let e = {};
     if (req.session.loggedIn || req.session.username === user)
@@ -74,9 +74,10 @@ router.post('/', async (req, res) => {
         res.sendStatus(401);
         return;
     }
-    console.log(req.session);
-    console.log(req.body);
+    //console.log(req.session);
+    //console.log(req.body);
     const db = req.app.locals.db;
+    const c = await db.collection('entries');
     // check required fields
     for (const f of requiredFields) {
         if (!req.body.hasOwnProperty(f))
@@ -85,8 +86,10 @@ router.post('/', async (req, res) => {
     // more checks?
     // - length
     // insert into db
-    const c = await db.collection('entries');
-    const r = await c.insertOne({ ...req.body });
+    const r = await c.updateOne({ $and: [
+            { user: req.body.user },
+            { id: req.body.id }
+        ] }, { $set: { ...req.body } }, { upsert: true });
     if (!r)
         return res.sendStatus(400);
     return res.send({ success: true, result: r });

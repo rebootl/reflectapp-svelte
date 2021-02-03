@@ -9,6 +9,7 @@
   import { digestMessage, getPrefix } from './resources/helpers.js';
 
   export let type = 'any';
+  export let editEntry = {};
 
   let inputText = '';
   let comment = '';
@@ -22,16 +23,38 @@
   let tags = [ 'lala', '123', 'test' ];
   let selectedTags = [];
 
+  let editId = '';
+
   let ready = false;
+  let edit = false;
 
   $: checkReady(inputText);
+  $: loadEdit(editEntry);
 
   function checkReady() {
-    if (type === 'tasks' || type === 'links' || type === 'articles') {
+    console.log("checkReady")
+    if (type === 'task' || type === 'link' || type === 'article') {
       if (inputText.length > 0)
         ready = true;
       else ready = false;
     }
+  }
+
+  function loadEdit() {
+    console.log("loadEdit")
+    //editId = editEntry.id;
+    inputText = editEntry.text;
+    topics = editEntry.topics;
+    tags = editEntry.tags;
+    selectedTopics = editEntry.topics;
+    selectedTags = editEntry.tags;
+
+    if (editEntry.type === 'link') {
+      linkTitle = editEntry.title;
+      comment = editEntry.comment;
+    }
+    edit = true;
+    ready = true;
   }
 
   function addTopic() {
@@ -69,15 +92,13 @@
 
     const d = {
       user: getUserName(),
-      type: type.slice(0, -1),
+      type: type,
     };
 
-    d.date = new Date();
-
-    if (type === 'tasks' || type === 'articles' || type === 'links') {
+    if (type === 'task' || type === 'article' || type === 'link') {
       d.text = inputText; // -> escape or anything???
     }
-    if (type === 'links') {
+    if (type === 'link') {
       d.title = linkTitle;
       d.comment = comment;
     }
@@ -86,9 +107,16 @@
     d.topics = [ ...newTopics, ...selectedTopics ];
     d.tags = [ ...newTags, ...selectedTags ];
 
-    // generate Id
-    d.id = await makeId(d);
-    console.log(d.id)
+    // handle edit / new
+    if (!edit) {
+      d.date = new Date();
+      d.id = await makeId(d);
+      console.log(d.id)
+    } else {
+      d.date = editEntry.date;
+      d.mdate = new Date();
+      d.id = editEntry.id;
+    }
 
     const r = await apiPostRequest(entriesURL, d);
     if (!r.success) {
@@ -99,6 +127,8 @@
   }
 
   function reset() {
+    ready = false;
+    edit = false;
     inputText = '';
     comment = '';
     linkTitle = '';
@@ -111,16 +141,14 @@
     tags = [ 'lala', '123', 'test' ];
     selectedTags = [];
   }
-
 </script>
 
 <div class="entry-input-box">
 {#if type !== 'any'}
-
   <div class="inputs-box">
-    {#if type === 'tasks'}
+    {#if type === 'task'}
       <Textfield textarea bind:value={inputText} label="New Task" />
-    {:else if type === 'links'}
+    {:else if type === 'link'}
       <div class="inputs-links-box">
         <Textfield variant="outlined" on:input={checkReady}
                    bind:value={inputText} label="New URL" />
@@ -129,10 +157,10 @@
           <Textfield variant="outlined" bind:value={comment} label="Comment" />
         {/if}
       </div>
-    {:else if type === 'articles'}
+    {:else if type === 'article'}
       <Textfield textarea fullwidth on:input={checkReady} bind:value={inputText}
                  label="New Entry" />
-    {:else if type === 'images'}
+    {:else if type === 'image'}
     {:else}
     {/if}
   </div>
@@ -174,7 +202,12 @@
   </div>
 
   <div class="buttons-box">
-    <Button on:click={create} variant="unelevated" disabled={!ready}>Create</Button>
+    {#if edit}
+      <Button on:click={create} variant="unelevated" disabled={!ready}>Update</Button>
+    {:else}
+      <Button on:click={create} variant="unelevated" disabled={!ready}>Create</Button>
+    {/if}
+    <Button on:click={reset}>Cancel</Button>
   </div>
   {/if}
 {:else}

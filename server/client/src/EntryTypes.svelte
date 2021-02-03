@@ -5,32 +5,49 @@
 
   const dispatch = createEventDispatcher();
 
+	export let editEntry = {};
+
   $: typeChanged(active);
+	$: loadEdit(editEntry);
 
   function typeChanged() {
-    dispatch('change', { type: active.label.toLowerCase() });
+    dispatch('change', { type: active.type });
   }
+
+	function loadEdit() {
+		let c = 0;
+		for (const t of iconTabs) {
+			if (t.label.toLowerCase().startsWith(editEntry.type))
+				active = iconTabs[c];
+			c++;
+		}
+	}
 
   let iconTabs = [
     {
       icon: 'view_module',
-      label: 'Any'
+      label: 'Any',
+			type: 'any'
     },
     {
       icon: 'task_alt',
-      label: 'Tasks'
+      label: 'Tasks',
+			type: 'task'
     },
     {
       icon: 'link',
-      label: 'Links'
+      label: 'Links',
+			type: 'link'
     },
     {
       icon: 'article',
-      label: 'Articles'
+      label: 'Articles',
+			type: 'article'
     },
     {
       icon: 'image',
-      label: 'Images'
+      label: 'Images',
+			type: 'image'
     }
   ];
 
