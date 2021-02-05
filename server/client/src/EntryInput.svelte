@@ -1,4 +1,5 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
   import Textfield from '@smui/textfield';
   import Button from '@smui/button';
   import Chip, { Set, Icon, Checkmark, Text } from '@smui/chips';
@@ -8,8 +9,9 @@
   import { getUserName } from './resources/auth.js';
   import { digestMessage, getPrefix } from './resources/helpers.js';
 
+  const dispatch = createEventDispatcher();
+
   export let type = 'any';
-  export let editEntry = {};
 
   let inputText = '';
   let comment = '';
@@ -23,13 +25,15 @@
   let tags = [ 'lala', '123', 'test' ];
   let selectedTags = [];
 
-  let editId = '';
+  //let editEntry = {};
+  let editEntryId = '';
+  let editEntryDate = '';
 
   let ready = false;
   let edit = false;
 
   $: checkReady(inputText);
-  $: loadEdit(editEntry);
+  //$: loadEdit(editEntry);
 
   function checkReady() {
     console.log("checkReady")
@@ -40,9 +44,10 @@
     }
   }
 
-  function loadEdit() {
+  export function loadEdit(editEntry) {
     console.log("loadEdit")
-    //editId = editEntry.id;
+    editEntryId = editEntry.id;
+    editEntryDate = editEntry.date
     inputText = editEntry.text;
     topics = editEntry.topics;
     tags = editEntry.tags;
@@ -89,7 +94,6 @@
   }
 
   async function create() {
-
     const d = {
       user: getUserName(),
       type: type,
@@ -113,17 +117,19 @@
       d.id = await makeId(d);
       console.log(d.id)
     } else {
-      d.date = editEntry.date;
+      d.date = editEntryDate;
       d.mdate = new Date();
-      d.id = editEntry.id;
+      d.id = editEntryId;
     }
 
     const r = await apiPostRequest(entriesURL, d);
     if (!r.success) {
       console.error(r);
+      return;
     }
     // reset
     reset();
+    dispatch('created')
   }
 
   function reset() {
@@ -140,6 +146,7 @@
     newTags = [];
     tags = [ 'lala', '123', 'test' ];
     selectedTags = [];
+    dispatch('cancel');
   }
 </script>
 

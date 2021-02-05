@@ -17,6 +17,9 @@
   let typeSelect = '';
   let entries = [];
 
+  let entryInputComponent;
+
+  let edit = false;
   let editEntry = {
     text: ''
   };
@@ -52,6 +55,8 @@
     if (!single) return;
     if (!entries[0]) return;
     editEntry = entries[0];
+    entryInputComponent.loadEdit(entries[0]);
+    edit = true;
   }
 </script>
 
@@ -59,9 +64,11 @@
   <div class="entries-header-box">
     <EntryTypes on:change={ (e) => typeSelect = e.detail.type } {editEntry} />
     {#if loggedIn()}
-      <EntryInput type={typeSelect} {editEntry} />
+      <EntryInput type={typeSelect} bind:this={entryInputComponent}
+                  on:cancel={() => edit = false}
+                  on:created={() => update()}/>
     {/if}
-    {#if single}
+    {#if single && !edit}
       <div class="single-buttons-box">
         <Button href={'/#~' + user}>View All</Button>
         {#if loggedIn()}
