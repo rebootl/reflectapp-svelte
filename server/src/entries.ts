@@ -30,8 +30,8 @@ router.get('/:user', async (req, res) => {
     : 'any' || 'any';
   const skip = parseInt(req.query.skip) || 0;
   const limit = parseInt(req.query.limit) || 10;
-  const topics = Array.isArray(req.query.topics) || [];
-  const tags = Array.isArray(req.query.tags) || [];
+  const topics = Array.isArray(req.query.topics) ? req.query.topics : [];
+  const tags = Array.isArray(req.query.tags) ? req.query.topics : [];
 
   // check if logged in
   //console.log(req.user);

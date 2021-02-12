@@ -12,11 +12,11 @@
 
 	export let overview = true;
 	export let user = '';
-	export let activeTopics = [];
-	export let activeTags = [];
 
-	let singleSelect = true;
-	let topics = [];
+	let activeTopics = [];
+	let activeTags = [];
+
+	let topics = [ 'One', 'Two', 'Three' ];
 
 	let foo = false;
 
@@ -28,13 +28,10 @@
 <nav class:showmenu>
 	<div class="marginbox"></div>
 	<div class="scrollbox">
-		<MenuItem active={overview} href="#">Home</MenuItem>
-		<!--<div class="spacer"></div>-->
-		<h4 class="subtitle">Users</h4>
 		<UserList {user} />
 		{#if !overview}
-			<TopicsTags {user} {activeTopics} {activeTags}
-								  on:tagclick={() => tagclicked()}/>
+			<TopicsTags {user} on:load={(e) => {}}
+									on:change={(e) => {}} />
 		{/if}
 	</div>
 </nav>

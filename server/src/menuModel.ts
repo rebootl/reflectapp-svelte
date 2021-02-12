@@ -1,12 +1,9 @@
 
-async function getPublicTopics(db, user) {
+async function getTopics(db, user) {
   const c = await db.collection('entries');
 
   const q = [
-    { $match: { $and: [
-      { user: user },
-      { private: false },
-    ]}},
+    { $match: { user: user }},
     { $unwind: "$topics" },
     { $group: { _id: "$topics" }},
     { $project: { _id: 0, name: "$_id" }},
@@ -15,12 +12,11 @@ async function getPublicTopics(db, user) {
   return await c.aggregate(q).toArray();
 }
 
-async function getPublicTags(db, user, topic) {
+async function getTags(db, user, topic) {
   const c = await db.collection('entries');
   const q = [
     { $match: { $and: [
       { user: user },
-      { private: false },
       { topics: topic }
     ]}},
     { $unwind: "$tags" },
@@ -31,11 +27,11 @@ async function getPublicTags(db, user, topic) {
   return await c.aggregate(q).toArray();
 }
 
-async function getPublicMenu(db, user) {
-  const topics = await getPublicTopics(db, user);
+async function getMenu(db, user) {
+  const topics = await getTopics(db, user);
   const r = [];
   for (const topic of topics) {
-    const tags = await getPublicTags(db, user, topic.name);
+    const tags = await getTags(db, user, topic.name);
     r.push({
       name: topic.name,
       tags: tags.map((t)=>t.name)
@@ -44,4 +40,4 @@ async function getPublicMenu(db, user) {
   return r;
 }
 
-export { getPublicMenu };
+export { getMenu };

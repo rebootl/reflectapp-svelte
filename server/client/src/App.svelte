@@ -114,8 +114,10 @@
 		--background-color-light: #2b2b31;
 		--background-color-lighter: #404046;
 		--background-color-dark: #030309;
-		--hover-color: #23232c;
-		--active-color: #2b2b31;
+		/*--hover-color: #23232c;*/
+		--hover-color: #29292f; /* (from material elements) */
+		/*--active-color: #2b2b31;*/
+		--active-color: #382751;
 
 		/* header */
 		--header-background-color: var(--background-color);
@@ -128,11 +130,11 @@
 		/* side */
 		--side-background-color: var(--background-color);
 		--side-hover-color: var(--hover-color);
-		--side-active-color: var(--background-color-light);
+		--side-active-color: var(--active-color);
 		--side-lines-color: var(--background-color-light);
 		--side-scrollbar-color: var(--background-color-dark);
 		--side-text-color: var(--main-text-color);
-		--side-text-color-active: var(--main-text-color);
+		--side-text-color-active: var(--logo-secondary-color);
 
 		/* main */
 		--main-background-color: var(--background-color);
@@ -164,7 +166,7 @@
 		/*** sizes ***/
 		--header-height: 50px;
 		--side-width: 0;
-		--side-width-extended: 230px;
+		--side-width-extended: 255px;
 		--main-width: 650px;
 
 		margin: 0;

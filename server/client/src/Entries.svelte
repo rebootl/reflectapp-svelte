@@ -40,7 +40,7 @@
     } else {
       entries = await getEntries(user, activeTopics, activeTags, typeSelect)
     }
-    console.log(entries)
+    //console.log(entries)
   }
 
   async function fetchEntries() {

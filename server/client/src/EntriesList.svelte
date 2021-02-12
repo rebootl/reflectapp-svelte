@@ -14,7 +14,7 @@
 
   function lazyload(e) {
     if (e[e.length - 1].intersectionRatio <= 0) return;
-    console.log('FETCH!')
+    //console.log('FETCH!')
 		dispatch('fetch');
   }
 
@@ -36,7 +36,7 @@
     const el = document.querySelector('.entrieslist');
     const newTriggerElement = el.children[el.children.length - n];
     if (newTriggerElement) {
-      console.log('add observer')
+      //console.log('add observer')
       newTriggerElement.classList.add('triggerelement')
       bottomObserver.observe(newTriggerElement);
     }

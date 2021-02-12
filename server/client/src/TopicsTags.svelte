@@ -1,4 +1,8 @@
 <script>
+	import Drawer, {AppContent, Content, Header, Title, Subtitle, Scrim} from '@smui/drawer';
+	import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
+	import H6 from '@smui/common/H6.svelte';
+	//import Chip, {Set, Icon, Checkmark} from '@smui/chips';
 	import { createEventDispatcher } from 'svelte';
 	import { myrouter } from './resources/router.js';
 	import { getUserMenu } from './resources/getData.js';
@@ -8,128 +12,76 @@
 	const dispatch = createEventDispatcher();
 
 	export let user = '';
-	export let activeTopics = [];
-	export let activeTags = [];
 
-	let singleSelect = true;
+	let activeTopics = new Set();
+	let activeTags = new Set();
+
 	let topics = [];
+	let tags = [];
 
 	$: loadUserMenu(user);
-	$: updateUserMenu(activeTopics, activeTags);
 
 	async function loadUserMenu() {
 		// reset for reload
 		topics = [];
 		const r = await getUserMenu(user);
-		for (const topic of r) {
-			const tags = topic.tags.map((t)=>{ return {
-				name: t,
-				active: false
-			}});
-			topics.push({
-				name: topic.name,
-				tags: tags,
-				active: false
-			});
-		}
-		//topics = topics;
-		updateUserMenu();
+		topics = r;
 	}
 
-	function updateUserMenu() {
-		//console.log('updateUserMenu')
-		//console.log('Nav/topics, activeTopics: ', topics, activeTopics)
-		for (const topic of topics) {
-			if (activeTopics.includes(topic.name)) {
-				topic.active = true;
-				for (const tag of topic.tags) {
-					if (activeTags.includes(tag.name)) tag.active = true;
-					else tag.active = false;
-				}
-			} else {
-				topic.active = false;
-				resetTags(topic);
-			}
+	function toggleTopic(topicName) {
+    if (activeTopics.has(topicName)) activeTopics.delete(topicName);
+		else {
+			activeTopics.clear();
+			activeTopics.add(topicName);
 		}
-		topics = topics
+		activeTopics = activeTopics;
+
+		if (activeTopics.size > 0) {
+			const activeTopicObj = topics.filter((e) => e.name === topicName)[0];
+			tags = activeTopicObj.tags;
+		} else tags = [];
+
+		activeTags.clear();
+		dispatchChange();
+  }
+
+	function toggleTag(tag) {
+		if (activeTags.has(tag)) activeTags.delete(tag);
+		else {
+			activeTags.clear();
+			activeTags.add(tag);
+		}
+		activeTags = activeTags;
+		dispatchChange();
 	}
 
-	function resetTags(topic) {
-		for (const tag of topic.tags) {
-			tag.active = false;
-		}
+	function dispatchChange() {
+		dispatch('change', { activeTopics: activeTopics, activeTags: activeTags });
 	}
-
-	function toggleTopic(topic) {
-		// reset
-		if (singleSelect) {
-			for (const t of topics) {
-				if (t === topic) {
-					if (t.active) {
-						t.active = false;
-						// reset tags
-						resetTags(t);
-					} else t.active = true;
-				} else {
-					t.active = false;
-					resetTags(t);
-				}
-			}
-		} else {
-			// set
-			topic.active = !topic.active;
-		}
-		// update triggered by assignment!!
-		topics = topics;
-		updateURL();
-	}
-
-	function toggleTag(topic, tag) {
-		const v = tag.active;
-		for (const t of topic.tags) {
-			t.active = false;
-		}
-		tag.active = !v;
-		topics = topics;
-		updateURL();
-		dispatch('tagclick');
-	}
-
-	function updateURL() {
-		const activeTopics = [];
-		const activeTags = [];
-		for (const t of topics) {
-			if (t.active) activeTopics.push(t.name);
-			for (const tag of t.tags) {
-				if (tag.active) activeTags.push(tag.name);
-			}
-		}
-		myrouter.setURL(myrouter.getRoute(), [ activeTopics, activeTags ]);
-	}
-
 </script>
 
 <div class="topics">
-	{#each topics as topic}
-		<Topic title={topic.name} active={topic.active} on:click={()=>toggleTopic(topic)} />
-		{#if topic.active}
-		<div class="tags">
-			{#each topic.tags as tag}
-				<Tag title={tag.name} active={tag.active} on:click={()=>toggleTag(topic, tag)} />
-			{/each}
-		</div>
-		{/if}
-	{:else}
-	 	<p>loading...</p>
-	{/each}
+	<Drawer>
+		<Content>
+	    <List>
+	      <Separator nav />
+	      <Subheader component={H6}>Topics</Subheader>
+	      {#each topics as t}
+					<Topic active={activeTopics.has(t.name) ? true : false}
+								 on:click={() => toggleTopic(t.name)}>{t.name}</Topic>
+	      {/each}
+				{#if tags.length > 0}
+	    		<Separator nav />
+	    		<Subheader component={H6}>Tags</Subheader>
+					{#each tags as t}
+						<Tag active={activeTags.has(t) ? true : false}
+								 on:click={() => toggleTag(t)}>{t}</Tag>
+					{/each}
+				{/if}
+			</List>
+	  </Content>
+	</Drawer>
 </div>
 
 <style>
-	.topics {
-		border-bottom: 1px solid var(--side-lines-color);
-	}
-	.tags {
-		padding: 4px 10px 4px 10px;
-		border-bottom: 1px solid var(--side-lines-color);
-	}
 </style>

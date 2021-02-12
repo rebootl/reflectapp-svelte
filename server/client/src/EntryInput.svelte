@@ -36,7 +36,7 @@
   //$: loadEdit(editEntry);
 
   function checkReady() {
-    console.log("checkReady")
+    //console.log("checkReady")
     if (type === 'task' || type === 'link' || type === 'article') {
       if (inputText.length > 0)
         ready = true;
@@ -45,7 +45,7 @@
   }
 
   export function loadEdit(editEntry) {
-    console.log("loadEdit")
+    //console.log("loadEdit")
     editEntryId = editEntry.id;
     editEntryDate = editEntry.date
     inputText = editEntry.text;

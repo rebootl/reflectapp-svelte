@@ -1,5 +1,5 @@
 import express from 'express';
-import { getPublicMenu } from './menuModel.js';
+import { getMenu } from './menuModel.js';
 import { getValidUser } from './userModel.js';
 
 const router = express.Router();
@@ -12,7 +12,7 @@ router.get('/:user', async (req, res) => {
   const u = await getValidUser(db, user);
   if (!u) return res.sendStatus(404);
 
-  const r = await getPublicMenu(db, user);
+  const r = await getMenu(db, user);
   return res.send({ success: true, result: r });
 });
 

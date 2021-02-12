@@ -7,13 +7,14 @@ async function getAllPublicEntries(db, skip, limit) {
 
 async function getUserEntries(db, user, topics, tags, skip, limit) {
   const c = await db.collection('entries');
+  console.log(topics, tags)
   let q;
-  if (topics < 1) {
+  if (topics.length < 1) {
     q = [
       { $match: { user: user }},
       { $sort: { pinned: -1, date: -1 }}
     ];
-  } else if (tags < 1) {
+  } else if (tags.length < 1) {
     q = [
       { $match: { $and: [
         { user: user },
