@@ -16,8 +16,6 @@
 	let activeTopics = [];
 	let activeTags = [];
 
-	let topics = [ 'One', 'Two', 'Three' ];
-
 	let foo = false;
 
 	function tagclicked() {

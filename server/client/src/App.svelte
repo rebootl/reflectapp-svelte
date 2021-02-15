@@ -4,6 +4,7 @@
 	import Entries from './Entries.svelte';
 	import SingleEntry from './SingleEntry.svelte';
 	import { myrouter } from './resources/router.js';
+	import { myDataStore } from './resources/dataStore.js';
 	import { loggedIn } from './resources/auth.js';
 
 	// route for template
@@ -15,6 +16,8 @@
 	let activeTags = [];
 	// id for single entry
 	let entryId = '';
+
+	let entries = [];
 
 	let overview = true;
 	let single = false;
@@ -76,7 +79,7 @@
 		<h1>Welcome!</h1>
 		landing page, blabla
 	{:else}
-		<Entries {user} {entryId} {single} {routerReady}
+		<Entries {user} {entryId} {single} {routerReady} {entries}
 						 activeTopics={activeTopics} activeTags={activeTags} />
 	{/if}
 	</main>

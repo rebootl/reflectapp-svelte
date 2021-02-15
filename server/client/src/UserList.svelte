@@ -3,33 +3,21 @@
   import Drawer, {AppContent, Content, Header, Title, Subtitle, Scrim} from '@smui/drawer';
   import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
   import H6 from '@smui/common/H6.svelte';
-	import { apiGetRequest } from './resources/requests.js';
-	import { profilesURL } from './resources/urls.js';
-  import MenuItem from './Elements/MenuItem.svelte';
+  import { myDataStore } from './resources/dataStore.js';
 
   export let user = '';
 
-	let profiles = [];
-
+  let profiles = [];
   let active = '';
+
+  async function initProfiles() {
+		profiles = await myDataStore.getProfiles();
+	}
+	initProfiles();
 
 	function setActive(value) {
     active = value;
-    //myDrawerOpen = false;
   }
-
-	async function getProfiles() {
-		const r = await apiGetRequest(profilesURL);
-		if (!r.success) {
-			console.error(r)
-			return [];
-		}
-		return r.result;
-	}
-
-	onMount(async () => {
-		profiles = await getProfiles();
-	});
 </script>
 
 <div class="box">
@@ -41,7 +29,6 @@
         <Graphic class="material-icons" aria-hidden="true">home</Graphic>
         <Text>Home</Text>
       </Item>
-      <!--<Separator nav />-->
       <Subheader component={H6}>Users</Subheader>
       {#each profiles as p}
       <Item href={'#~' + p.name} on:click={() => setActive(p.name)}
@@ -56,9 +43,4 @@
 </div>
 
 <style>
-	.box {
-		/*display: flex;
-    flex-wrap: wrap;
-    border-bottom: 1px solid var(--side-lines-color);*/
-	}
 </style>

@@ -1,16 +1,15 @@
 <script>
-  //import ProfilePicture from './ProfilePicture.svelte';
   import Button, { Icon } from '@smui/button';
   import EntryTypes from './EntryTypes.svelte';
   import EntryInput from './EntryInput.svelte';
 	import EntriesList from './EntriesList.svelte';
-	import { getEntries, getEntry } from './resources/getData.js';
   import { loggedIn, getUserName } from './resources/auth.js';
+  import { myDataStore } from './resources/dataStore.js';
 
   export let routerReady = false;
   export let user = '';
-  export let entryId = '';
   export let single = false;
+  export let entryId = '';
   export let activeTopics = [];
   export let activeTags = [];
 
@@ -24,30 +23,32 @@
     text: ''
   };
 
-  let userNotFound = false;
-  // -> add some error handling
-  /*{#if userNotFound}
-    <p>Ooops, user not found...</p>
-  {:else}*/
+  $: updateEntries(user, single, entryId, activeTopics, activeTags, typeSelect);
 
-  $: update(user, single, activeTopics, activeTags, typeSelect);
+  myDataStore.registerUpdateCallback(updateEntries);
 
-  async function update() {
+  async function updateEntries() {
     if (!routerReady) return;
+    console.log("update")
+    console.log(typeSelect)
+    let limit = 10;
+    if (entries.length > 10) limit = entries.length;
     entries = [];
     if (single) {
-      entries = [ await getEntry(user, entryId) ];
+      entries = await myDataStore.getSingleEntry(user, entryId);
     } else {
-      entries = await getEntries(user, activeTopics, activeTags, typeSelect)
+      entries = await myDataStore.getFilteredEntries(user, typeSelect,
+                                                     activeTopics, activeTags,
+                                                     0, limit);
     }
-    //console.log(entries)
+    console.log(entries)
   }
 
   async function fetchEntries() {
     const s = entries.length;
     entries = [
       ...entries,
-      ...await getEntries(user, activeTopics, activeTags, typeSelect, s)
+      ...await myDataStore.getFilteredEntries(user, activeTopics, activeTags, typeSelect, s)
     ];
   }
 
