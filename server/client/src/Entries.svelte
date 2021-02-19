@@ -5,13 +5,12 @@
 	import EntriesList from './EntriesList.svelte';
   import { loggedIn, getUserName } from './resources/auth.js';
   import { myDataStore } from './resources/dataStore.js';
+  import { activeTopics, activeTags } from './store.js';
 
   export let routerReady = false;
   export let user = '';
   export let single = false;
   export let entryId = '';
-  export let activeTopics = [];
-  export let activeTags = [];
 
   let typeSelect = '';
   let entries = [];
@@ -23,14 +22,12 @@
     text: ''
   };
 
-  $: updateEntries(user, single, entryId, activeTopics, activeTags, typeSelect);
+  $: updateEntries(user, single, entryId, $activeTopics, $activeTags, typeSelect);
 
   myDataStore.registerUpdateCallback(updateEntries);
 
   async function updateEntries() {
     if (!routerReady) return;
-    console.log("update")
-    console.log(typeSelect)
     let limit = 10;
     if (entries.length > 10) limit = entries.length;
     entries = [];
@@ -38,10 +35,9 @@
       entries = await myDataStore.getSingleEntry(user, entryId);
     } else {
       entries = await myDataStore.getFilteredEntries(user, typeSelect,
-                                                     activeTopics, activeTags,
+                                                     $activeTopics, $activeTags,
                                                      0, limit);
     }
-    console.log(entries)
   }
 
   async function fetchEntries() {
@@ -86,7 +82,6 @@
 <style>
   .main-container {
     display: flex;
-    /*justify-content: center;*/
     flex-flow: column;
     padding-top: 20px;
     padding-bottom: 20px;

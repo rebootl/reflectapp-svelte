@@ -1,22 +1,13 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
-	import { myrouter } from './resources/router.js';
-	import { getUserMenu } from './resources/getData.js';
-	import MenuItem from './Elements/MenuItem.svelte';
 	import UserList from './UserList.svelte';
 	import TopicsTags from './TopicsTags.svelte';
 
 	const dispatch = createEventDispatcher();
 
 	export let showmenu;
-
 	export let overview = true;
 	export let user = '';
-
-	let activeTopics = [];
-	let activeTags = [];
-
-	let foo = false;
 
 	function tagclicked() {
 		if (showmenu) dispatch('togglemenu');

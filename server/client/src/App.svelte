@@ -2,9 +2,7 @@
 	import Header from './Header.svelte';
 	import Menu from './Menu.svelte';
 	import Entries from './Entries.svelte';
-	import SingleEntry from './SingleEntry.svelte';
 	import { myrouter } from './resources/router.js';
-	import { myDataStore } from './resources/dataStore.js';
 	import { loggedIn } from './resources/auth.js';
 
 	// route for template
@@ -12,12 +10,8 @@
 	// router
 	let routerReady = false;
 	let user = '';
-	let activeTopics = [];
-	let activeTags = [];
 	// id for single entry
 	let entryId = '';
-
-	let entries = [];
 
 	let overview = true;
 	let single = false;
@@ -28,28 +22,18 @@
 	async function routerUpdate() {
 
 		route = myrouter.getRouteNamed();
-		//console.log("App/route: ", route)
 
 		if (route === 'singleentry') {
 			user = myrouter.getUser();
 			entryId = myrouter.getEntryId();
-			//console.log("App/entryId: ", entryId)
-			activeTopics = [];
-			activeTags = [];
+
 		} else if (route === 'user') {
 			// get user
 			user = myrouter.getUser();
-			//console.log('App/user: ', user)
-			// get topics/tags
-			activeTopics = myrouter.getTopics();
-			activeTags = myrouter.getTags();
-			//console.log('App/user, topics, tags: ', user, topics, tags)
 		} else {
 			// overview
 			route = 'overview';
 			user = '';
-			activeTopics = [];
-			activeTags = [];
 			// reset url
 			myrouter.setURL('', [], []);
 		}
@@ -64,27 +48,20 @@
 <div class="wrapper" class:showmenu>
 	<Header on:togglemenu={ () => showmenu = !showmenu } />
 	<Menu {showmenu} {user} {overview}
-			 activeTopics={activeTopics} activeTags={activeTags}
 			 on:togglemenu={ () => showmenu = !showmenu } />
 
 	<!-- (sidearea stays empty, menu is overlayed above) -->
 	<div class="sidearea"></div>
-	<!-- (spacer between the two vertical lines) -->
-	<!--<div class="spacer"></div>-->
 
 	<main>
-	<!--{#if route === 'singleentry'}
-		<SingleEntry {user} id={entryId} />-->
 	{#if route === 'overview'}
 		<h1>Welcome!</h1>
 		landing page, blabla
 	{:else}
-		<Entries {user} {entryId} {single} {routerReady} {entries}
-						 activeTopics={activeTopics} activeTags={activeTags} />
+		<Entries {user} {entryId} {single} {routerReady} />
 	{/if}
 	</main>
 
-	<!--<div class="filler"></div>-->
 </div>
 
 <style>

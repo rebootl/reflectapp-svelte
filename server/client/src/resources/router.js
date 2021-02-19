@@ -1,22 +1,4 @@
-//
-// url:
-//
-// /#<route> / <part>+<part>+.. / <part>+<part>+.. / .. / ?<bool>&<bool>&..
-// route     parts                                        boolean-parameters
-// str      [ [ str, str, .. ], [ str, str, .. ], .. ]    [ str, str, .. ]
-//
-// examples:
-//
-// /#editor/Computing+Chess/openings+ai
-// view-entries topics       tags
-//
-// /#edit-entry/entry-id_fooblabla-a4fa49ebb
-// view-editor  entry-id
-//
-// /#~username/Astro+Nature/snapshots
-// view-user   topics       tags
-//
-//
+
 const registeredComponents = new Set();
 
 const updateCallbacks = new Set();
@@ -88,12 +70,6 @@ class Router {
     }
     return '';
   }
-  getTopics() {
-    return this.getParts(0);
-  }
-  getTags() {
-    return this.getParts(1);
-  }
   getParts(n) {
     return this._parts[n] || [];
   }
@@ -102,14 +78,13 @@ class Router {
   }
   parseUrl() {
     const hashString = location.hash.slice(1) || '';
-    // ~username / Chess+Computing+Misc / KSP+Linux / ? <parameters>
     const [ path, parameters ] = hashString.split('?');
     const pathParts = path.split('/');
     // ~username
-    this._route = pathParts[0];
+    this._route = dec(pathParts[0]);
     // [ Chess+Computing+Misc, KSP+Linux ]
     // [ [ Chess, Computing, Misc ], [ KSP, Linux ] ]
-    this._parts = pathParts.slice(1).map(p=>p.split('+').map(p=>dec(p)));
+    this._parts = pathParts.slice(1).map(p=>dec(p));
     // -> needed?
     if (this._parts[0]) if (this._parts[0][0] === '') this._parts[0] = [];
 

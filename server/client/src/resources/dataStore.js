@@ -4,46 +4,38 @@ import { getEntries, getUserMenu } from './getData.js';
 
 const updateCallbacks = new Set();
 
+// -> make generic
+/*class DataSet {
+  constructor(url) {
+    this.url = url;
+    this.updateCallbacks = new Set();
+    this.filters = {};
+    this.loadedEntries = null;
+    this.filteredEntries = null;
+  }
+  registerUpdateCallback(f) {
+    this.updateCallbacks.add(f);
+  }
+  registerFilter(f) {
+
+  }
+  async fetchEntries() {
+
+  }
+  async loadEntries() {
+
+  }
+  async getFilteredEntries(filterName) {
+
+  }
+}*/
+
 class DataStore {
-
-  set currentMenu(v) {
-    this._currentMenu = v;
-
-    const activeTopics = [];
-    const activeTags = []
-    for (const t of v) {
-      if (t.active) activeTopics.push(t.name);
-      for (const u of t.tags) {
-        if (u.active) activeTags.push(u.name);
-      }
-    }
-    this.activeTopics = activeTopics;
-    this.activeTags = activeTags;
-  }
-  get currentMenu() {
-    return this._currentMenu;
-  }
-
-  set activeTopics(v) {
-    this._activeTopics = v;
-    console.log(v)
-  }
-  get activeTopics() {
-    return this._activeTopics;
-  }
-  set activeTags(v) {
-    this._activeTopics = v;
-    console.log(v)
-  }
-  get activeTags() {
-    return this._activeTopics;
-  }
 
   constructor() {
     this.profiles = null;
     this.userMenus = {};
     this.entries = {};
-    this.currentMenu = [];
   }
 
   registerUpdateCallback(f) {
@@ -71,7 +63,7 @@ class DataStore {
   }
 
   async loadEntries(user) {
-    console.log("loadEntries (loading entries from server)")
+    //console.log("loadEntries (loading entries from server)")
     this.entries[user] = await getEntries(user, [], [], 'any');
   }
   async getSingleEntry(user, entryId) {
@@ -86,7 +78,7 @@ class DataStore {
     return entry;
   }
   async getFilteredEntries(user, typeSelect = 'any',
-                     activeTopics = [], activeTags =  [],
+                     activeTopics = new Set(), activeTags =  new Set(),
                      skip = 0, limit = 10) {
     if (!this.entries.hasOwnProperty(user)) {
       await this.loadEntries(user);
@@ -95,17 +87,17 @@ class DataStore {
     if (typeSelect !== 'any') {
       entries = this.entries[user].filter((e) => e.type === typeSelect);
     }
-    if (activeTopics.length > 0) {
+    if (activeTopics.size > 0) {
       entries = entries.filter((e) => {
         for (const t of e.topics) {
-          if (activeTopics.includes(t)) return e;
+          if (activeTopics.has(t)) return e;
         }
       });
     }
-    if (activeTags.length > 0) {
+    if (activeTags.size > 0) {
       entries = entries.filter((e) => {
         for (const t of e.tags) {
-          if (activeTopics.includes(t)) return e;
+          if (activeTags.has(t)) return e;
         }
       });
     }
@@ -114,14 +106,7 @@ class DataStore {
 
   async loadUserMenu(user) {
     const r = await getUserMenu(user);
-    const r1 = r.map((e) => {
-      e.active = false;
-      e.tags = e.tags.map((e) => { return { name: e, active: false }});
-      return e;
-    });
-    //console.log(r1)
     this.userMenus[user] = r;
-    this.currentMenu = r;
   }
   async getUserMenu(user) {
     if (!this.userMenus.hasOwnProperty(user))
