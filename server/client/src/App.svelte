@@ -26,7 +26,7 @@
 		if (route === 'singleentry') {
 			user = myrouter.getUser();
 			entryId = myrouter.getEntryId();
-
+			console.log(entryId)
 		} else if (route === 'user') {
 			// get user
 			user = myrouter.getUser();
@@ -110,11 +110,11 @@
 		/* side */
 		--side-background-color: var(--background-color);
 		--side-hover-color: var(--hover-color);
-		--side-active-color: var(--active-color);
+		--side-active-color: var(--background-color-lighter);
 		--side-lines-color: var(--background-color-light);
 		--side-scrollbar-color: var(--background-color-dark);
 		--side-text-color: var(--main-text-color);
-		--side-text-color-active: var(--logo-secondary-color);
+		--side-text-color-active: var(--main-text-color);
 
 		/* main */
 		--main-background-color: var(--background-color);

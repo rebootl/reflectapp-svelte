@@ -60,7 +60,7 @@ class Router {
     return '';
   }
   getEntryId() {
-    const p = this.getParts(0)[0];
+    const p = this.getParts(0);
     //console.log(p)
     if (p) {
       if (p.startsWith('~')) {
@@ -71,6 +71,7 @@ class Router {
     return '';
   }
   getParts(n) {
+    console.log(this._parts)
     return this._parts[n] || [];
   }
   getParameters() {
@@ -82,25 +83,16 @@ class Router {
     const pathParts = path.split('/');
     // ~username
     this._route = dec(pathParts[0]);
-    // [ Chess+Computing+Misc, KSP+Linux ]
-    // [ [ Chess, Computing, Misc ], [ KSP, Linux ] ]
     this._parts = pathParts.slice(1).map(p=>dec(p));
     // -> needed?
     if (this._parts[0]) if (this._parts[0][0] === '') this._parts[0] = [];
 
     this._parameters = parameters ? parameters.split('&').map((p)=>dec(p)) : [];
   }
-  setURL(route, parts=[[]], parameters=[]) {
+  setURL(route, parts=[], parameters=[]) {
     const parameterString = parameters.map(p=>enc(p)).join('&');
-    const pts = [];
-    for (const p of parts) {
-      // [ [ "Chess", "Computing", "Misc" ], [ "KSP", "Linux" ] ]
-      pts.push(p.map(p=>enc(p)).join('+'));
-      // [ "Chess+Computing+Misc", "KSP+Linux" ]
-    }
-    // "Chess+Computing+Misc/KSP+Linux"
-    let s = pts[0];
-    if (pts[1]) if (pts[1] !== "") s = pts.join('/');
+
+    const pts = parts.join('/');
 
     let hashString = '#' + route;
     if (pts.length > 0) hashString += '/' + s;
