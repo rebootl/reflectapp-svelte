@@ -4,7 +4,13 @@ import { getEntries, getUserMenu } from './getData.js';
 
 const updateCallbacks = new Set();
 
-// -> make generic
+
+
+
+
+
+
+
 /*class DataSet {
   constructor(url) {
     this.url = url;
