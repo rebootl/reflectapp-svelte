@@ -63,6 +63,10 @@
       <p>oops entry type unknown...</p>
     </div>
   {/if}
+  <div class="tagbox">
+    {#each entry.topics as topic}<TopicTag>{topic}</TopicTag>{/each}
+    {#each entry.tags as tag}<TagTag>{tag}</TagTag>{/each}
+  </div>
 </div>
 
 <style>
@@ -101,12 +105,12 @@
     margin-top: 10px;
     margin-bottom: 10px;
   }
-  /*.tagbox {
+  .tagbox {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
     padding: 10px;
-  }*/
+  }
   /*:global(pre) {
     overflow-x: scroll;
     background-color: rgba(0, 0, 0, 0.3);
