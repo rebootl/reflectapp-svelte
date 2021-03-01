@@ -5,36 +5,36 @@ import { getEntries, getUserMenu } from './getData.js';
 const updateCallbacks = new Set();
 
 
-
-
-
-
-
-
-/*class DataSet {
+export class DataSet {
   constructor(url) {
     this.url = url;
-    this.updateCallbacks = new Set();
-    this.filters = {};
-    this.loadedEntries = null;
-    this.filteredEntries = null;
-  }
-  registerUpdateCallback(f) {
-    this.updateCallbacks.add(f);
-  }
-  registerFilter(f) {
 
+    this.data = [];
+    //this.load();
   }
-  async fetchEntries() {
+  useStore(store) {
+    this.store = store;
+    this.store.set(this.data);
+  }
+  async load() {
+    const r = await apiGetRequest(this.url, {
+      skip: 0,
+    });
+    if (!r.success) {
+      console.error(r)
+      this.data = [];
+    }
+    this.data = r.result;
+  }
+  async new() {
+  }
+  async update() {
+  }
+  async delete() {
+  }
+}
 
-  }
-  async loadEntries() {
 
-  }
-  async getFilteredEntries(filterName) {
-
-  }
-}*/
 
 class DataStore {
 

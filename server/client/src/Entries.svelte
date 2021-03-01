@@ -4,8 +4,11 @@
   import EntryInput from './EntryInput.svelte';
 	import EntriesList from './EntriesList.svelte';
   import { loggedIn, getUserName } from './resources/auth.js';
-  import { myDataStore } from './resources/dataStore.js';
-  import { activeTopics, activeTags } from './store.js';
+
+  import { DataSet } from './resources/dataStore.js';
+  import { entriesURL } from './resources/urls.js';
+
+  import { activeTopics, activeTags, userEntries, filteredEntries } from './store.js';
 
   export let routerReady = false;
   export let user = '';
@@ -22,11 +25,22 @@
     text: ''
   };
 
-  $: updateEntries(user, single, entryId, $activeTopics, $activeTags, typeSelect);
+  let entriesInstance;
 
-  myDataStore.registerUpdateCallback(updateEntries);
+  $: loadEntries(user);
+  //$: updateEntries(user, single, entryId, $activeTopics, $activeTags, typeSelect);
 
-  async function updateEntries() {
+  async function loadEntries() {
+    if (user === '') return;
+    entriesInstance = new DataSet(entriesURL + '/' + user);
+    await entriesInstance.load();
+    console.log(entriesInstance.data)
+
+    entriesInstance.useStore(userEntries);
+    // -> load Entries into svelte store!!
+  }
+
+  /*async function updateEntries() {
     if (!routerReady) return;
     let limit = 10;
     if (entries.length > 10) limit = entries.length;
@@ -38,14 +52,14 @@
                                                      $activeTopics, $activeTags,
                                                      0, limit);
     }
-  }
+  }*/
 
   async function fetchEntries() {
-    const s = entries.length;
+    /*const s = entries.length;
     entries = [
       ...entries,
       ...await myDataStore.getFilteredEntries(user, activeTopics, activeTags, typeSelect, s)
-    ];
+    ];*/
   }
 
   function loadEdit() {
@@ -74,7 +88,7 @@
       </div>
     {/if}
   </div>
-  <EntriesList {entries}
+  <EntriesList entries={$filteredEntries}
                edit={ loggedIn() && getUserName() === user ? true : false }
                on:fetch={ ()=>fetchEntries() } />
 </div>
