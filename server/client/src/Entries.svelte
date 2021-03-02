@@ -5,10 +5,10 @@
 	import EntriesList from './EntriesList.svelte';
   import { loggedIn, getUserName } from './resources/auth.js';
 
-  import { DataSet } from './resources/dataStore.js';
   import { entriesURL } from './resources/urls.js';
+  import { DataSet } from './resources/dataSet.js';
 
-  import { activeTopics, activeTags, userEntries, filteredEntries } from './store.js';
+  import { activeType, limitDisplay, userEntries, filteredEntries } from './store.js';
 
   export let routerReady = false;
   export let user = '';
@@ -28,52 +28,39 @@
   let entriesInstance;
 
   $: loadEntries(user);
-  //$: updateEntries(user, single, entryId, $activeTopics, $activeTags, typeSelect);
 
   async function loadEntries() {
     if (user === '') return;
     entriesInstance = new DataSet(entriesURL + '/' + user);
     await entriesInstance.load();
-    console.log(entriesInstance.data)
+    //console.log(entriesInstance.data)
 
+    // load Entries into svelte store!!
     entriesInstance.useStore(userEntries);
-    // -> load Entries into svelte store!!
   }
 
-  /*async function updateEntries() {
-    if (!routerReady) return;
-    let limit = 10;
-    if (entries.length > 10) limit = entries.length;
-    entries = [];
-    if (single) {
-      entries = await myDataStore.getSingleEntry(user, entryId);
-    } else {
-      entries = await myDataStore.getFilteredEntries(user, typeSelect,
-                                                     $activeTopics, $activeTags,
-                                                     0, limit);
-    }
-  }*/
-
   async function fetchEntries() {
-    /*const s = entries.length;
-    entries = [
-      ...entries,
-      ...await myDataStore.getFilteredEntries(user, activeTopics, activeTags, typeSelect, s)
-    ];*/
+    $limitDisplay += 10;
+  }
+
+  function typeChange(type) {
+    typeSelect = type;
+    $activeType = typeSelect;
   }
 
   function loadEdit() {
     if (!single) return;
-    if (!entries[0]) return;
-    editEntry = entries[0];
-    entryInputComponent.loadEdit(entries[0]);
+    if (!$userEntries[0]) return;
+    const entry = $userEntries[0];
+    editEntry = entry;
+    entryInputComponent.loadEdit(entry);
     edit = true;
   }
 </script>
 
 <div class="main-container">
   <div class="entries-header-box">
-    <EntryTypes on:change={ (e) => typeSelect = e.detail.type } {editEntry} />
+    <EntryTypes on:change={ (e) => typeChange(e.detail.type) } {editEntry} />
     {#if loggedIn()}
       <EntryInput type={typeSelect} bind:this={entryInputComponent}
                   on:cancel={() => edit = false}

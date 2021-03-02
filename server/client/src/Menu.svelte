@@ -9,9 +9,6 @@
 	export let overview = true;
 	export let user = '';
 
-	function tagclicked() {
-		if (showmenu) dispatch('togglemenu');
-	}
 </script>
 
 <nav class:showmenu>
@@ -19,8 +16,7 @@
 	<div class="scrollbox">
 		<UserList {user} />
 		{#if !overview}
-			<TopicsTags {user} on:load={(e) => {}}
-									on:change={(e) => {}} />
+			<TopicsTags />
 		{/if}
 	</div>
 </nav>

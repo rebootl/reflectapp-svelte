@@ -3,19 +3,27 @@
   import Drawer, {Content} from '@smui/drawer';
   import List, {Item, Text, Graphic, Subheader} from '@smui/list';
   import H6 from '@smui/common/H6.svelte';
-  import { myDataStore } from './resources/dataStore.js';
+
+  import { profilesURL } from './resources/urls.js';
+  import { DataSet } from './resources/dataSet.js';
 
   export let user = '';
 
   let profiles = [];
   let active = 'Home';
 
-  async function initProfiles() {
-		profiles = await myDataStore.getProfiles();
+  let profilesInstance;
+
+  async function loadProfiles() {
+    profilesInstance = new DataSet(profilesURL);
+    await profilesInstance.load();
+
+    profiles = profilesInstance.data;
+
     if (user === '') active = 'Home';
     else active = user;
 	}
-	initProfiles();
+	loadProfiles();
 
 	function setActive(value) {
     active = value;
