@@ -8,12 +8,10 @@
   import { entriesURL } from './resources/urls.js';
   import { DataSet } from './resources/dataSet.js';
 
-  import { activeType, limitDisplay, userEntries, filteredEntries } from './store.js';
+  import { singleEntry, activeType, limitDisplay, userEntries, filteredEntries } from './store.js';
 
   export let routerReady = false;
   export let user = '';
-  export let single = false;
-  export let entryId = '';
 
   let typeSelect = '';
   let entries = [];
@@ -33,7 +31,6 @@
     if (user === '') return;
     entriesInstance = new DataSet(entriesURL + '/' + user);
     await entriesInstance.load();
-    //console.log(entriesInstance.data)
 
     // load Entries into svelte store!!
     entriesInstance.useStore(userEntries);
@@ -49,7 +46,7 @@
   }
 
   function loadEdit() {
-    if (!single) return;
+    if (!$singleEntry) return;
     if (!$userEntries[0]) return;
     const entry = $userEntries[0];
     editEntry = entry;
@@ -60,13 +57,15 @@
 
 <div class="main-container">
   <div class="entries-header-box">
-    <EntryTypes on:change={ (e) => typeChange(e.detail.type) } {editEntry} />
-    {#if loggedIn()}
+    {#if !$singleEntry}
+      <EntryTypes on:change={ (e) => typeChange(e.detail.type) } {editEntry} />
+    {/if}
+    {#if loggedIn() && !$singleEntry}
       <EntryInput type={typeSelect} bind:this={entryInputComponent}
                   on:cancel={() => edit = false}
                   on:created={() => update()}/>
     {/if}
-    {#if single && !edit}
+    {#if $singleEntry && !edit}
       <div class="single-buttons-box">
         <Button href={'/#~' + user}>View All</Button>
         {#if loggedIn()}
@@ -76,7 +75,6 @@
     {/if}
   </div>
   <EntriesList entries={$filteredEntries}
-               edit={ loggedIn() && getUserName() === user ? true : false }
                on:fetch={ ()=>fetchEntries() } />
 </div>
 

@@ -217,8 +217,6 @@
     <Button on:click={reset}>Cancel</Button>
   </div>
   {/if}
-{:else}
-  <small>Select type to add entry.</small>
 {/if}
 </div>
 

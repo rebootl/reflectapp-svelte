@@ -6,7 +6,6 @@
   const dispatch = createEventDispatcher();
 
   export let entries = [];
-  export let edit = false;
 
   // trigger fetch at nth element from the bottom
   // -> loading get's stuck at some point when using 4, why?
@@ -45,13 +44,14 @@
 	onMount(async () => {
     const ul = document.querySelector('.entrieslist');
     ulMutationObserver.observe(ul, { childList: true });
+    console.log(entries)
 	});
 </script>
 
 <div class="entrieslist">
 {#each entries as entry}
   <div class="entrybox">
-    <Entry entry={entry} {edit} />
+    <Entry entry={entry} />
     <a href={'#~' + entry.user + '/~' + entry.id} class="clicklink"></a>
   </div>
 {:else}

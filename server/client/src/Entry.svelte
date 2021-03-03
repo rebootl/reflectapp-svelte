@@ -11,7 +11,6 @@
   const dateFormat = 'MMM D YYYY - HH:mm';
 
 	export let entry = {};
-  export let edit = false;
 
   let html = '';
   let date = '';
@@ -43,7 +42,6 @@
       {date}
     </small>
     <a class="entrylink" href={'/#~' + entry.user + '/~' + entry.id}></a>
-    <!--{#if edit}<i class="material-icons">create</i>{/if}-->
   </div>
   {#if entry.type === 'task'}
     <div class="entrycontent">

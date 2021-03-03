@@ -1,6 +1,9 @@
 import { writable, derived } from 'svelte/store';
+import { myrouter } from './resources/router.js';
 
 // application state
+
+export const singleEntry = writable(false);
 
 export const activeTopics = writable(new Set());
 export const activeTags = writable(new Set());
@@ -22,6 +25,7 @@ export const tags = writable([]);
 // derived from userEntries depending on selection state
 export const filteredEntries = derived(
   [
+    singleEntry,
     activeTopics,
     activeTags,
     activeType,
@@ -29,6 +33,7 @@ export const filteredEntries = derived(
     userEntries,
   ],
   ([
+    $singleEntry,
     $activeTopics,
     $activeTags,
     $activeType,
@@ -36,6 +41,9 @@ export const filteredEntries = derived(
     $userEntries,
   ]) => {
     let filteredEntries = [];
+    if ($singleEntry) {
+      return $userEntries.filter(e => e.id === myrouter.getEntryId());
+    }
     if ($activeType !== 'any') {
       filteredEntries = $userEntries.filter((e) => e.type === $activeType);
     } else filteredEntries = $userEntries;

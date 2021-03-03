@@ -4,6 +4,7 @@
 	import Entries from './Entries.svelte';
 	import { myrouter } from './resources/router.js';
 	import { loggedIn } from './resources/auth.js';
+	import { singleEntry } from './store.js';
 
 	// route for template
 	let route = '';
@@ -26,6 +27,7 @@
 		if (route === 'singleentry') {
 			user = myrouter.getUser();
 			entryId = myrouter.getEntryId();
+
 			console.log(entryId)
 		} else if (route === 'user') {
 			// get user
@@ -39,6 +41,8 @@
 		}
 		overview = route === 'overview' ? true : false;
 		single = route === 'singleentry' ? true : false;
+		route === 'singleentry' ? singleEntry.set(true)
+														: singleEntry.set(false);
 		routerReady = true;
 	}
 
@@ -58,7 +62,7 @@
 		<h1>Welcome!</h1>
 		landing page, blabla
 	{:else}
-		<Entries {user} {entryId} {single} {routerReady} />
+		<Entries {user} {routerReady} />
 	{/if}
 	</main>
 
