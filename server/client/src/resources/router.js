@@ -1,4 +1,26 @@
 
+// as per: https://stackoverflow.com/questions/6390341/how-to-detect-if-url-has-changed-after-hash-in-javascript
+//
+/*history.pushState = ( f => function pushState(){
+    var ret = f.apply(this, arguments);
+    window.dispatchEvent(new Event('pushstate'));
+    window.dispatchEvent(new Event('locationchange'));
+    return ret;
+})(history.pushState);
+
+history.replaceState = ( f => function replaceState(){
+    var ret = f.apply(this, arguments);
+    window.dispatchEvent(new Event('replacestate'));
+    window.dispatchEvent(new Event('locationchange'));
+    return ret;
+})(history.replaceState);
+
+window.addEventListener('popstate',()=>{
+    window.dispatchEvent(new Event('locationchange'))
+});*/
+//
+
+
 const registeredComponents = new Set();
 
 const updateCallbacks = new Set();
@@ -70,34 +92,14 @@ class Router {
     }
     return '';
   }
-  getParts(n) {
-    console.log(this._parts)
-    return this._parts[n] || [];
-  }
-  getParameters() {
-    return this._parameters || [];
-  }
   parseUrl() {
-    const hashString = location.hash.slice(1) || '';
-    const [ path, parameters ] = hashString.split('?');
-    const pathParts = path.split('/');
-    // ~username
-    this._route = dec(pathParts[0]);
-    this._parts = pathParts.slice(1).map(p=>dec(p));
-    // -> needed?
-    if (this._parts[0]) if (this._parts[0][0] === '') this._parts[0] = [];
+    this._pathArray = window.location.pathname.split('/');
+    console.log(this._pathArray)
 
-    this._parameters = parameters ? parameters.split('&').map((p)=>dec(p)) : [];
+    this._route = dec(this._pathArray[0]);
   }
-  setURL(route, parts=[], parameters=[]) {
-    const parameterString = parameters.map(p=>enc(p)).join('&');
-
-    const pts = parts.join('/');
-
-    let hashString = '#' + route;
-    if (pts.length > 0) hashString += '/' + s;
-    if (parameterString.length > 0) hashString += '?' + parameterString;
-    window.location.hash = hashString;
+  setURL(p) {
+    window.location.pathname = p;
   }
 }
 

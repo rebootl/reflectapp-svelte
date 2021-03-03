@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllPublicEntries, getUserEntries, getEntry } from './entriesModel.js';
+import { getAllPublicEntries, getEntries, getEntry } from './entriesModel.js';
 import { getValidUser } from './userModel.js';
 const router = express.Router();
 const allowedTypes = ['any', 'task', 'link', 'article', 'image'];
@@ -14,35 +14,21 @@ router.get('/', async (req, res) => {
 router.get('/:user', async (req, res) => {
     const db = req.app.locals.db;
     const user = req.params.user;
-    // check if user exists _and valid_ !!
+    // check if requested user exists _and valid_ !!
     const u = await getValidUser(db, user);
     if (!u)
         return res.sendStatus(404);
-    console.log(req.query.type);
-    const type = allowedTypes.includes(req.query.type) ? req.query.type
-        : 'any' || 'any';
     const skip = parseInt(req.query.skip) || 0;
     const limit = parseInt(req.query.limit) || 10;
-    const topics = Array.isArray(req.query.topics) ? req.query.topics : [];
-    const tags = Array.isArray(req.query.tags) ? req.query.topics : [];
-    // check if logged in
-    //console.log(req.user);
-    const r = await getUserEntries(db, user, topics, tags, skip, limit);
-    // if not logged in or request user not equals logged in user filter private entries
-    let e = [];
+    let r;
     if (!req.session.loggedIn || req.session.username !== user) {
-        e = r.filter(e => {
-            if (e.private)
-                if (e.private === false)
-                    return e;
-        });
+        // not logged in
+        r = await getEntries(db, user, skip, limit);
     }
-    else
-        e = r;
-    if (type !== 'any') {
-        e = e.filter(e => e.type === type);
+    else {
+        r = await getEntries(db, user, skip, limit, true);
     }
-    return res.send({ success: true, result: e });
+    return res.send({ success: true, result: r });
 });
 router.get('/:user/:entryId', async (req, res) => {
     const db = req.app.locals.db;

@@ -11,8 +11,6 @@
 	// router
 	let routerReady = false;
 	let user = '';
-	// id for single entry
-	let entryId = '';
 
 	let overview = true;
 	let single = false;
@@ -26,9 +24,6 @@
 
 		if (route === 'singleentry') {
 			user = myrouter.getUser();
-			entryId = myrouter.getEntryId();
-
-			console.log(entryId)
 		} else if (route === 'user') {
 			// get user
 			user = myrouter.getUser();
@@ -37,7 +32,7 @@
 			route = 'overview';
 			user = '';
 			// reset url
-			myrouter.setURL('', [], []);
+			//myrouter.setURL('');
 		}
 		overview = route === 'overview' ? true : false;
 		single = route === 'singleentry' ? true : false;

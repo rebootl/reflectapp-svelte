@@ -34,14 +34,14 @@
   <Drawer>
     <Content>
       <List>
-        <Item href="#" on:click={() => setActive('Home')}
+        <Item href="/#" on:click={() => setActive('Home')}
               activated={active === 'Home'}>
           <Graphic class="material-icons" aria-hidden="true">home</Graphic>
           <Text>Home</Text>
         </Item>
         <Subheader component={H6}>Users</Subheader>
         {#each profiles as p}
-        <Item href={'#~' + p.name} on:click={() => setActive(p.name)}
+        <Item href={'/#' + p.name} on:click={() => setActive(p.name)}
               activated={active === p.name}>
           <Graphic class="material-icons" aria-hidden="true">person</Graphic>
           <Text>{p.name}</Text>
