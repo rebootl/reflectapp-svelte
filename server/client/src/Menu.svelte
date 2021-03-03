@@ -36,7 +36,7 @@
 		z-index: 25;
 		color: var(--side-text-color);
 		background-color: var(--side-background-color);
-		border-right: 2px solid var(--logo-secondary-color);
+		border-right: 1px solid var(--side-lines-color);
 	}
 	.subtitle {
 		text-align: center;

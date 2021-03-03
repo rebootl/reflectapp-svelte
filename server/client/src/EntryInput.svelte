@@ -150,75 +150,75 @@
   }
 </script>
 
-<div class="entry-input-box">
 {#if type !== 'any'}
-  <div class="inputs-box">
-    {#if type === 'task'}
-      <Textfield textarea bind:value={inputText} label="New Task" />
-    {:else if type === 'link'}
-      <div class="inputs-links-box">
-        <Textfield variant="outlined" on:input={checkReady}
-                   bind:value={inputText} label="New URL" />
-        {#if ready}
-          <Textfield variant="outlined" bind:value={linkTitle} label="Title" />
-          <Textfield variant="outlined" bind:value={comment} label="Comment" />
-        {/if}
+  <div class="entry-input-box">
+    <div class="inputs-box">
+      {#if type === 'task'}
+        <Textfield textarea bind:value={inputText} label="New Task" />
+      {:else if type === 'link'}
+        <div class="inputs-links-box">
+          <Textfield variant="outlined" on:input={checkReady}
+                     bind:value={inputText} label="New URL" />
+          {#if ready}
+            <Textfield variant="outlined" bind:value={linkTitle} label="Title" />
+            <Textfield variant="outlined" bind:value={comment} label="Comment" />
+          {/if}
+        </div>
+      {:else if type === 'article'}
+        <Textfield textarea fullwidth on:input={checkReady} bind:value={inputText}
+                   label="New Entry" />
+      {:else if type === 'image'}
+      {:else}
+      {/if}
+    </div>
+
+    {#if ready}
+    <div class="topics-tags-box">
+      <div class="topics-box">
+        <h3>Topics</h3>
+        <div class="new-topic-box">
+          <Textfield variant="outlined" bind:value={newTopic} label="New Topic" />
+          <Button on:click={addTopic}>Add</Button>
+        </div>
+        <Set chips={newTopics} let:chip input>
+          <Chip>
+            <Text>{chip}</Text>
+            <Icon on:click={removeTopic(chip)} class="material-icons">cancel</Icon>
+          </Chip>
+        </Set>
+        <Set chips={topics} let:chip filter bind:selected={selectedTopics}>
+          <Chip tabindex="0"><Checkmark /><Text>{chip}</Text></Chip>
+        </Set>
       </div>
-    {:else if type === 'article'}
-      <Textfield textarea fullwidth on:input={checkReady} bind:value={inputText}
-                 label="New Entry" />
-    {:else if type === 'image'}
-    {:else}
+      <div class="tags-box">
+        <h3>Tags</h3>
+        <div class="new-tag-box">
+          <Textfield variant="outlined" bind:value={newTag} label="New Tag" />
+          <Button on:click={addTag}>Add</Button>
+        </div>
+        <Set chips={newTags} let:chip input>
+          <Chip>
+            <Text>{chip}</Text>
+            <Icon on:click={removeTag(chip)} class="material-icons">cancel</Icon>
+          </Chip>
+        </Set>
+        <Set chips={tags} let:chip filter bind:selected={selectedTags}>
+          <Chip tabindex="0"><Checkmark /><Text>{chip}</Text></Chip>
+        </Set>
+      </div>
+    </div>
+
+    <div class="buttons-box">
+      {#if edit}
+        <Button on:click={create} variant="unelevated" disabled={!ready}>Update</Button>
+      {:else}
+        <Button on:click={create} variant="unelevated" disabled={!ready}>Create</Button>
+      {/if}
+      <Button on:click={reset}>Cancel</Button>
+    </div>
     {/if}
   </div>
-
-  {#if ready}
-  <div class="topics-tags-box">
-    <div class="topics-box">
-      <h3>Topics</h3>
-      <div class="new-topic-box">
-        <Textfield variant="outlined" bind:value={newTopic} label="New Topic" />
-        <Button on:click={addTopic}>Add</Button>
-      </div>
-      <Set chips={newTopics} let:chip input>
-        <Chip>
-          <Text>{chip}</Text>
-          <Icon on:click={removeTopic(chip)} class="material-icons">cancel</Icon>
-        </Chip>
-      </Set>
-      <Set chips={topics} let:chip filter bind:selected={selectedTopics}>
-        <Chip tabindex="0"><Checkmark /><Text>{chip}</Text></Chip>
-      </Set>
-    </div>
-    <div class="tags-box">
-      <h3>Tags</h3>
-      <div class="new-tag-box">
-        <Textfield variant="outlined" bind:value={newTag} label="New Tag" />
-        <Button on:click={addTag}>Add</Button>
-      </div>
-      <Set chips={newTags} let:chip input>
-        <Chip>
-          <Text>{chip}</Text>
-          <Icon on:click={removeTag(chip)} class="material-icons">cancel</Icon>
-        </Chip>
-      </Set>
-      <Set chips={tags} let:chip filter bind:selected={selectedTags}>
-        <Chip tabindex="0"><Checkmark /><Text>{chip}</Text></Chip>
-      </Set>
-    </div>
-  </div>
-
-  <div class="buttons-box">
-    {#if edit}
-      <Button on:click={create} variant="unelevated" disabled={!ready}>Update</Button>
-    {:else}
-      <Button on:click={create} variant="unelevated" disabled={!ready}>Create</Button>
-    {/if}
-    <Button on:click={reset}>Cancel</Button>
-  </div>
-  {/if}
 {/if}
-</div>
 
 <style>
   .entry-input-box {
