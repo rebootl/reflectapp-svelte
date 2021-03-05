@@ -7,7 +7,14 @@
 </script>
 
 <div class="linkbox">
-  <a href={href} target="_blank"><small>{href}</small></a>
+  <div class="refbox">
+    <small>
+      <a href={href} target="_blank">
+        <span class="clickspan"></span>
+        {href}
+      </a>
+    </small>
+  </div>
   {title}
   <small>{comment}</small>
 </div>
@@ -15,14 +22,16 @@
 <style>
   .linkbox {
     padding: 10px;
-    padding-top: 35px;
     position: relative;
-    min-height: 45px;
+    /*min-height: 45px;*/
   }
   .linkbox:hover {
     background-color: var(--main-hover-color);
   }
-  a {
+  .refbox {
+    padding-bottom: 10px;
+  }
+  .clickspan {
     position: absolute;
     display: block;
     width: 100%;
