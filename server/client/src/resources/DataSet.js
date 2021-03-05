@@ -18,8 +18,9 @@ export class DataSet {
     if (!r.success) {
       console.error(r)
       this.data = [];
+    } else {
+      this.data = r.result;
     }
-    this.data = r.result;
   }
   async new() {
   }

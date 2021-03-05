@@ -6,9 +6,9 @@
   import { loggedIn, getUserName } from './resources/auth.js';
 
   import { entriesURL } from './resources/urls.js';
-  import { DataSet } from './resources/dataSet.js';
+  import { DataSet } from './resources/DataSet.js';
 
-  import { singleEntry, activeType, limitDisplay, userEntries, filteredEntries } from './store.js';
+  import { singleEntry, activeType, limitDisplay, userEntries, filteredEntries } from './resources/store.js';
 
   export let routerReady = false;
   export let user = '';

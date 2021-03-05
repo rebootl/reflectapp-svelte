@@ -3,7 +3,7 @@
 	import List, {Separator, Subheader} from '@smui/list';
 	import H6 from '@smui/common/H6.svelte';
 
-	import { topics, tags, activeTopics, activeTags } from './store.js';
+	import { topics, tags, activeTopics, activeTags } from './resources/store.js';
 
 	import Topic from './Topic.svelte';
 	import Tag from './Tag.svelte';

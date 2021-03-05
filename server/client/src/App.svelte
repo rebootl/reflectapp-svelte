@@ -4,7 +4,7 @@
 	import Entries from './Entries.svelte';
 	import { myrouter } from './resources/router.js';
 	import { loggedIn } from './resources/auth.js';
-	import { singleEntry } from './store.js';
+	import { singleEntry } from './resources/store.js';
 
 	// route for template
 	let route = '';
@@ -18,7 +18,7 @@
 	// state of the menu
 	let showmenu = false;
 
-	async function routerUpdate() {
+	function routerUpdate() {
 
 		route = myrouter.namedRoute;
 

@@ -5,7 +5,7 @@
   import H6 from '@smui/common/H6.svelte';
 
   import { profilesURL } from './resources/urls.js';
-  import { DataSet } from './resources/dataSet.js';
+  import { DataSet } from './resources/DataSet.js';
 
   export let user = '';
 

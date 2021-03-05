@@ -1,5 +1,5 @@
 import { writable, derived } from 'svelte/store';
-import { myrouter } from './resources/router.js';
+import { myrouter } from './router.js';
 
 // application state
 
