@@ -41,7 +41,7 @@
     <small class="date">
       {date}
     </small>
-    <a class="entrylink" href={'/#~' + entry.user + '/~' + entry.id}></a>
+    <a class="entrylink" href={'/#' + entry.user + '/' + entry.id}></a>
   </div>
   {#if entry.type === 'task'}
     <div class="entrycontent">

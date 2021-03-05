@@ -42,7 +42,7 @@ export const filteredEntries = derived(
   ]) => {
     let filteredEntries = [];
     if ($singleEntry) {
-      return $userEntries.filter(e => e.id === myrouter.getEntryId());
+      return $userEntries.filter(e => e.id === myrouter.entryId);
     }
     if ($activeType !== 'any') {
       filteredEntries = $userEntries.filter((e) => e.type === $activeType);

@@ -20,86 +20,84 @@ window.addEventListener('popstate',()=>{
 });*/
 //
 
-
-const registeredComponents = new Set();
-
 const updateCallbacks = new Set();
 
 const dec = decodeURIComponent;
 const enc = encodeURIComponent;
 
 class Router {
+
+  get namedRoute() {
+    return this._namedRoute || '';
+  }
+  set namedRoute(v) {
+    this._namedRoute = v;
+  }
+
+  get user() {
+    return this._user || '';
+  }
+  set user(v) {
+    this._user = v;
+  }
+
+  get entryId() {
+    return this._entryId || '';
+  }
+  set entryId(v) {
+    this._entryId = v;
+  }
+
   constructor() {
-    window.addEventListener('hashchange', ()=>this.urlChange());
-    window.addEventListener('load', ()=>this.urlChange());
+    window.addEventListener('hashchange', ()=>this._urlChange());
+    window.addEventListener('load', ()=>this._urlChange());
   }
-  registerSvelte(updateCallback) {
-    updateCallbacks.add(updateCallback);
+
+  registerCallback(f) {
+    updateCallbacks.add(f);
   }
-  unregisterSvelte(updateCallback) {
-    updateCallbacks.delete(updateCallback);
-  }
-  register(comp) {
-    console.log("router register");
-    registeredComponents.add(comp);
-  }
-  unregister(comp) {
-    registeredComponents.delete(comp);
+  unregisterCallback(f) {
+    updateCallbacks.delete(f);
   }
   triggerUpdate() {
-    this.urlChange();
+    this._urlChange();
   }
-  urlChange() {
-    this.parseUrl();
-    //console.log("router update");
-    for (const c of registeredComponents) {
-      c.routerUpdate();
+  /*setURL(p) {
+    window.location.pathname = p;
+  }*/
+  setNamedRoute(v) {
+    let route = '';
+    if (v.length > 1) {
+      route = '#' + enc(v[0]) + '/' + enc(v[1]);
+    } else {
+      route = '#' + enc(v[0]);
     }
+    window.location.hash = route;
+  }
+
+  _urlChange() {
+    this._parseUrl();
     for (let c of updateCallbacks) {
       c();
     }
   }
-  getRoute() {
-    return this._route || '';
-  }
-  getRouteNamed() {
-    // user entries/entry
-    if (this._route.startsWith('~')) {
-      const _p0 = this.getParts(0);
-      // single user entry
-      if (_p0[0]) {
-        if (_p0[0].startsWith('~')) {
-          return 'singleentry';
-        }
-      }
-      return 'user';
-    }
-    return 'overview';
-  }
-  getUser() {
-    if (this._route.startsWith('~'))
-      return this._route.slice(1);
-    return '';
-  }
-  getEntryId() {
-    const p = this.getParts(0);
-    //console.log(p)
-    if (p) {
-      if (p.startsWith('~')) {
-        return p.slice(1);
-      }
-      return '';
-    }
-    return '';
-  }
-  parseUrl() {
-    this._pathArray = window.location.pathname.split('/');
-    console.log(this._pathArray)
+  _parseUrl() {
+    const pathArray = location.hash.slice(1).split('/');
+    console.log(pathArray)
 
-    this._route = dec(this._pathArray[0]);
-  }
-  setURL(p) {
-    window.location.pathname = p;
+    this.route = dec(pathArray[0]);
+
+    if (this.route === '')
+      this.namedRoute = 'home';
+    else {
+      this.namedRoute = 'user';
+      this.user = pathArray[0];
+
+      if (pathArray.length > 1) {
+        this.namedRoute = 'singleentry';
+        this.entryId = pathArray[1];
+      }
+    }
   }
 }
 

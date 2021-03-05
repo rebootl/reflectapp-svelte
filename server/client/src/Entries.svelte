@@ -67,7 +67,7 @@
     {/if}
     {#if $singleEntry && !edit}
       <div class="single-buttons-box">
-        <Button on:click={typeSelect = 'any'} href={'/#~' + user}>View All</Button>
+        <Button on:click={typeSelect = 'any'} href={'/#' + user}>View All</Button>
         {#if loggedIn()}
           <Button on:click={()=>loadEdit()}><Icon class="material-icons">create</Icon>Edit</Button>
         {/if}

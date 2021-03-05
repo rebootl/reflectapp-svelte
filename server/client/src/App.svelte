@@ -20,13 +20,13 @@
 
 	async function routerUpdate() {
 
-		route = myrouter.getRouteNamed();
+		route = myrouter.namedRoute;
 
 		if (route === 'singleentry') {
-			user = myrouter.getUser();
+			user = myrouter.user;
 		} else if (route === 'user') {
 			// get user
-			user = myrouter.getUser();
+			user = myrouter.user;
 		} else {
 			// overview
 			route = 'overview';
@@ -41,7 +41,7 @@
 		routerReady = true;
 	}
 
-	myrouter.registerSvelte(routerUpdate);
+	myrouter.registerCallback(routerUpdate);
 </script>
 
 <div class="wrapper" class:showmenu>

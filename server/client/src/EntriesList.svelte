@@ -52,7 +52,7 @@
 {#each entries as entry}
   <div class="entrybox">
     <Entry entry={entry} />
-    <a href={'#~' + entry.user + '/~' + entry.id} class="clicklink"></a>
+    <!--<a href={'#' + entry.user + '/' + entry.id} class="clicklink"></a>-->
   </div>
 {:else}
   <p>loading...</p>
