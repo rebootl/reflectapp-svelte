@@ -7,7 +7,7 @@ const router = express.Router();
 const allowedTypes = [ 'any', 'task', 'link', 'article', 'image' ];
 const requiredFields = [ 'id', 'type', 'date', 'topics', 'tags' ];
 
-router.get('/', async (req, res) => {
+/*router.get('/', async (req, res) => {
   const db = req.app.locals.db;
 
   const skip = parseInt(req.query.skip) || 0;
@@ -15,11 +15,11 @@ router.get('/', async (req, res) => {
 
   const r = await getAllPublicEntries(db, skip, limit);
   return res.send({ success: true, result: r });
-});
+});*/
 
-router.get('/:user', async (req, res) => {
+router.get('/', async (req, res) => {
   const db = req.app.locals.db;
-  const user = req.params.user;
+  const user = req.query.user;
 
   // check if requested user exists _and valid_ !!
   const u = await getValidUser(db, user);
@@ -39,7 +39,7 @@ router.get('/:user', async (req, res) => {
   return res.send({ success: true, result: r });
 });
 
-router.get('/:user/:entryId', async (req, res) => {
+/*router.get('/:user/:entryId', async (req, res) => {
   const db = req.app.locals.db;
   const user = req.params.user;
   // check if user exists _and valid_ !!
@@ -62,7 +62,7 @@ router.get('/:user/:entryId', async (req, res) => {
   //console.log(r)
   if (!e) return res.sendStatus(404);
   return res.send({ success: true, result: e });
-});
+});*/
 
 router.post('/', async (req, res) => {
   if (!req.session.loggedIn || req.session.username !== req.body.user) {

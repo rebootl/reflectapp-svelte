@@ -12,6 +12,7 @@
   const dispatch = createEventDispatcher();
 
   export let type = 'any';
+  export let entriesInstance;
 
   let inputText = '';
   let comment = '';
@@ -116,17 +117,19 @@
       d.date = new Date();
       d.id = await makeId(d);
       console.log(d.id)
+      entriesInstance.new(d);
     } else {
       d.date = editEntryDate;
       d.mdate = new Date();
       d.id = editEntryId;
+      entriesInstance.update(d);
     }
 
-    const r = await apiPostRequest(entriesURL, d);
+    /*const r = await apiPostRequest(entriesURL, d);
     if (!r.success) {
       console.error(r);
       return;
-    }
+    }*/
     // reset
     reset();
     dispatch('created')

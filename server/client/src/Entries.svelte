@@ -29,8 +29,8 @@
 
   async function loadEntries() {
     if (user === '') return;
-    entriesInstance = new DataSet(entriesURL + '/' + user);
-    await entriesInstance.load();
+    entriesInstance = new DataSet(entriesURL);
+    await entriesInstance.load({ user: user });
 
     // load Entries into svelte store!!
     entriesInstance.useStore(userEntries);
@@ -62,8 +62,9 @@
     {/if}
     {#if loggedIn() && !$singleEntry}
       <EntryInput type={typeSelect} bind:this={entryInputComponent}
+                  {entriesInstance}
                   on:cancel={() => edit = false}
-                  on:created={() => update()}/>
+                  on:created={ () => {} } />
     {/if}
     {#if $singleEntry && !edit}
       <div class="single-buttons-box">
