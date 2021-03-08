@@ -9,7 +9,6 @@ export class DataSet {
     this.url = url;
 
     this.data = [];
-    //this.load();
   }
   useStore(dataStore) {
     this.dataStore = dataStore;
@@ -28,19 +27,39 @@ export class DataSet {
     }
   }
   async fetch() {
-
   }
   async new(e) {
-    // -> update locally
+    // update locally
     this.dataStore.update(d => [ e, ...d ]);
-    // -> insert queue
-    updateQueue.push({ type: 'POST', data: e });
-    // -> sync queue
+    // insert queue
+    updateQueue.push({ type: 'NEW', data: e });
+    // sync queue
     this._syncQueue();
   }
-  async update() {
+  async update(e) {
+    // update locally
+    this.dataStore.update(d => {
+      return d.map(v => {
+        if (v.id === e.id) return e;
+        return v;
+      });
+    });
+    // insert queue
+    updateQueue.push({ type: 'UPDATE', data: e });
+    // sync queue
+    this._syncQueue();
   }
-  async delete() {
+  async delete(e) {
+    // update locally
+    this.dataStore.update(d => {
+      return d.filter(v => {
+        if (v.id !== e.id) return v;
+      });
+    });
+    // insert queue
+    updateQueue.push({ type: 'DELETE', data: e });
+    // sync queue
+    this._syncQueue();
   }
 
   async _syncQueue() {
@@ -52,11 +71,16 @@ export class DataSet {
     const newQueue = [];
     for (const v of updateQueue) {
       let r;
-      if (v.type === 'POST') {
+      if (v.type === 'NEW') {
         r = await apiPostRequest(this.url, v.data);
       }
-      else if (v.type === 'PUT') {}
-      else if (v.type === 'DELETE') {}
+      else if (v.type === 'UPDATE') {
+        r = await apiPostRequest(this.url, v.data);
+      }
+      else if (v.type === 'DELETE') {
+        // -> todo
+        //r = await apiDeleteRequest(this.url, v.data);
+      }
       // -> check return
       if (!r.success) {
         console.log(r);
