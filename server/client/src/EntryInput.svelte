@@ -4,10 +4,11 @@
   import Button from '@smui/button';
   import Chip, { Set, Icon, Checkmark, Text } from '@smui/chips';
   import TextArea from './Elements/TextArea.svelte';
-  import { apiPostRequest } from './resources/requests.js';
-  import { entriesURL } from './resources/urls.js';
+
   import { getUserName } from './resources/auth.js';
   import { digestMessage, getPrefix } from './resources/helpers.js';
+
+  import { topics, userEntries } from './resources/store.js';
 
   const dispatch = createEventDispatcher();
 
@@ -19,11 +20,11 @@
   let linkTitle = '';
   let newTopic = '';
   let newTopics = [];
-  let topics = [ 'abc', '123', 'test' ];
+  //let topics = $topics;
   let selectedTopics = [];
   let newTag = '';
   let newTags = [];
-  let tags = [ 'lala', '123', 'test' ];
+  let tags = [];
   let selectedTags = [];
 
   //let editEntry = {};
@@ -50,8 +51,8 @@
     editEntryId = editEntry.id;
     editEntryDate = editEntry.date
     inputText = editEntry.text;
-    topics = editEntry.topics;
-    tags = editEntry.tags;
+    //topics = editEntry.topics;
+    //tags = editEntry.tags;
     selectedTopics = editEntry.topics;
     selectedTags = editEntry.tags;
 
@@ -61,6 +62,28 @@
     }
     edit = true;
     ready = true;
+  }
+
+  function setTagsForTopics() {
+    const currentTags = [];
+    if (selectedTopics === 0) {
+      for (const e of $userEntries) {
+        for (const t of e.tags) {
+          if (!currentTags.includes(t)) currentTags.push(t);
+        }
+      }
+    } else {
+      for (const e of $userEntries) {
+        for (const topic of e.topics) {
+          if (selectedTopics.includes(topic)) {
+            for (const t of e.tags) {
+              if (!currentTags.includes(t)) currentTags.push(t);
+            }
+          }
+        }
+      }
+    }
+    tags = currentTags.sort();
   }
 
   function addTopic() {
@@ -125,12 +148,6 @@
       entriesInstance.update(d);
     }
 
-    /*const r = await apiPostRequest(entriesURL, d);
-    if (!r.success) {
-      console.error(r);
-      return;
-    }*/
-    // reset
     reset();
     dispatch('created')
   }
@@ -143,11 +160,11 @@
     linkTitle = '';
     newTopic = '';
     newTopics = [];
-    topics = [ 'abc', '123', 'test' ];
+    //topics = [ 'abc', '123', 'test' ];
     selectedTopics = [];
     newTag = '';
     newTags = [];
-    tags = [ 'lala', '123', 'test' ];
+    //tags = [ 'lala', '123', 'test' ];
     selectedTags = [];
     dispatch('cancel');
   }
@@ -189,7 +206,7 @@
             <Icon on:click={removeTopic(chip)} class="material-icons">cancel</Icon>
           </Chip>
         </Set>
-        <Set chips={topics} let:chip filter bind:selected={selectedTopics}>
+        <Set chips={$topics} let:chip filter bind:selected={selectedTopics}>
           <Chip tabindex="0"><Checkmark /><Text>{chip}</Text></Chip>
         </Set>
       </div>

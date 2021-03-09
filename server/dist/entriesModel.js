@@ -3,7 +3,7 @@ async function getAllPublicEntries(db, skip, limit) {
     return await c.find({ private: false })
         .sort({ date: -1 }).skip(skip).limit(limit).toArray();
 }
-async function getEntries(db, user, skip, limit, _private = false) {
+async function getEntries(db, user, skip, _private = false) {
     const c = await db.collection('entries');
     let q;
     if (_private) {
@@ -21,7 +21,7 @@ async function getEntries(db, user, skip, limit, _private = false) {
             { $sort: { pinned: -1, date: -1 } }
         ];
     }
-    return await c.aggregate(q).skip(skip).limit(limit).toArray();
+    return await c.aggregate(q).skip(skip).toArray();
 }
 async function getEntry(db, user, id) {
     const c = await db.collection('entries');
