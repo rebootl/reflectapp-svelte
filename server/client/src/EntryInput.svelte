@@ -1,5 +1,5 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
+  import { onMount, createEventDispatcher } from 'svelte';
   import Textfield from '@smui/textfield';
   import Button from '@smui/button';
   import Chip, { Set, Icon, Checkmark, Text } from '@smui/chips';
@@ -8,7 +8,7 @@
   import { getUserName } from './resources/auth.js';
   import { digestMessage, getPrefix } from './resources/helpers.js';
 
-  import { topics, userEntries } from './resources/store.js';
+  import { topics, filteredEntries, userEntries } from './resources/store.js';
 
   const dispatch = createEventDispatcher();
 
@@ -36,6 +36,7 @@
 
   $: checkReady(inputText);
   //$: loadEdit(editEntry);
+  $: setTagsForTopics($userEntries, selectedTopics);
 
   function checkReady() {
     //console.log("checkReady")
@@ -66,7 +67,8 @@
 
   function setTagsForTopics() {
     const currentTags = [];
-    if (selectedTopics === 0) {
+    if (selectedTopics.length === 0) {
+      console.log($filteredEntries)
       for (const e of $userEntries) {
         for (const t of e.tags) {
           if (!currentTags.includes(t)) currentTags.push(t);
@@ -168,6 +170,10 @@
     selectedTags = [];
     dispatch('cancel');
   }
+
+  onMount(() => {
+    setTagsForTopics();
+  });
 </script>
 
 {#if type !== 'any'}

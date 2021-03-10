@@ -83,7 +83,6 @@ class Router {
   }
   _parseUrl() {
     const pathArray = location.hash.slice(1).split('/');
-    console.log(pathArray)
 
     this.route = dec(pathArray[0]);
 

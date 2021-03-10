@@ -62,7 +62,6 @@ export const filteredEntries = derived(
         if (!t.includes(tag)) t.push(tag);
       }
     }
-    console.log(t)
     tags.set(t.sort());
 
     if ($activeTags.size > 0) {

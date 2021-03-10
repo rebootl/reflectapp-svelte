@@ -44,7 +44,6 @@
 	onMount(async () => {
     const ul = document.querySelector('.entrieslist');
     ulMutationObserver.observe(ul, { childList: true });
-    console.log(entries)
 	});
 </script>
 
