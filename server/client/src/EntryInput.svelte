@@ -13,6 +13,7 @@
   const dispatch = createEventDispatcher();
 
   export let type = 'any';
+  export let single = false;
   export let entriesInstance;
 
   let inputText = '';
@@ -49,6 +50,7 @@
 
   export function loadEdit(editEntry) {
     //console.log("loadEdit")
+    type = editEntry.type;
     editEntryId = editEntry.id;
     editEntryDate = editEntry.date
     inputText = editEntry.text;
@@ -155,6 +157,7 @@
   }
 
   function reset() {
+    type = 'any';
     ready = false;
     edit = false;
     inputText = '';
@@ -176,7 +179,7 @@
   });
 </script>
 
-{#if type !== 'any'}
+{#if (type !== 'any' && !single) || edit}
   <div class="entry-input-box">
     <div class="inputs-box">
       {#if type === 'task'}

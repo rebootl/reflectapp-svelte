@@ -14,6 +14,7 @@
   export let user = '';
 
   let typeSelect = '';
+  let setType = 'any';
   let entries = [];
 
   let entryInputComponent;
@@ -47,29 +48,36 @@
 
   function loadEdit() {
     if (!$singleEntry) return;
-    if (!$userEntries[0]) return;
-    const entry = $userEntries[0];
+    if (!$filteredEntries[0]) return;
+    const entry = $filteredEntries[0];
     editEntry = entry;
-    entryInputComponent.loadEdit(entry);
+    setType = entry.type;
     edit = true;
+    entryInputComponent.loadEdit(entry);
+  }
+
+  function viewAll() {
+    setType = 'any';
+    location.hash = user;
   }
 </script>
 
 <div class="main-container">
   <div class="entries-header-box">
-    {#if !$singleEntry}
-      <EntryTypes on:change={ (e) => typeChange(e.detail.type) } {editEntry} />
+    {#if !$singleEntry || edit}
+      <EntryTypes on:change={ (e) => typeChange(e.detail.type) } type={setType} />
     {/if}
-    {#if loggedIn() && !$singleEntry}
+    {#if loggedIn() && user === getUserName()}
       <EntryInput type={typeSelect} bind:this={entryInputComponent}
+                  single={$singleEntry}
                   {entriesInstance}
                   on:cancel={() => edit = false}
                   on:created={ () => {} } />
     {/if}
     {#if $singleEntry && !edit}
       <div class="single-buttons-box">
-        <Button on:click={typeSelect = 'any'} href={'/#' + user}>View All</Button>
-        {#if loggedIn()}
+        <Button on:click={() => viewAll()}>View All</Button>
+        {#if loggedIn() && user === getUserName()}
           <Button on:click={()=>loadEdit()}><Icon class="material-icons">create</Icon>Edit</Button>
         {/if}
       </div>

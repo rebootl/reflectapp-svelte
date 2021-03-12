@@ -5,22 +5,18 @@
 
   const dispatch = createEventDispatcher();
 
-	export let editEntry = {};
+	export let type = 'any';
 
   $: typeChanged(active);
-	$: loadEdit(editEntry);
+	$: setType(type);
 
   function typeChanged() {
     dispatch('change', { type: active.type });
   }
 
-	function loadEdit() {
-		let c = 0;
-		for (const t of iconTabs) {
-			if (t.label.toLowerCase().startsWith(editEntry.type))
-				active = iconTabs[c];
-			c++;
-		}
+	function setType() {
+		const t = iconTabs.find(e => e.type === type);
+		active = t;
 	}
 
   let iconTabs = [
