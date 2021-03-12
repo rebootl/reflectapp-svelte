@@ -3,7 +3,9 @@
   import Textfield from '@smui/textfield';
   import Button from '@smui/button';
   import Chip, { Set, Icon, Checkmark, Text } from '@smui/chips';
-  import TextArea from './Elements/TextArea.svelte';
+
+  //import TextArea from './Elements/TextArea.svelte';
+  //import './theme/special-theme.scss';
 
   import { getUserName } from './resources/auth.js';
   import { digestMessage, getPrefix } from './resources/helpers.js';
@@ -70,7 +72,6 @@
   function setTagsForTopics() {
     const currentTags = [];
     if (selectedTopics.length === 0) {
-      console.log($filteredEntries)
       for (const e of $userEntries) {
         for (const t of e.tags) {
           if (!currentTags.includes(t)) currentTags.push(t);
@@ -156,6 +157,16 @@
     dispatch('created')
   }
 
+  function _delete() {
+    // -> confirm dialog!!
+    if (!confirm("Do u really want to delete this entry?"));
+      return;
+    // -> delete
+    entriesInstance.delete(editEntry);
+    reset();
+    dispatch('deleted');
+  }
+
   function reset() {
     type = 'any';
     ready = false;
@@ -238,12 +249,21 @@
     </div>
 
     <div class="buttons-box">
+      <div>
+        <Button variant="unelevated" on:click={create} disabled={!ready}>
+          {#if edit}
+            Update
+          {:else}
+            Create
+          {/if}
+        </Button>
+        <Button on:click={reset}>Cancel</Button>
+      </div>
       {#if edit}
-        <Button on:click={create} variant="unelevated" disabled={!ready}>Update</Button>
-      {:else}
-        <Button on:click={create} variant="unelevated" disabled={!ready}>Create</Button>
+        <div class="delete-button-box">
+          <Button variant="unelevated" on:click={_delete}>Delete</Button>
+        </div>
       {/if}
-      <Button on:click={reset}>Cancel</Button>
     </div>
     {/if}
   </div>
@@ -271,5 +291,12 @@
   }
   .new-topic-box {
     margin-bottom: 5px;
+  }
+  .buttons-box {
+    display: flex;
+    justify-content: space-between;
+  }
+  :global(.delete-button-box .mdc-button--unelevated:not(:disabled)) {
+    background-color: #f12;
   }
 </style>
