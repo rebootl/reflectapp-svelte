@@ -5,7 +5,7 @@
   import Chip, { Set, Icon, Checkmark, Text } from '@smui/chips';
 
   //import TextArea from './Elements/TextArea.svelte';
-  //import './theme/special-theme.scss';
+  import './special-theme.scss';
 
   import { getUserName } from './resources/auth.js';
   import { digestMessage, getPrefix } from './resources/helpers.js';
@@ -52,6 +52,7 @@
 
   export function loadEdit(editEntry) {
     //console.log("loadEdit")
+    //editEntry = editEntry;
     type = editEntry.type;
     editEntryId = editEntry.id;
     editEntryDate = editEntry.date
@@ -162,7 +163,10 @@
     if (!confirm("Do u really want to delete this entry?"));
       return;
     // -> delete
-    entriesInstance.delete(editEntry);
+    entriesInstance.delete({
+      id: editEntryId,
+      user: getUserName(),
+    });
     reset();
     dispatch('deleted');
   }
@@ -295,8 +299,5 @@
   .buttons-box {
     display: flex;
     justify-content: space-between;
-  }
-  :global(.delete-button-box .mdc-button--unelevated:not(:disabled)) {
-    background-color: #f12;
   }
 </style>

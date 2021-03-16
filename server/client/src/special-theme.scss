@@ -1,0 +1,24 @@
+//
+@import './theme/_smui-theme.scss';
+
+
+.delete-button-box {
+  $mdc-theme-primary: $mdc-theme-error;
+
+
+
+
+  @import "@material/theme/variables";
+  @each $style in map-keys($mdc-theme-property-values) {
+    --mdc-theme-#{$style}: #{map-get($mdc-theme-property-values, $style)};
+  }
+
+  //@import "@smui/button/style";
+  //@import "@smui/fab/style";
+}
+
+/*
+.delete-button-box .mdc-button--unelevated:not(:disabled) {
+  background-color: #f12;
+}
+*/

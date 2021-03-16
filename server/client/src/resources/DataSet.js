@@ -1,4 +1,4 @@
-import { apiGetRequest, apiPostRequest } from './requests.js';
+import { apiGetRequest, apiPostRequest, apiDeleteRequest } from './requests.js';
 
 let updateQueue = [];
 let syncInterval = null;
@@ -78,13 +78,13 @@ export class DataSet {
         r = await apiPostRequest(this.url, v.data);
       }
       else if (v.type === 'DELETE') {
-        // -> todo
-        //r = await apiDeleteRequest(this.url, v.data);
+        console.log(v.data)
+        r = await apiDeleteRequest(this.url, v.data);
       }
-      // -> check return
+      // check return
       if (!r.success) {
         console.log(r);
-        // -> if server not reachable push to new queue
+        // if server not reachable push to new queue
         newQueue.push(v);
       }
       // -> what to do if error/cannot sync?

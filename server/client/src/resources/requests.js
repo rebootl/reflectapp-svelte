@@ -88,6 +88,30 @@ export async function apiPostRequest(apiUrl, params, header=defaultHeader) {
   return data;
 }
 
+export async function apiDeleteRequest(apiUrl, params, header=defaultHeader) {
+  let response;
+  try {
+    response = await fetch(apiUrl, {
+      method: 'DELETE',
+      headers: header,
+      body: JSON.stringify(params)
+    });
+  } catch (e) {
+    e.code = 'EFETCH';
+    console.error(e);
+    return { success: false, error: e };
+  }
+  if (!response.ok) {
+    const e = new Error('HTTP error, status = ' + response.status);
+    e.code = 'ESERVER';
+    console.error(e);
+    return { success: false, error: e };
+  }
+  // if decoding fails it shall throw (and stop exec.)
+  const data = await response.json();
+  return data;
+}
+
 export async function uploadFile(apiUrl, data) {
   const formData = new FormData();
   formData.append('data', data);
