@@ -11,6 +11,7 @@
   import { digestMessage, getPrefix } from './resources/helpers.js';
 
   import { topics, filteredEntries, userEntries } from './resources/store.js';
+  import { compressImage, encodeData } from './resources/imagestore.js';
 
   const dispatch = createEventDispatcher();
 
@@ -33,6 +34,8 @@
   //let editEntry = {};
   let editEntryId = '';
   let editEntryDate = '';
+
+  let newImages = [];
 
   let ready = false;
   let edit = false;
@@ -121,6 +124,33 @@
     // -> the digest function is total overkill but meh... :D
     const digest = await digestMessage(JSON.stringify(entry));
     return entry.type + "-" + digest.slice(0, 12);
+  }
+
+  async function handleImages(files) {
+    console.log(files)
+    const n = await Promise.all(Array.from(files)
+      //.filter((file)=>file.type.startsWith('image/'))
+      .filter((file) => !newImages.map((v)=>v.filename).includes(file.name))
+      .map(async (file) => {
+        const placeholder = `<image_placeholder ${file.name}>`;
+        const blob = await compressImage(file, 240, 240);
+        const data = await encodeData(blob);
+        const image = {
+          placeholder: placeholder,
+          filename: file.name,
+          osize: file.size,
+          type: file.type,
+          lastModified: file.lastModified,
+          previewData: data,
+          file: file,
+        };
+        //this.dispatchEvent(new CustomEvent('addimage', {detail: image}));
+        return image;
+      })
+    );
+    console.log(n)
+    newImages = [ ...newImages, ...n ];
+    if (newImages.length > 0) ready = true;
   }
 
   async function create() {
@@ -212,6 +242,15 @@
         <Textfield textarea fullwidth on:input={checkReady} bind:value={inputText}
                    label="New Entry" />
       {:else if type === 'image'}
+        <input on:change={ (e) => handleImages(e.target.files) }
+               type="file"
+               accept="image/*"
+               multiple>
+        <div class="newimages-list">
+          {#each newImages as i}
+            <div>{i.filename}</div>
+          {/each}
+        </div>
       {:else}
       {/if}
     </div>
@@ -299,5 +338,9 @@
   .buttons-box {
     display: flex;
     justify-content: space-between;
+  }
+  .newimages-list {
+    display: flex;
+    flex-flow: column;
   }
 </style>

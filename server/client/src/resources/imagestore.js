@@ -1,7 +1,7 @@
-/*import Compressor from 'compressorjs';
-import { localapi } from './api-service.js';
-import { uploadMultiFilesGenerator } from './api_request_helpers.js';
-import { uploadMultiImagesUrl } from './api-service.js';
+import Compressor from 'compressorjs';
+//import { localapi } from './api-service.js';
+//import { uploadMultiFilesGenerator } from './api_request_helpers.js';
+//import { uploadMultiImagesUrl } from './api-service.js';
 
 export const compressImage = (file, maxWidth=1920, maxHeight=1920) => {
   return new Promise((res, rej) => {
@@ -103,4 +103,3 @@ class ImageStore {
 }
 
 export const imagestore = new ImageStore();
-*/
