@@ -8,6 +8,7 @@ export default async (req : any, res : any) => {
   }
   //console.log(req.user)
   if (!req.files || Object.keys(req.files).length === 0) {
+    console.log(req.files)
     return res.status(400).send('No files were uploaded.');
   }
   let files = [];

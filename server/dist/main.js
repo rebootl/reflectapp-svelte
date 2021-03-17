@@ -2,8 +2,8 @@ import express from 'express';
 import session from 'express-session';
 import connectMongo from 'connect-mongo';
 const MongoStore = connectMongo(session);
-//import compression from 'compression';
-//import fileupload from 'express-fileupload';
+import compression from 'compression';
+import fileupload from 'express-fileupload';
 //import cors from 'cors';
 // routes
 import routeUrlInfo from './routeUrlInfo.js';
@@ -41,10 +41,10 @@ app.use(session({
         collection: 'sessions'
     })
 }));
-//app.use(compression());
-/*app.use(fileupload({
-  createParentPath: true
-}));*/
+app.use(compression());
+app.use(fileupload({
+    createParentPath: true
+}));
 // static files (incl. client)
 app.use('/', express.static(config.STATICDIR));
 // routes w/o db access

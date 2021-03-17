@@ -11,7 +11,8 @@
   import { digestMessage, getPrefix } from './resources/helpers.js';
 
   import { topics, filteredEntries, userEntries } from './resources/store.js';
-  import { compressImage, encodeData } from './resources/imagestore.js';
+  import { compressImage, encodeData, uploadMultiImagesGenerator }
+    from './resources/imagestore.js';
 
   const dispatch = createEventDispatcher();
 
@@ -36,6 +37,7 @@
   let editEntryDate = '';
 
   let newImages = [];
+  let uploadProgress = 0.;
 
   let ready = false;
   let edit = false;
@@ -143,6 +145,7 @@
           lastModified: file.lastModified,
           previewData: data,
           file: file,
+          comment: "",
         };
         //this.dispatchEvent(new CustomEvent('addimage', {detail: image}));
         return image;
@@ -153,20 +156,33 @@
     if (newImages.length > 0) ready = true;
   }
 
+  function setImageComment(comment, filename) {
+    const image = newImages.find(i => i.filename === filename);
+    image.comment = comment;
+  }
+
   async function create() {
     const d = {
       user: getUserName(),
       type: type,
     };
 
+    // -> upload new images
+    const res = await uploadNewImages();
+    // -> alert or so...
+    if (!res) return false;
+
     if (type === 'task' || type === 'article' || type === 'link') {
       d.text = inputText; // -> escape or anything???
-    }
-    if (type === 'link') {
+      if (type === 'article') {
+        d.images = newImages;
+      }
+    } else if (type === 'link') {
       d.title = linkTitle;
       d.comment = comment;
+    } else if (type === 'image') {
+      d.images = newImages;
     }
-    // -> type images
 
     d.topics = [ ...newTopics, ...selectedTopics ];
     d.tags = [ ...newTags, ...selectedTags ];
@@ -186,6 +202,30 @@
 
     reset();
     dispatch('created')
+  }
+
+  async function uploadNewImages() {
+    let uploadResult = {};
+    console.log(newImages)
+    for await (const r of uploadMultiImagesGenerator(newImages)) {
+      // update progress
+      uploadResult = r;
+      uploadProgress = r.progress;
+    }
+    // handle the upload result
+    if (!uploadResult.result.success) return false;
+    const res = newImages.map((i) => {
+      for (const r of uploadResult.result.files) {
+        if (i.filename === r.originalname) {
+          i.filepath = r.path;
+          break;
+        }
+      }
+      delete i.file;
+      i.uploaded = true;
+      return i;
+    });
+    return res;
   }
 
   function _delete() {
@@ -216,6 +256,7 @@
     newTags = [];
     //tags = [ 'lala', '123', 'test' ];
     selectedTags = [];
+    newImages = [];
     dispatch('cancel');
   }
 
@@ -248,8 +289,13 @@
                multiple>
         <div class="newimages-list">
           {#each newImages as i}
-            <div>{i.filename}</div>
+            <div>
+              {i.filename}
+              <input placeholder="Add comment..."
+                     on:input={(e) => setImageComment(e.target.value, i.filename)} />
+            </div>
           {/each}
+          <progress max="100" value={uploadProgress}></progress>
         </div>
       {:else}
       {/if}

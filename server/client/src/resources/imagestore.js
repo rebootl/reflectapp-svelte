@@ -1,7 +1,8 @@
 import Compressor from 'compressorjs';
 //import { localapi } from './api-service.js';
-//import { uploadMultiFilesGenerator } from './api_request_helpers.js';
-//import { uploadMultiImagesUrl } from './api-service.js';
+
+import { uploadMultiFilesGenerator } from './requests.js';
+import { uploadMultiImagesUrl } from './urls.js';
 
 export const compressImage = (file, maxWidth=1920, maxHeight=1920) => {
   return new Promise((res, rej) => {
@@ -28,6 +29,18 @@ export const encodeData = (file) => {
     reader.readAsDataURL(file);
   });
 };
+
+// upload w/ progress
+export async function *uploadMultiImagesGenerator(images) {
+  const files = await Promise.all(images.map(async (i) => {
+    const blob = await compressImage(i.file, 1920, 1920);
+    return new File([blob], i.filename);
+  }));
+  console.log(files)
+  for await (const r of uploadMultiFilesGenerator(uploadMultiImagesUrl, files)) {
+    yield r;
+  }
+}
 
 class ImageStore {
   // local storage
