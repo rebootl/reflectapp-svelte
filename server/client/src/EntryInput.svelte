@@ -168,9 +168,11 @@
     };
 
     // -> upload new images
-    const res = await uploadNewImages();
-    // -> alert or so...
-    if (!res) return false;
+    if (newImages.length > 0) {
+      const res = await uploadNewImages();
+      // -> alert or so...
+      if (!res) return false;
+    }
 
     if (type === 'task' || type === 'article' || type === 'link') {
       d.text = inputText; // -> escape or anything???
