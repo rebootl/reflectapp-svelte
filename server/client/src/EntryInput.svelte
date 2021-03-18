@@ -56,6 +56,7 @@
   }
 
   export function loadEdit(editEntry) {
+    console.log(editEntry)
     //console.log("loadEdit")
     //editEntry = editEntry;
     type = editEntry.type;
@@ -216,18 +217,13 @@
     }
     // handle the upload result
     if (!uploadResult.result.success) return false;
-    const res = newImages.map((i) => {
-      for (const r of uploadResult.result.files) {
-        if (i.filename === r.originalname) {
-          i.filepath = r.path;
-          break;
-        }
-      }
+    newImages.map((i) => {
+      const r = uploadResult.result.files.find(e => e.originalname === i.filename);
+      i.filepath = r.path;
       delete i.file;
-      i.uploaded = true;
       return i;
     });
-    return res;
+    return true;
   }
 
   function _delete() {
