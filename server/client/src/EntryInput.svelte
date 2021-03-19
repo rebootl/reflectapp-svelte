@@ -37,6 +37,7 @@
   let editEntryDate = '';
 
   let newImages = [];
+  let images = [];
   let uploadProgress = 0.;
 
   let ready = false;
@@ -67,6 +68,7 @@
     //tags = editEntry.tags;
     selectedTopics = editEntry.topics;
     selectedTags = editEntry.tags;
+    images = editEntry.images;
 
     if (editEntry.type === 'link') {
       linkTitle = editEntry.title;
@@ -133,7 +135,8 @@
     console.log(files)
     const n = await Promise.all(Array.from(files)
       //.filter((file)=>file.type.startsWith('image/'))
-      .filter((file) => !newImages.map((v)=>v.filename).includes(file.name))
+      .filter((file) => !images.map(v => v.filename).includes(file.name))
+      .filter((file) => !newImages.map(v => v.filename).includes(file.name))
       .map(async (file) => {
         const placeholder = `<image_placeholder ${file.name}>`;
         const blob = await compressImage(file, 240, 240);
@@ -162,29 +165,47 @@
     image.comment = comment;
   }
 
+  function setLoadedImageComment(comment, filename) {
+    const image = images.find(i => i.filename === filename);
+    image.comment = comment;
+  }
+
+  function toggleImageRemove(i, v) {
+    i.remove = v;
+    images = images;
+  }
+
+  function removeNewImage(i) {
+    newImages = newImages.filter(n => i.filename !== n.filename);
+  }
+
   async function create() {
     const d = {
       user: getUserName(),
       type: type,
     };
 
-    // -> upload new images
+    // upload new images
     if (newImages.length > 0) {
       const res = await uploadNewImages();
       // -> alert or so...
       if (!res) return false;
     }
 
+    // remove marked images from entry
+    images = images.filter(i => !i.remove);
+    console.log(images)
+
     if (type === 'task' || type === 'article' || type === 'link') {
       d.text = inputText; // -> escape or anything???
       if (type === 'article') {
-        d.images = newImages;
+        d.images = [ ...images, ...newImages ];
       }
     } else if (type === 'link') {
       d.title = linkTitle;
       d.comment = comment;
     } else if (type === 'image') {
-      d.images = newImages;
+      d.images = [ ...images, ...newImages ];
     }
 
     d.topics = [ ...newTopics, ...selectedTopics ];
@@ -234,6 +255,7 @@
     entriesInstance.delete({
       id: editEntryId,
       user: getUserName(),
+      images: images,
     });
     reset();
     dispatch('deleted');
@@ -255,6 +277,8 @@
     //tags = [ 'lala', '123', 'test' ];
     selectedTags = [];
     newImages = [];
+    images = [];
+    uploadProgress = 0.;
     dispatch('cancel');
   }
 
@@ -285,18 +309,46 @@
                type="file"
                accept="image/*"
                multiple>
-        <div class="newimages-list">
+        <div class="edit-images-list">
           {#each newImages as i}
-            <div>
-              {i.filename}
-              <input placeholder="Add comment..."
-                     on:input={(e) => setImageComment(e.target.value, i.filename)} />
+            <div class="edit-image">
+              <!--{i.filename}-->
+              <img src={i.previewData} />
+              <div class="edit-image-fields">
+                <div class="shortwidth">
+                  <div class="delete-button-box">
+                    <Button on:click={removeNewImage(i)}>Remove</Button>
+                  </div>
+                  <input placeholder="Add comment..."
+                         on:input={(e) => setImageComment(e.target.value, i.filename)} />
+                </div>
+              </div>
             </div>
           {/each}
           <progress max="100" value={uploadProgress}></progress>
         </div>
       {:else}
       {/if}
+      <div class="edit-images-list">
+        {#each images as i}
+          <div class="edit-image">
+            <img src={i.previewData} />
+            <div class="edit-image-fields">
+              <div class="shortwidth">
+                {#if !i.remove}
+                  <div class="delete-button-box">
+                    <Button on:click={toggleImageRemove(i, true)}>Remove</Button>
+                  </div>
+                {:else}
+                  <Button on:click={toggleImageRemove(i, false)}>Keep</Button>
+                {/if}
+              </div>
+              <input value={i.comment} placeholder="Add comment..."
+                     on:input={(e) => setLoadedImageComment(e.target.value, i.filename)} />
+            </div>
+          </div>
+        {/each}
+      </div>
     </div>
 
     {#if ready}
@@ -383,8 +435,18 @@
     display: flex;
     justify-content: space-between;
   }
-  .newimages-list {
+  /*.newimages-list {
     display: flex;
     flex-flow: column;
+  }*/
+  .edit-image {
+    display: flex;
+  }
+  .edit-image-fields {
+    display: flex;
+    flex-flow: column;
+  }
+  .shortwidth {
+    max-width: 120px;
   }
 </style>

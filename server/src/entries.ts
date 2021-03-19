@@ -1,6 +1,7 @@
 import express from 'express';
 import { getAllPublicEntries, getEntries, getEntry } from './entriesModel.js';
 import { getValidUser } from './userModel.js';
+import { handleUpdateImages, deleteImage } from './imageStorage.js';
 
 const router = express.Router();
 
@@ -49,6 +50,11 @@ router.post('/', async (req, res) => {
   // more checks?
   // - length
 
+  // get existing images for handleUpdateImages below
+  let oldImages = [];
+  const rOld = await getEntry(db, req.body.user, req.body.id);
+  if (rOld) if (rOld.images) oldImages = rOld.images;
+
   // insert into db
   const r = await c.updateOne(
     { $and: [
@@ -58,13 +64,19 @@ router.post('/', async (req, res) => {
     { $set: { ...req.body } },
     { upsert: true }
   );
-
   if (!r) return res.sendStatus(400);
+
+  // handle images
+  // (this deletes removed images on server,
+  //  upload of new images is separate via image upload)
+  let newImages = [];
+  if (req.body.images) newImages = req.body.images;
+  handleUpdateImages(newImages, oldImages);
+
   return res.send({ success: true, result: r });
 })
 
 router.delete('/', async (req, res) => {
-  console.log(req.body);
   if (!req.session.loggedIn || req.session.username !== req.body.user) {
     console.log('unallowed entry delete rejected');
     res.sendStatus(401);
@@ -83,8 +95,13 @@ router.delete('/', async (req, res) => {
 
   // delete from db
   const r = await c.remove({ id: req.body.id });
-
   if (!r) return res.sendStatus(400);
+
+  // delete images
+  for (const image of req.body.images) {
+    deleteImage(image);
+  }
+
   return res.send({ success: true, result: r });
 })
 

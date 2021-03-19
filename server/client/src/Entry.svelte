@@ -7,6 +7,8 @@
   import TagTag from './TagTag.svelte';
   import { getHTML } from './resources/helpers.js';
 
+  import { singleEntry } from './resources/store.js';
+
   const md = window.markdownit();
   const dateFormat = 'MMM D YYYY - HH:mm';
 
@@ -15,6 +17,8 @@
   let html = '';
   let date = '';
 
+  let wide = false;
+
   let iconsTypes = {
     task: 'task_alt',
     link: 'link',
@@ -22,17 +26,22 @@
     image: 'image'
   };
 
-  $: update(entry);
+  $: update(entry, $singleEntry);
 
   function update() {
+    console.log($singleEntry)
     if (entry.type === 'task' || entry.type === 'article')
       html = md.render(entry.text);
+
+    wide = false;
+    if ((entry.type === 'article' || entry.type === 'image') && $singleEntry)
+      wide = true;
 
     date = moment(new Date(entry.date)).format(dateFormat);
   }
 </script>
 
-<div class="entry">
+<div class="entry" class:wide>
   <div class="entryheader">
     <div>
       <i class="material-icons">{iconsTypes[entry.type]}</i>
@@ -56,6 +65,12 @@
              title={entry.title}
              comment={entry.comment} />
   {:else if entry.type === 'image'}
+    <div class="imagecontent">
+      {#each entry.images as image}
+        <img src={image.filepath} />
+        <div class="imagecomment"><small>{image.comment}</small></div>
+      {/each}
+    </div>
   {:else}
     <div class="entrycontent">
       <p>oops entry type unknown...</p>
@@ -73,6 +88,9 @@
     width: 220px;
     border: 1px solid var(--main-lines-color);
     border-radius: 4px;
+  }
+  .entry.wide {
+    width: 100%;
   }
   .entryheader {
     display: flex;
@@ -102,6 +120,13 @@
     padding-right: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
+  }
+  img {
+    max-width: 100%;
+  }
+  .imagecomment {
+    padding: 10px;
+    color: var(--main-text-color-low-emph);
   }
   .tagbox {
     display: flex;

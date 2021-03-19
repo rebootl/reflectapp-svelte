@@ -23,7 +23,6 @@ export function storeImage(i : any) : Promise<any> {
 }
 
 export function deleteImage(image : any) : any | void {
-  if (!image.uploaded) return image;
   if (!image.filepath) {
     console.log("image has no filepath argument, returning");
     return image;
@@ -41,13 +40,12 @@ export function deleteImage(image : any) : any | void {
 
 export function handleUpdateImages(newImages : any, oldImages : any) : void {
   // compare new/old ids, delete removed images
-  const newIds = newImages.map((e)=>e.filename);
-  const oldIds = oldImages.map((e)=>e.filename);
+  const newIds = newImages.map(e => e.filename);
+  const oldIds = oldImages.map(e => e.filename);
   for (const oldId of oldIds) {
     if (!newIds.includes(oldId)) {
-      for (const image of oldImages) {
-        if (image.filename === oldId) deleteImage(image);
-      }
+      const r = oldImages.find(i => i.filename === oldId);
+      deleteImage(r)
     }
   }
 }
