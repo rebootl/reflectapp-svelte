@@ -4,8 +4,6 @@
 ## now
 
 - images
-  - load images on edit
-  - delete images on server, on entry delete
   - images for articles
 
 - private entries
@@ -13,9 +11,15 @@
 
 ### later
 
+- "progressive web app"
 - encrypt private entries
 - make images truly private
 - use webp for images
+
+### done/test
+
+- load images on edit
+- delete images on server, on entry delete
 
 ## done
 

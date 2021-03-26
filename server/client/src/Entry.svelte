@@ -121,9 +121,9 @@
     margin-top: 10px;
     margin-bottom: 10px;
   }
-  img {
+  /*img {
     max-width: 100%;
-  }
+  }*/
   .imagecomment {
     padding: 10px;
     color: var(--main-text-color-low-emph);
@@ -134,25 +134,24 @@
     gap: 5px;
     padding: 10px;
   }
-  /*:global(pre) {
+  :global(pre) {
     overflow-x: scroll;
     background-color: rgba(0, 0, 0, 0.3);
     padding: 20px;
     z-index: 20;
   }
-  :global(.entryimage) {
+  /*:global(.entryimage) {
     max-width: 100%;
-  }
+  }*/
   :global(img) {
     max-width: 100%;
   }
-  .imagecomment {
+  /*.imagecomment {
     display: block;
     text-align: center;
     margin-top: -20px;
     padding: 10px 0 10px 0;
     border-top: 1px solid var(--main-background-color-lighter);
     background-color: var(--main-background-color-light);
-  }
-*/
+  }*/
 </style>

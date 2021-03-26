@@ -57,18 +57,16 @@
   }
 
   export function loadEdit(editEntry) {
-    console.log(editEntry)
-    //console.log("loadEdit")
-    //editEntry = editEntry;
+
     type = editEntry.type;
     editEntryId = editEntry.id;
     editEntryDate = editEntry.date
-    inputText = editEntry.text;
-    //topics = editEntry.topics;
-    //tags = editEntry.tags;
+
     selectedTopics = editEntry.topics;
     selectedTags = editEntry.tags;
-    images = editEntry.images;
+
+    inputText = editEntry.text || "";
+    images = editEntry.images || [];
 
     if (editEntry.type === 'link') {
       linkTitle = editEntry.title;
@@ -171,7 +169,8 @@
   }
 
   function toggleImageRemove(i, v) {
-    i.remove = v;
+    if (i.remove) delete i.remove;
+    else i.remove = true;
     images = images;
   }
 
@@ -226,6 +225,15 @@
 
     reset();
     dispatch('created')
+  }
+
+  async function uploadImages() {
+    const r = uploadNewImages();
+    if (r) newImages = [];
+  }
+
+  function insertImageLink(i) {
+    inputText += `\n![${i.comment}](${i.filepath})\n`;
   }
 
   async function uploadNewImages() {
@@ -304,51 +312,63 @@
       {:else if type === 'article'}
         <Textfield textarea fullwidth on:input={checkReady} bind:value={inputText}
                    label="New Entry" />
-      {:else if type === 'image'}
+      {/if}
+      {#if type === 'image' || type === 'article'}
         <input on:change={ (e) => handleImages(e.target.files) }
                type="file"
                accept="image/*"
                multiple>
-        <div class="edit-images-list">
-          {#each newImages as i}
-            <div class="edit-image">
-              <!--{i.filename}-->
-              <img src={i.previewData} />
-              <div class="edit-image-fields">
-                <div class="shortwidth">
-                  <div class="delete-button-box">
-                    <Button on:click={removeNewImage(i)}>Remove</Button>
+        {#if newImages.length > 0}
+          <div class="edit-images-list">
+            {#each newImages as i}
+              <div class="edit-image">
+                <!--{i.filename}-->
+                <img src={i.previewData} />
+                <div class="edit-image-fields">
+                  <div class="shortwidth">
+                    <div class="delete-button-box">
+                      <Button on:click={removeNewImage(i)}>Unload</Button>
+                    </div>
+                    <input placeholder="Add comment..."
+                           on:input={(e) => setImageComment(e.target.value, i.filename)} />
                   </div>
-                  <input placeholder="Add comment..."
-                         on:input={(e) => setImageComment(e.target.value, i.filename)} />
                 </div>
               </div>
-            </div>
-          {/each}
-          <progress max="100" value={uploadProgress}></progress>
-        </div>
-      {:else}
-      {/if}
-      <div class="edit-images-list">
-        {#each images as i}
-          <div class="edit-image">
-            <img src={i.previewData} />
-            <div class="edit-image-fields">
-              <div class="shortwidth">
-                {#if !i.remove}
-                  <div class="delete-button-box">
-                    <Button on:click={toggleImageRemove(i, true)}>Remove</Button>
-                  </div>
-                {:else}
-                  <Button on:click={toggleImageRemove(i, false)}>Keep</Button>
-                {/if}
-              </div>
-              <input value={i.comment} placeholder="Add comment..."
-                     on:input={(e) => setLoadedImageComment(e.target.value, i.filename)} />
-            </div>
+            {/each}
+            <Button on:click={() => uploadImages()}>Upload</Button>
+            <progress max="100" value={uploadProgress}></progress>
           </div>
-        {/each}
-      </div>
+        {/if}
+        {#if images.length > 0}
+          <div class="edit-images-list">
+            {#each images as i}
+              <div class="edit-image">
+                <img src={i.previewData} />
+                <div class="edit-image-fields">
+                  <div class="shortwidth">
+                      <div class="delete-button-box">
+                        <Button on:click={toggleImageRemove(i)}>
+                          {#if i.remove}<Icon class="material-icons">checkmark</Icon>{/if}
+                          Remove
+                        </Button>
+                      </div>
+                    <!--{:else}
+                      <Button on:click={toggleImageRemove(i, false)}><Icon class="material-icons">checkmark</Icon>Keep</Button>
+                    {/if}-->
+                  </div>
+                  <input value={i.comment} placeholder="Add comment..."
+                         on:input={(e) => setLoadedImageComment(e.target.value, i.filename)} />
+                  {#if type === 'article'}
+                    <div class="shortwidth">
+                      <Button on:click={() => insertImageLink(i)}>Insert Link</Button>
+                    </div>
+                  {/if}
+                </div>
+              </div>
+            {/each}
+          </div>
+        {/if}
+      {/if}
     </div>
 
     {#if ready}
