@@ -1,4 +1,7 @@
 <script>
+	import Drawer, { Header, Title, Content } from '@smui/drawer';
+	import List, { Separator, Subheader, Item, Text, Graphic } from '@smui/list';
+	import H6 from '@smui/common/H6.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import UserList from './UserList.svelte';
 	import TopicsTags from './TopicsTags.svelte';
@@ -14,10 +17,27 @@
 <nav class:showmenu>
 	<div class="marginbox"></div>
 	<div class="scrollbox">
-		<UserList {user} />
-		{#if !overview}
-			<TopicsTags />
-		{/if}
+		<div>
+			<Drawer>
+				<Content>
+					<List>
+						<Item href="/#">
+							<Graphic class="material-icons" aria-hidden="true">home</Graphic>
+							<Text>Home</Text>
+						</Item>
+						{#if overview}
+							<UserList {user} />
+						{:else}
+							<Subheader component={H6}>User</Subheader>
+							<Header>
+								<Title>{user}</Title>
+							</Header>
+							<TopicsTags />
+						{/if}
+					</List>
+				</Content>
+			</Drawer>
+		</div>
 	</div>
 </nav>
 <div class="overlay" class:showmenu on:click={() => dispatch('togglemenu')}></div>
