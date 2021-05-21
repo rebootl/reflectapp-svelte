@@ -54,6 +54,10 @@
 
 	<main>
 	{#if route === 'overview'}
+		<div class="logo-box">
+			<img class="logo-r-left" src="/icons/R-left.svg" />
+			<img class="logo-r-right" src="/icons/R-right.svg" />
+		</div>
 		<h1>Welcome!</h1>
 		landing page, blabla
 	{:else}
@@ -192,6 +196,20 @@
 			grid-template-areas:
 				"header header"
 				"main main";
+		}
+		.logo-box {
+			margin-top: 20px;
+			width: 100px;
+			box-sizing: initial;
+			height: 100px;
+			border: 1px solid var(--header-lines-color);
+			padding: 10px;
+		}
+		.logo-r-left {
+			height: 100px;
+		}
+		.logo-r-right {
+			height: 100px;
 		}
 	}
 </style>

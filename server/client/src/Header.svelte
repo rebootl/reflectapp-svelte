@@ -25,11 +25,6 @@
 		<IconButton class="material-icons"
 								title="Home"
 								href="/#">home</IconButton>
-
-		<!--<div class="logo-box">
-			<img class="logo-r-left" src="/icons/R-left.svg" />
-			<img class="logo-r-right" src="/icons/R-right.svg" />
-		</div>-->
 	</div>
 	<div class="right-box">
 		<!--<IconButton class="material-icons" href="/#"

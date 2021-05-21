@@ -3,8 +3,11 @@
 
 ## now
 
+- -> make fixed header
 - images
   - images for articles
+  - -> fix/finish image upload
+    -> after image upload insert link and show image
 
 - private entries
 - don't display topics/tags on single entry/edit
