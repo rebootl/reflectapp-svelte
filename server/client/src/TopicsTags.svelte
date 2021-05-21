@@ -1,5 +1,7 @@
 <script>
 	import { Separator, Subheader, Item, Text, Graphic } from '@smui/list';
+	import { Icon } from '@smui/icon-button';
+
 	import H6 from '@smui/common/H6.svelte';
 
 	import { topics, tags, activeTopics, activeTags } from './resources/store.js';
@@ -30,7 +32,10 @@
 
 <div class="topics">
   <Separator nav />
-  <Subheader component={H6}>Topics</Subheader>
+  <Subheader component={H6}>
+		<!--<span class="icon"><Icon class="material-icons">topic</Icon></span>-->
+		Topics
+	</Subheader>
   {#each $topics as t}
 		<Topic active={$activeTopics.has(t)}
 					 on:click={() => toggleTopic(t)}>{t}</Topic>

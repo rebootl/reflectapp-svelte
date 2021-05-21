@@ -21,14 +21,14 @@
 			<Drawer>
 				<Content>
 					<List>
-						<Item href="/#">
+						<!--<Item href="/#">
 							<Graphic class="material-icons" aria-hidden="true">home</Graphic>
 							<Text>Home</Text>
-						</Item>
+						</Item>-->
 						{#if overview}
 							<UserList {user} />
 						{:else}
-							<Subheader component={H6}>User</Subheader>
+							<!--<Subheader component={H6}>User</Subheader>-->
 							<Header>
 								<Title>{user}</Title>
 							</Header>
